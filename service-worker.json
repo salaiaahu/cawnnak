@@ -1,0 +1,59 @@
+const CACHE_NAME = 'chin-driving-app-v1'; // Cache version
+const urlsToCache = [
+    './', // Caches the root (index.html or driving_app.html)
+    './driving_app.html', // Specific HTML file name
+    './style.css', // If you move CSS to a separate file
+    './script.js', // If you move JS to a separate file
+    './correct.mp3',
+    './wrong.mp3',
+    './retry.mp3',
+    './congrats.mp3',
+    // Include all your icon files here
+    './icons/icon-192x192.png',
+    './icons/icon-512x512.png',
+    './icons/icon-maskable-192x192.png',
+    './icons/icon-maskable-512x512.png'
+    // Add any other static assets (e.g., more images, fonts)
+];
+
+// If your CSS/JS is inlined in HTML, you might not need style.css/script.js here
+// but you must ensure driving_app.html is cached.
+
+self.addEventListener('install', (event) => {
+    event.waitUntil(
+        caches.open(CACHE_NAME)
+            .then((cache) => {
+                console.log('Opened cache');
+                return cache.addAll(urlsToCache);
+            })
+            .then(() => self.skipWaiting()) // Activates the new service worker immediately
+    );
+});
+
+self.addEventListener('fetch', (event) => {
+    event.respondWith(
+        caches.match(event.request)
+            .then((response) => {
+                // Cache hit - return response
+                if (response) {
+                    return response;
+                }
+                // No cache hit - fetch from network
+                return fetch(event.request);
+            })
+    );
+});
+
+self.addEventListener('activate', (event) => {
+    event.waitUntil(
+        caches.keys().then((cacheNames) => {
+            return Promise.all(
+                cacheNames.map((cacheName) => {
+                    if (cacheName !== CACHE_NAME) {
+                        return caches.delete(cacheName); // Delete old caches
+                    }
+                })
+            );
+        }).then(() => self.clients.claim()) // Takes control of clients immediately
+    );
+});

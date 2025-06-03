@@ -1,0 +1,1476 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chin Driving Phrases</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            line-height: 1.6;
+            padding-top: 75px; /* Slightly reduced initial padding */
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            box-sizing: border-box;
+            height: auto;
+            min-height: 60px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.5em;
+            flex-shrink: 0;
+        }
+
+        .voice-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            flex-shrink: 0;
+        }
+
+        .voice-control label {
+            white-space: nowrap;
+        }
+
+        .voice-control select {
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: white;
+            min-width: 120px;
+            flex-grow: 1;
+        }
+
+        /* --- Main Content Styling --- */
+        .app-section {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .app-section {
+            display: none;
+        }
+        .app-section.active {
+            display: block;
+        }
+
+        /* Main Menu Specific Styles */
+        #main-menu {
+            text-align: center;
+            padding-top: 50px;
+        }
+
+        .menu-button {
+            display: block;
+            width: 80%;
+            max-width: 300px;
+            margin: 20px auto;
+            padding: 20px;
+            font-size: 1.2em;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .menu-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Phrase Card Styles (existing) */
+        .phrase {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fafafa;
+            display: flex;
+            flex-direction: column;
+        }
+        .phrase p {
+            margin: 0;
+            padding-bottom: 5px;
+        }
+        .phrase p:first-child {
+            font-weight: bold;
+            color: #0056b3;
+        }
+        .phrase button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            align-self: flex-start;
+        }
+        .phrase button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Back Button Styling */
+        .back-button {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            flex-grow: 1;
+            margin: 0 5px;
+        }
+        .back-button:hover {
+            background-color: #5a6268;
+        }
+
+        /* --- Quiz Specific Styles --- */
+        #quiz-question {
+            font-size: 1.5em;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: #0056b3;
+        }
+
+        #quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .quiz-option-button {
+            background-color: #f0f0f0;
+            color: #333;
+            border: 1px solid #ddd;
+            padding: 12px 15px;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .quiz-option-button:hover {
+            background-color: #e2e6ea;
+            border-color: #adadad;
+        }
+
+        .quiz-option-button.correct {
+            background-color: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+
+        .quiz-option-button.incorrect {
+            background-color: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+
+        .quiz-option-button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        #quiz-feedback {
+            text-align: center;
+            font-size: 1.1em;
+            margin-top: 15px;
+            font-weight: bold;
+            min-height: 1.5em;
+        }
+
+        #quiz-feedback.correct-text {
+            color: #28a745;
+        }
+
+        #quiz-feedback.incorrect-text {
+            color: #dc3545;
+        }
+
+        #quiz-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        #quiz-score {
+            font-size: 1.1em;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+/* NEW: Quiz Question Container for button alignment */
+.quiz-question-container {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center the question and button */
+    gap: 10px; /* Space between question text and button */
+    margin-bottom: 20px; /* Adjust as needed */
+}
+
+#quiz-question {
+    font-size: 1.5em;
+    text-align: center;
+    font-weight: bold;
+    color: #0056b3;
+    margin: 0; /* Remove default paragraph margin */
+}
+
+/* NEW: Style for the play English button in quiz */
+.quiz-play-button {
+    background-color: #28a745; /* Green color */
+    color: white;
+    border: none;
+    border-radius: 50%; /* Make it round */
+    width: 35px; /* Slightly increased width from 30px, adjust if needed */
+    height: 35px; /* Slightly increased height from 30px, adjust if needed */
+    font-size: 1.1em; /* Adjusted font size for symbol */
+    line-height: 1; /* Crucial for vertical centering of text/symbols */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    flex-shrink: 0; /* Prevent it from shrinking */
+    margin-left: 8px; /* Added a little more space from the text */
+    overflow: hidden; /* NEW: Hide overflowing content */
+    padding: 0; /* NEW: Remove default padding */
+    box-sizing: border-box; /* NEW: Include padding/border in width/height */
+}
+
+.quiz-play-button:hover {
+    background-color: #218838;
+}
+
+/* NEW: Quiz Summary Styling */
+#quiz-summary {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+    text-align: left; /* Align text to the left within the summary */
+}
+
+#quiz-summary h3 {
+    text-align: center;
+    color: #0056b3;
+    margin-top: 0;
+}
+
+#quiz-summary #final-score,
+#quiz-summary #time-taken {
+    font-size: 1.2em;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+#quiz-summary h4 {
+    color: #333;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+#wrong-answers-list {
+    list-style: none; /* Remove bullet points */
+    padding: 0;
+    margin: 0;
+}
+
+#wrong-answers-list li {
+    background-color: #f8d7da; /* Light red background */
+    border: 1px solid #dc3545; /* Red border */
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    font-size: 0.95em;
+}
+
+#wrong-answers-list li .english-phrase {
+    font-weight: bold;
+    color: #721c24; /* Dark red text */
+}
+
+#wrong-answers-list li .correct-chin {
+    font-style: italic;
+    color: #28a745; /* Green for correct answer */
+}
+
+.summary-buttons {
+    display: flex;
+    justify-content: space-around;
+    gap: 10px;
+    margin-top: 25px;
+    flex-wrap: wrap; /* Allow buttons to wrap on small screens */
+}
+
+.summary-buttons button {
+    flex-grow: 1; /* Allow buttons to expand */
+    min-width: 120px; /* Minimum width for buttons */
+}
+        #next-question-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            flex-grow: 1;
+            margin: 0 5px;
+        }
+
+        #next-question-button:hover {
+            background-color: #0056b3;
+        }
+        #next-question-button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 10px;
+            }
+            .voice-control {
+                margin-top: 10px;
+                width: 100%;
+                justify-content: space-between;
+            }
+            .voice-control select {
+                flex-grow: 1;
+            }
+            body {
+                padding-top: 115px;
+            }
+            .menu-button {
+                width: 90%;
+            }
+            #quiz-controls button {
+                width: 100%;
+                margin: 5px 0;
+            }
+            #quiz-score {
+                width: 100%;
+                text-align: center;
+                margin-bottom: 10px;
+            }
+        }
+        @media (max-width: 768px) {
+            .app-section {
+                margin: 15px;
+                padding: 15px;
+            }
+        }
+
+        /* --- Modal Styling --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); /* Dark semi-transparent background */
+            z-index: 2000; /* Above everything else */
+            display: none; /* Hidden by default */
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+            backdrop-filter: blur(5px); /* Optional: blur background */
+        }
+
+        .modal-box {
+            position: fixed; /* Fixed position so it stays central */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* Exactly centers the box */
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 2001; /* Above overlay */
+            display: none; /* Hidden by default */
+            flex-direction: column; /* Content inside stacks vertically */
+            align-items: center; /* Center content horizontally */
+            text-align: center;
+            max-width: 90%; /* Max width on mobile */
+            width: 400px; /* Standard width for larger screens */
+            animation: fadeIn 0.3s ease-out; /* Simple fade-in animation */
+            box-sizing: border-box; /* Include padding in width calculation */
+        }
+
+        .modal-box.active {
+            display: flex; /* Show the modal */
+        }
+
+        .modal-content {
+            margin-bottom: 20px;
+            position: relative; /* For confetti container */
+        }
+
+        .modal-content h3 {
+            margin-top: 0;
+            font-size: 1.8em;
+            color: #28a745; /* Green for positive message */
+        }
+
+        .modal-box#study-again-modal .modal-content h3 {
+            color: #dc3545; /* Red for study again message */
+        }
+
+        .modal-box p {
+            font-size: 1.1em;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        /* Reusing menu-button style for modal buttons */
+        .modal-box .menu-button {
+            width: 100%; /* Make modal button full width */
+            max-width: 200px; /* Limit its max width */
+            margin: 0 auto; /* Center it */
+        }
+
+        /* Simple Fade-in Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translate(-50%, -60%); }
+            to { opacity: 1; transform: translate(-50%, -50%); }
+        }
+
+        /* Basic Confetti Particle Styling (Pure CSS, very simple) */
+        .confetti-particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background-color: #f0f; /* Placeholder color */
+            border-radius: 50%;
+            opacity: 0;
+            animation: confetti-fall 3s ease-out forwards;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(200vh) rotate(720deg); /* Fall far down */
+            }
+        }
+    </style>
+</head>
+<body>
+    <header id="app-header">
+        <h1>Holh Cawnnak</h1>
+        <div class="voice-control">
+            <label for="voice-select">Aw Thlennak:</label>
+            <select id="voice-select"></select>
+        </div>
+    </header>
+
+    <div id="main-menu" class="app-section active">
+        <button id="learn-button" class="menu-button">Cawnnak</button>
+        <button id="quiz-button" class="menu-button">Test Tuahnak</button>
+    </div>
+
+    <div id="learn-section" class="app-section">
+        <div class="phrase">
+            <p>English: Open the door</p>
+            <p>Chin: Innka Ong</p>
+            <button class="play-button">Play</button>
+        </div>
+        <div class="phrase">
+            <p>English: Close the door</p>
+            <p>Chin: Innka Khar</p>
+            <button class="play-button">Play</button>
+        </div>
+        <div class="phrase">
+            <p>English: Get inside</p>
+            <p>Chin: A chung ah lut</p>
+            <button class="play-button">Play</button>
+        </div>
+        <div class="phrase">
+            <p>English: Get out</p>
+            <p>Chin: Chuak / Leng ah chuak</p>
+            <button class="play-button">Play</button>
+        </div>
+		<div class="phrase">
+            <p>English: Turn left</p>
+            <p>Chin: Kehlei ah ii kuai</p>
+            <button class="play-button">Play</button>
+        </div>
+        <div class="phrase">
+            <p>English: Turn right</p>
+            <p>Chin: Orhlei ah ii kuai</p>
+            <button class="play-button">Play</button>
+        </div>
+        <div class="phrase">
+            <p>English: Make a left turn</p>
+            <p>Chin: Kehlei ah ii kuai</p>
+            <button class="play-button">Play</button>
+        </div>
+        <div class="phrase">
+            <p>English: Make a right turn</p>
+            <p>Chin: Orhlei ah ii kuai</p>
+            <button class="play-button">Play</button>
+        </div>
+        <div class="phrase">
+            <p>English: Stop</p>
+            <p>Chin: Dir</p>
+            <button class="play-button">Play</button>
+        </div>
+		<div class="phrase">
+            <p>English: Go straight</p>
+            <p>Chin: Hmailei ah ding te in kal</p>
+            <button class="play-button">Play</button>
+        </div>
+        <div class="phrase">
+            <p>English: Left lane</p>
+            <p>Chin: Kehlei kam lam</p>
+            <button class="play-button">Play</button>
+        </div>
+        <div class="phrase">
+            <p>English: Right lane</p>
+            <p>Chin: Orhlei kam lam</p>
+            <button class="play-button">Play</button>
+        </div>
+        <div class="phrase">
+            <p>English: Take the left lane</p>
+            <p>Chin: Kehlei kam lam ah khan kal/lut</p>
+            <button class="play-button">Play</button>
+        </div>
+        <div class="phrase">
+            <p>English: Take the right lane</p>
+            <p>Chin: Orhlei kam lam ah khan kal/lut</p>
+            <button class="play-button">Play</button>
+        </div>
+		<div class="phrase">
+            <p>English: Slow down</p>
+            <p>Chin: Nuar deuh/ duhsah deuh in kal</p>
+            <button class="play-button">Play</button>
+        </div>
+        <div class="phrase">
+            <p>English: Speed up</p>
+            <p>Chin: Rang deuh in kal</p>
+            <button class="play-button">Play</p>
+        </div>
+        <div class="phrase">
+            <p>English: Go faster</p>
+            <p>Chin: Rang deuh in kal</p>
+            <button class="play-button">Play</button>
+        </div>
+        <div class="phrase">
+            <p>English: Watch out!</p>
+            <p>Chin: I ralring!</p>
+            <button class="play-button">Play</button>
+        </div>
+        <div class="phrase">
+            <p>English: Reverse / backup</p>
+            <p>Chin: Noh soh/ hnulei ah kal</p>
+            <button class="play-button">Play</button>
+        </div>
+		<div class="phrase">
+            <p>English: Forward/ move forward</p>
+            <p>Chin: Hmailei ah kal</p>
+            <button class="play-button">Play</button>
+        </div>
+        <div class="phrase">
+            <p>English: Left turn signal</p>
+            <p>Chin: Kehlei kalnak piahtu mei</p>
+            <button class="play-button">Play</button>
+        </div>
+        <div class="phrase">
+            <p>English: Right turn signal</p>
+            <p>Chin: Orhlei kalnak piahtu mei</p>
+            <button class="play-button">Play</button>
+        </div>
+        <div class="phrase">
+            <p>English: Wiper</p>
+            <p>Chin: Thlalang hnawhnak</p>
+            <button class="play-button">Play</button>
+        </div>
+        <div class="phrase">
+            <p>English: Turn the wiper on</p>
+            <p>Chin: Thlalang hnawhnak kha ong</p>
+            <button class="play-button">Play</button>
+        </div>
+		<div class="phrase">
+            <p>English: Turn the wiper off</p>
+            <p>Chin: Thlalang hnawhnak kha phit</p>
+            <button class="play-button">Play</p>
+        </div>
+        <div class="phrase">
+            <p>English: Winshield</p>
+            <p>Chin: A hmailei thlalang</p>
+            <button class="play-button">Play</button>
+        </div>
+        <div class="phrase">
+            <p>English: Roll down the window</p>
+            <p>Chin: Na innka thlalang kha ong/ṭumter</p>
+            <button class="play-button">Play</button>
+        </div>
+        <div class="phrase">
+            <p>English: Roll up the window</p>
+            <p>Chin: Na innka thlalang kha khar/kaiter</p>
+            <button class="play-button">Play</button>
+        </div>
+		<div class="phrase">
+            <p>English: Emergency brake</p>
+            <p>Chin: Emergency brik</p>
+            <button class="play-button">Play</button>
+        </div>
+        <div class="phrase">
+            <p>English: Where is your emergency brake?</p>
+            <p>Chin: Na emergency brik khoika ah dah a um?</p>
+            <button class="play-button">Play</button>
+        </div>
+        <div class="phrase">
+            <p>English: Show me the emergency brake</p>
+            <p>Chin: Emergency brik ka piah tuah</p>
+            <button class="play-button">Play</button>
+        </div>
+		<div class="phrase">
+            <p>English: Brake</p>
+            <p>Chin: Brik/ brik kha lam</p>
+            <button class="play-button">Play</button>
+        </div>
+        <div class="phrase">
+            <p>English: High beams</p>
+            <p>Chin: Lamhlat mei</p>
+            <button class="play-button">Play</button>
+        </div>
+        <div class="phrase">
+            <p>English: Low beams</p>
+            <p>Chin: Lamnaih mei</p>
+            <button class="play-button">Play</p>
+        </div>
+        <div class="phrase">
+            <p>English: Are you nervous?</p>
+            <p>Chin: Na lungrethei ma?</p>
+            <button class="play-button">Play</button>
+        </div>
+        <div class="phrase">
+            <p>English: Don't be nervous</p>
+            <p>Chin: Na lungrethei hlah</p>
+            <button class="play-button">Play</p>
+        </div>
+		<div class="phrase">
+            <p>English: Are you excited?</p>
+            <p>Chin: Naa ngaih ma?</p>
+            <button class="play-button">Play</button>
+        </div>
+        <div class="phrase">
+            <p>English: Are you scared?</p>
+            <p>Chin: Na tih ma?</p>
+            <button class="play-button">Play</button>
+        </div>
+        <div class="phrase">
+            <p>English: Don't be scared</p>
+            <p>Chin: Tih hlah.</p>
+            <button class="play-button">Play</button>
+        </div>
+		<div class="phrase">
+            <p>English: Relax</p>
+            <p>Chin: Thadam tein um</p>
+            <button class="play-button">Play</button>
+        </div>
+        <div class="phrase">
+            <p>English: Follow that car</p>
+            <p>Chin: Mah mawtaw khi zul</p>
+            <button class="play-button">Play</button>
+        </div>
+        <div class="phrase">
+            <p>English: Follow me</p>
+            <p>Chin: Rak ka zul</p>
+            <button class="play-button">Play</button>
+        </div>
+        <div class="phrase">
+            <p>English: Come with me</p>
+            <p>Chin: Rak ka zul</p>
+            <button class="play-button">Play</button>
+        </div>
+        <div class="phrase">
+            <p>English: Don't go yet</p>
+            <p>Chin: Kal rih hlah</p>
+            <button class="play-button">Play</button>
+        </div>
+		<div class="phrase">
+            <p>English: Wait</p>
+            <p>Chin: Um rih/ hngak rih</p>
+            <button class="play-button">Play</button>
+        </div>
+		<div class="phrase">
+            <p>English: Hazard light/ Emergency light</p>
+            <p>Chin: Emergency mei</p>
+            <button class="play-button">Play</button>
+        </div>
+        <div class="phrase">
+            <p>English: Park right there</p>
+            <p>Chin: Ka khin park</p>
+            <button class="play-button">Play</button>
+        </div>
+        <div class="phrase">
+            <p>English: Park right here</p>
+            <p>Chin: Ka hin park</p>
+            <button class="play-button">Play</button>
+        </div>
+		<div class="phrase">
+            <p>English: Don't park there</p>
+            <p>Chin: Ka khan park hlah</p>
+            <button class="play-button">Play</p>
+        </div>
+        <div class="phrase">
+            <p>English: Don't park here</p>
+            <p>Chin: Ka hin park hlah</p>
+            <button class="play-button">Play</p>
+        </div>
+        <div class="phrase">
+            <p>English: Stop right there</p>
+            <p>Chin: Ka khan dir</p>
+            <button class="play-button">Play</button>
+        </div>
+        <div class="phrase">
+            <p>English: Stop right here</p>
+            <p>Chin: Ka hin dir</p>
+            <button class="play-button">Play</p>
+        </div>
+        <div class="phrase">
+            <p>English: Good job</p>
+            <p>Chin: Na thiam/ na ti tha </p>
+            <button class="play-button">Play</button>
+        </div>
+		<div class="phrase">
+            <p>English: Congratulation!</p>
+            <p>Chin: Kan lawmh pi!</p>
+            <button class="play-button">Play</button>
+        </div>
+        <button id="back-to-menu-learn" class="back-button">Kirthannak</button>
+    </div>
+
+    <div id="quiz-section" class="app-section">
+        <h2>Quiz</h2>
+        <p id="quiz-score">Score: 0 / 0</p>
+        <div class="quiz-question-container"> <p id="quiz-question"></p>
+            <button id="quiz-play-english-button" class="quiz-play-button">🔊</button> </div>
+        <div id="quiz-options">
+            </div>
+        <p id="quiz-feedback"></p>
+        <div id="quiz-controls">
+            <button id="next-question-button" disabled>A Dang</button>
+            <button id="back-to-menu-quiz" class="back-button">Kir Than</button>
+        </div>
+        <div id="quiz-summary" style="display: none;">
+            <h3>Quiz Results</h3>
+            <p id="final-score"></p>
+            <p id="time-taken"></p>
+            <h4>Questions to Review:</h4>
+            <ul id="wrong-answers-list">
+                </ul>
+            <div class="summary-buttons">
+                <button id="restart-quiz-summary-button" class="menu-button">Restart Quiz</button>
+                <button id="back-to-menu-summary-button" class="back-button">Kir Than</button>
+            </div>
+        </div>
+    </div>
+
+    <audio id="correctSound" src="https://www.myinstants.com/media/sounds/quick-ting.mp3" preload="auto"></audio>
+    <audio id="wrongSound" src="https://www.myinstants.com/media/sounds/error_CDOxCYm.mp3" preload="auto"></audio>
+    <audio id="retrySound" src="https://www.myinstants.com/media/sounds/tf_nemesis.mp3" preload="auto"></audio> <audio id="congratsSound" src="https://www.myinstants.com/en/instant/winners-92695/" preload="auto"></audio> <div id="modal-overlay" class="modal-overlay"></div>
+
+    <div id="study-again-modal" class="modal-box">
+        <div class="modal-content">
+            <h3>Zoh Than Na Hau!</h3>
+            <p>Tlawmpal naa harh deuh rih ko hih, cawng than rih usih!</p>
+            <button id="study-again-button" class="menu-button">Cawng Than</button>
+        </div>
+    </div>
+
+    <div id="congratulations-modal" class="modal-box">
+        <div class="modal-content">
+            <h3>Na Thiam Bak!</h3>
+            <p>voi 10 tiang bak palh lo tein na phit khawh!</p>
+            <div id="confetti-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; pointer-events: none;"></div>
+            <button id="congrats-ok-button" class="menu-button">A Tha tuk!</button>
+        </div>
+    </div>
+
+
+    <script>
+        const phrases = [
+            { english: "Open the door", chin: "Innka Ong" },
+            { english: "Close the door", chin: "Innka Khar" },
+            { english: "Get inside", chin: "A chung ah lut" },
+            { english: "Get out", chin: "Chuak / Leng ah chuak" },
+            { english: "Turn left", chin: "Kehlei ah ii kuai" },
+            { english: "Turn right", chin: "Orhlei ah ii kuai" },
+            { english: "Make a left turn", chin: "Kehlei ah ii kuai" },
+            { english: "Make a right turn", chin: "Orhlei ah ii kuai" },
+            { english: "Stop", chin: "Dir" },
+            { english: "Go straight", chin: "Hmailei ah ding te in kal" },
+            { english: "Left lane", chin: "Kehlei kam lam" },
+            { english: "Right lane", chin: "Orhlei kam lam" },
+            { english: "Take the left lane", chin: "Kehlei kam lam ah khan kal/lut" },
+            { english: "Take the right lane", chin: "Orhlei kam lam ah khan kal/lut" },
+            { english: "Slow down", chin: "Nuar deuh/ duhsah deuh in kal" },
+            { english: "Speed up", chin: "Rang deuh in kal" },
+            { english: "Go faster", chin: "Rang deuh in kal" },
+            { english: "Watch out!", chin: "I ralring!" },
+            { english: "Reverse / backup", chin: "Noh soh/ hnulei ah kal" },
+            { english: "Forward/ move forward", chin: "Hmailei ah kal" },
+            { english: "Left turn signal", chin: "Kehlei kalnak piahtu mei" },
+            { english: "Right turn signal", chin: "Orhlei kalnak piahtu mei" },
+            { english: "Wiper", chin: "Thlalang hnawhnak" },
+            { english: "Turn the wiper on", chin: "Thlalang hnawhnak kha ong" },
+            { english: "Turn the wiper off", chin: "Thlalang hnawhnak kha phit" },
+            { english: "Winshield", chin: "A hmailei thlalang" },
+            { english: "Roll down the window", chin: "Na innka thlalang kha ong/ṭumter" },
+            { english: "Roll up the window", chin: "Na innka thlalang kha khar/kaiter" },
+            { english: "Emergency brake", chin: "Emergency brik" },
+            { english: "Where is your emergency brake?", chin: "Na emergency brik khoika ah dah a um?" },
+            { english: "Show me the emergency brake", chin: "Emergency brik ka piah tuah" },
+            { english: "Brake", chin: "Brik/ brik kha lam" },
+            { english: "High beams", chin: "Lamhlat mei" },
+            { english: "Low beams", chin: "Lamnaih mei" },
+            { english: "Are you nervous?", chin: "Na lungrethei ma?" },
+            { english: "Don't be nervous", chin: "Na lungrethei hlah" },
+            { english: "Are you excited?", chin: "Naa ngaih ma?" },
+            { english: "Are you scared?", chin: "Na tih ma?" },
+            { english: "Don't be scared", chin: "Tih hlah." },
+            { english: "Relax", chin: "Thadam tein um" },
+            { english: "Follow that car", chin: "Mah mawtaw khi zul" },
+            { english: "Follow me", chin: "Rak ka zul" },
+            { english: "Come with me", chin: "Rak ka zul" },
+            { english: "Don't go yet", chin: "Kal rih hlah" },
+            { english: "Wait", chin: "Um rih/ hngak rih" },
+            { english: "Hazard light/ Emergency light", chin: "Emergency mei" },
+            { english: "Park right there", chin: "Ka khin park" },
+            { english: "Park right here", chin: "Ka hin park" },
+            { english: "Don't park there", chin: "Ka khan park hlah" },
+            { english: "Don't park here", chin: "Ka hin park hlah" },
+            { english: "Stop right there", chin: "Ka khan dir" },
+            { english: "Stop right here", chin: "Ka hin dir" },
+            { english: "Good job", chin: "Na thiam/ na ti ṭha" },
+            { english: "Congratulation!", chin: "Kan lawmh pi!" }
+        ];
+
+        const playButtons = document.querySelectorAll('.play-button');
+        const voiceSelect = document.getElementById('voice-select');
+        let voices = [];
+        let selectedVoice = null;
+		
+        // NEW: Quiz Play English Button reference
+        const quizPlayEnglishButton = document.getElementById('quiz-play-english-button');
+
+        // NEW: Quiz Summary Elements
+        const quizSummary = document.getElementById('quiz-summary');
+        const finalScoreElement = document.getElementById('final-score');
+        const timeTakenElement = document.getElementById('time-taken');
+        const wrongAnswersList = document.getElementById('wrong-answers-list');
+        const restartQuizSummaryButton = document.getElementById('restart-quiz-summary-button');
+        const backToMenuSummaryButton = document.getElementById('back-to-menu-summary-button');
+
+        const mainMenu = document.getElementById('main-menu');
+        const learnSection = document.getElementById('learn-section');
+        const quizSection = document.getElementById('quiz-section');
+
+        const learnButton = document.getElementById('learn-button');
+        const quizButton = document.getElementById('quiz-button');
+        const backToMenuLearnButton = document.getElementById('back-to-menu-learn');
+        const backToMenuQuizButton = document.getElementById('back-to-menu-quiz');
+
+        const quizQuestionElement = document.getElementById('quiz-question');
+        const quizOptionsElement = document.getElementById('quiz-options');
+        const quizFeedbackElement = document.getElementById('quiz-feedback');
+        const quizScoreElement = document.getElementById('quiz-score');
+        const nextQuestionButton = document.getElementById('next-question-button');
+		const quizControls = document.getElementById('quiz-controls');
+
+        const correctSound = document.getElementById('correctSound');
+        const wrongSound = document.getElementById('wrongSound');
+        const retrySound = document.getElementById('retrySound');   // NEW Audio Element Reference
+        const congratsSound = document.getElementById('congratsSound'); // NEW Audio Element Reference
+
+        // --- Modal Elements ---
+        const modalOverlay = document.getElementById('modal-overlay');
+        const studyAgainModal = document.getElementById('study-again-modal');
+        const congratulationsModal = document.getElementById('congratulations-modal');
+        const studyAgainButton = document.getElementById('study-again-button');
+        const congratsOkButton = document.getElementById('congrats-ok-button');
+        const confettiContainer = document.getElementById('confetti-container'); // For CSS confetti
+
+
+        let shuffledQuestions = [];
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let consecutiveWrongAnswers = 0;
+        let consecutiveCorrectAnswers = 0;
+
+        // NEW: Timer variables
+        let quizStartTime;
+        let quizEndTime;
+        let wronglyAnsweredQuestions = []; // NEW: Array to store incorrect questions
+
+        const NUMBER_OF_QUIZ_QUESTIONS = 10;
+        const NUMBER_OF_OPTIONS = 4;
+
+        const header = document.getElementById('app-header');
+        function adjustBodyPadding() {
+            const headerHeight = header.offsetHeight;
+            document.body.style.paddingTop = `${headerHeight}px`;
+        }
+        
+        window.addEventListener('load', adjustBodyPadding);
+        window.addEventListener('resize', adjustBodyPadding);
+
+        let currentActiveSection = 'main-menu'; // Tracks which main section is currently visible
+
+        // Function to show a specific section and manage history state
+        function showSection(sectionId, pushState = true) {
+            // Stop any ongoing speech or sounds when changing sections
+            window.speechSynthesis.cancel(); 
+            correctSound.pause(); correctSound.currentTime = 0;
+            wrongSound.pause(); wrongSound.currentTime = 0;
+            retrySound.pause(); retrySound.currentTime = 0;
+            congratsSound.pause(); congratsSound.currentTime = 0;
+
+            modalOverlay.classList.remove('active');
+            studyAgainModal.classList.remove('active');
+            congratulationsModal.classList.remove('active');
+
+            mainMenu.classList.remove('active');
+            learnSection.classList.remove('active');
+            quizSection.classList.remove('active');
+
+            let targetSection;
+            if (sectionId === 'main-menu') {
+                targetSection = mainMenu;
+            } else if (sectionId === 'learn-section') {
+                targetSection = learnSection;
+            } else if (sectionId === 'quiz-section') {
+                targetSection = quizSection;
+            } else {
+                console.error("Unknown section ID:", sectionId);
+                return;
+            }
+            targetSection.classList.add('active');
+            currentActiveSection = sectionId;
+
+            if (pushState) {
+                history.pushState({ section: sectionId }, '', `#${sectionId}`);
+            }
+
+            if (sectionId === 'quiz-section') {
+                startQuiz();
+            } else if (sectionId === 'main-menu') {
+                resetQuiz();
+            }
+            adjustBodyPadding();
+        }
+
+        // Event listener for browser/device back button
+        window.addEventListener('popstate', (event) => {
+            // event.state contains the state object that was pushed
+            if (event.state && event.state.section) {
+                // A known app section state was popped, show that section
+                showSection(event.state.section, false); // Don't push another state
+            } else {
+                // This means we've popped back to the initial page load state (or outside our app's control)
+                // If currentActiveSection is not 'main-menu', we force it back to main menu
+                if (currentActiveSection !== 'main-menu') {
+                    showSection('main-menu', false); // Don't push another state
+                }
+                // If it IS 'main-menu', we let the browser handle it (exit the app or go to previous external page)
+            }
+        });
+
+        // Initialize history state on page load (replaces default initial entry)
+        history.replaceState({ section: 'main-menu' }, '', '#main-menu');
+
+
+        // Voice selection logic (unchanged)
+        function populateVoiceList() {
+            voices = window.speechSynthesis.getVoices().filter(voice => voice.lang.startsWith('en'));
+            voiceSelect.innerHTML = '';
+
+            if (voices.length === 0) {
+                const option = document.createElement('option');
+                option.textContent = 'No voices available';
+                option.value = '';
+                voiceSelect.appendChild(option);
+                voiceSelect.disabled = true;
+                return;
+            } else {
+                voiceSelect.disabled = false;
+            }
+
+            voices.forEach(voice => {
+                const option = document.createElement('option');
+                option.textContent = `${voice.name} (${voice.lang})`;
+                option.value = voice.name;
+                voiceSelect.appendChild(option);
+            });
+
+            const defaultVoiceName = 'Microsoft Zira - English (United States)';
+            const defaultVoice = voices.find(voice => voice.name === defaultVoiceName);
+            
+            if (defaultVoice) {
+                voiceSelect.value = defaultVoiceName;
+                selectedVoice = defaultVoice;
+            } else if (voices.length > 0) {
+                voiceSelect.value = voices[0].name;
+                selectedVoice = voices[0];
+            } else {
+                console.warn("No English voices found after filtering!");
+            }
+        }
+
+        if ('speechSynthesis' in window) {
+            speechSynthesis.onvoiceschanged = populateVoiceList;
+        }
+        populateVoiceList(); 
+
+        voiceSelect.addEventListener('change', () => {
+            const selectedVoiceName = voiceSelect.value;
+            selectedVoice = voices.find(voice => voice.name === selectedVoiceName);
+            if (!selectedVoice) {
+                console.warn("Selected voice not found in available voices array.");
+            }
+        });
+
+        // Learning section play button logic (unchanged)
+        playButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const englishPhraseElement = button.parentNode.querySelector('p:first-child');
+                const englishPhrase = englishPhraseElement.textContent.replace('English: ', '');
+                
+                if ('speechSynthesis' in window && selectedVoice) {
+                    const utterance = new SpeechSynthesisUtterance(englishPhrase);
+                    utterance.voice = selectedVoice;
+                    utterance.lang = selectedVoice.lang;
+
+                    utterance.onerror = (event) => {
+                        console.error('SpeechSynthesisUtterance error:', event.error);
+                        alert("Speech playback failed. Check console for details.");
+                    };
+
+                    window.speechSynthesis.cancel(); 
+                    window.speechSynthesis.speak(utterance);
+                } else if (!('speechSynthesis' in window)) {
+                    alert("Text-to-speech not supported in this browser/device.");
+                } else if (!selectedVoice) {
+                    alert("No voice selected or available. Please ensure voices are loaded.");
+                }
+            });
+        });
+
+        // Quiz Logic
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function startQuiz() {
+            resetQuiz();
+            wronglyAnsweredQuestions = []; // NEW: Clear wrong answers list for new quiz
+            quizSummary.style.display = 'none'; // NEW: Hide summary when starting quiz
+            
+            // NEW: Hide quiz controls and show question container initially
+            document.querySelector('.quiz-question-container').style.display = 'flex';
+            quizOptionsElement.style.display = 'flex'; // Ensure options are visible
+            quizFeedbackElement.style.display = 'block'; // Ensure feedback is visible
+            quizControls.style.display = 'flex'; // Ensure controls are visible
+			
+            shuffledQuestions = shuffleArray([...phrases]);
+            
+            // Limit the number of questions in the quiz if the phrase list is long
+            if (shuffledQuestions.length > NUMBER_OF_QUIZ_QUESTIONS) {
+                shuffledQuestions = shuffledQuestions.slice(0, NUMBER_OF_QUIZ_QUESTIONS);
+            }
+
+            if (shuffledQuestions.length < NUMBER_OF_OPTIONS) {
+                 alert(`Not enough unique phrases (${phrases.length}) to create a quiz with ${NUMBER_OF_OPTIONS} options. Please add more phrases.`);
+                 showSection('main-menu');
+                 return;
+            }
+
+            quizStartTime = new Date().getTime(); // NEW: Start timer
+            displayQuestion();
+        }
+
+        function resetQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            consecutiveWrongAnswers = 0;
+            consecutiveCorrectAnswers = 0;
+            wronglyAnsweredQuestions = []; // NEW: Important to clear this
+            updateScoreDisplay();
+            quizFeedbackElement.textContent = '';
+            quizFeedbackElement.className = '';
+            nextQuestionButton.disabled = true;
+            quizOptionsElement.innerHTML = '';
+            quizQuestionElement.textContent = '';
+            nextQuestionButton.style.display = 'inline-block';
+            const existingRestartButton = quizOptionsElement.querySelector('#restart-quiz-button');
+            if (existingRestartButton) {
+                existingRestartButton.remove();
+            }
+            // NEW: Ensure summary is hidden on quiz reset
+            quizSummary.style.display = 'none';
+        }
+
+        function displayQuestion() {
+            quizFeedbackElement.textContent = '';
+            quizFeedbackElement.className = '';
+            nextQuestionButton.disabled = true;
+
+            if (currentQuestionIndex >= shuffledQuestions.length) {
+                endQuiz();
+                return;
+            }
+
+            const currentQuestion = shuffledQuestions[currentQuestionIndex];
+            quizQuestionElement.textContent = `${currentQuestion.english}`; // No "What does..." here, button is next to it
+
+            // Generate options
+            const options = [];
+            options.push(currentQuestion.chin);
+
+            const incorrectOptionsPool = phrases.filter(p => p.chin !== currentQuestion.chin);
+            shuffleArray(incorrectOptionsPool);
+
+            let addedIncorrectOptions = new Set();
+            for (let i = 0; options.length < NUMBER_OF_OPTIONS && i < incorrectOptionsPool.length; i++) {
+                const potentialIncorrect = incorrectOptionsPool[i].chin;
+                if (!addedIncorrectOptions.has(potentialIncorrect) && potentialIncorrect !== currentQuestion.chin) {
+                    options.push(potentialIncorrect);
+                    addedIncorrectOptions.add(potentialIncorrect);
+                }
+            }
+            
+            shuffleArray(options);
+
+            quizOptionsElement.innerHTML = '';
+
+            options.forEach(option => {
+                const button = document.createElement('button');
+                button.textContent = option;
+                button.classList.add('quiz-option-button');
+                button.addEventListener('click', () => checkAnswer(button, option, currentQuestion.chin));
+                quizOptionsElement.appendChild(button);
+            });
+            updateScoreDisplay();
+        }
+
+        function checkAnswer(selectedButton, selectedAnswer, correctAnswer) {
+            Array.from(quizOptionsElement.children).forEach(button => {
+                button.disabled = true;
+                if (button.textContent === correctAnswer) {
+                    button.classList.add('correct');
+                }
+            });
+            nextQuestionButton.disabled = false;
+
+            if (selectedAnswer === correctAnswer) {
+                score++;
+                wrongAnswersInARow = 0;
+                consecutiveCorrectAnswers++;
+
+                quizFeedbackElement.textContent = "Na Hman!";
+                quizFeedbackElement.classList.add('correct-text');
+                selectedButton.classList.add('correct');
+                vibrate(200);
+                playCorrectSound();
+
+                if (consecutiveCorrectAnswers === 10) {
+                    playCongratsSound();
+                    showModal('congratulations-modal');
+                }
+
+            } else {
+                wrongAnswersInARow++;
+                consecutiveCorrectAnswers = 0; // Reset correct streak on wrong answer
+
+                // NEW: Store wrongly answered question
+                wronglyAnsweredQuestions.push({
+                    english: shuffledQuestions[currentQuestionIndex].english,
+                    selectedChin: selectedAnswer,
+                    correctChin: correctAnswer
+                });
+
+                quizFeedbackElement.textContent = `Na Palh!, a phi cu: ${correctAnswer}`;
+                quizFeedbackElement.classList.add('incorrect-text');
+                selectedButton.classList.add('incorrect');
+                vibrate([100, 50, 100]);
+
+                playWrongSound();
+
+                if (wrongAnswersInARow === 3) {
+                    playRetrySound();
+                    showModal('study-again-modal');
+                }
+            }
+            updateScoreDisplay();
+        }
+
+        function updateScoreDisplay() {
+            quizScoreElement.textContent = `Score: ${score} / ${currentQuestionIndex + (currentQuestionIndex < shuffledQuestions.length ? 1 : 0)}`;
+            if (currentQuestionIndex >= shuffledQuestions.length) {
+                quizScoreElement.textContent = `Final Score: ${score} / ${shuffledQuestions.length}`;
+            }
+        }
+
+        // --- MODIFIED endQuiz for Summary ---
+        function endQuiz() {
+            quizEndTime = new Date().getTime(); // NEW: End timer
+            const timeTakenMs = quizEndTime - quizStartTime;
+            const timeTakenSeconds = Math.floor(timeTakenMs / 1000);
+            const minutes = Math.floor(timeTakenSeconds / 60);
+            const seconds = timeTakenSeconds % 60;
+
+            // Hide quiz elements
+            document.querySelector('.quiz-question-container').style.display = 'none';
+            quizOptionsElement.style.display = 'none';
+            quizFeedbackElement.style.display = 'none';
+            quizControls.style.display = 'none'; // Hide quiz controls
+
+            // Show summary section
+            quizSummary.style.display = 'block';
+
+            // Populate summary
+            finalScoreElement.textContent = `Your score: ${score} out of ${shuffledQuestions.length}`;
+            timeTakenElement.textContent = `Time taken: ${minutes}m ${seconds}s`;
+
+            wrongAnswersList.innerHTML = ''; // Clear previous list
+            if (wronglyAnsweredQuestions.length > 0) {
+                wronglyAnsweredQuestions.forEach(item => {
+                    const listItem = document.createElement('li');
+                    listItem.innerHTML = `<span class="english-phrase">${item.english}</span><br>
+                                          Your answer: ${item.selectedChin}<br>
+                                          Correct: <span class="correct-chin">${item.correctChin}</span>`;
+                    wrongAnswersList.appendChild(listItem);
+                });
+            } else {
+                const listItem = document.createElement('li');
+                listItem.textContent = "Great job! You got all questions right.";
+                wrongAnswersList.appendChild(listItem);
+            }
+        }
+
+        function vibrate(pattern) {
+            if ("vibrate" in navigator) {
+                navigator.vibrate(pattern);
+            } else {
+                console.warn("Vibration API not supported in this browser/device.");
+            }
+        }
+
+        function playCorrectSound() {
+            if (correctSound) {
+                correctSound.currentTime = 0;
+                correctSound.play().catch(e => console.error("Error playing correct sound:", e));
+            }
+        }
+
+        function playWrongSound() {
+            if (wrongSound) {
+                wrongSound.currentTime = 0;
+                wrongSound.play().catch(e => console.error("Error playing wrong sound:", e));
+            }
+        }
+
+        function playRetrySound() {
+            if (retrySound) {
+                retrySound.currentTime = 0;
+                retrySound.play().catch(e => console.error("Error playing retry sound:", e));
+            }
+        }
+
+        function playCongratsSound() {
+            if (congratsSound) {
+                congratsSound.currentTime = 0;
+                congratsSound.play().catch(e => console.error("Error playing congrats sound:", e));
+            }
+        }
+
+        // --- Modal Control Functions (unchanged) ---
+        function showModal(modalId) {
+            modalOverlay.classList.add('active');
+            if (modalId === 'study-again-modal') {
+                studyAgainModal.classList.add('active');
+            } else if (modalId === 'congratulations-modal') {
+                congratulationsModal.classList.add('active');
+                triggerConfetti();
+            }
+        }
+
+        function hideModal(modalId) {
+            modalOverlay.classList.remove('active');
+            if (modalId === 'study-again-modal') {
+                studyAgainModal.classList.remove('active');
+            } else if (modalId === 'congratulations-modal') {
+                congratulationsModal.classList.remove('active');
+                confettiContainer.innerHTML = ''; // Clear confetti particles
+            }
+            // Reset consecutive counters AFTER dismissing modal
+            wrongAnswersInARow = 0;
+            correctAnswersInARow = 0;
+        }
+
+        // --- Confetti Animation (Pure CSS particles) ---
+        function triggerConfetti() {
+            confettiContainer.innerHTML = '';
+            const colors = ['#f0f', '#0ff', '#ff0', '#f80', '#08f', '#8f0', '#f00', '#0f0', '#00f'];
+            const numParticles = 75;
+
+            for (let i = 0; i < numParticles; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('confetti-particle');
+                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.animationDelay = `${Math.random() * 0.8}s`;
+                particle.style.animationDuration = `${2 + Math.random() * 3}s`;
+                particle.style.opacity = `${0.7 + Math.random() * 0.3}`;
+
+                particle.style.transform = `rotate(${Math.random() * 360}deg)`;
+                particle.style.transformOrigin = `${Math.random() * 100}% ${Math.random() * 100}%`;
+                particle.style.width = `${6 + Math.random() * 4}px`;
+                particle.style.height = particle.style.width;
+
+
+                confettiContainer.appendChild(particle);
+
+                particle.addEventListener('animationend', () => {
+                    particle.remove();
+                });
+            }
+        }
+
+
+        // --- Event Listeners ---
+
+        // NEW: Event listener for quiz play English button
+        quizPlayEnglishButton.addEventListener('click', () => {
+            if (currentQuestionIndex < shuffledQuestions.length) {
+                const englishPhrase = shuffledQuestions[currentQuestionIndex].english;
+                if ('speechSynthesis' in window && selectedVoice) {
+                    const utterance = new SpeechSynthesisUtterance(englishPhrase);
+                    utterance.voice = selectedVoice;
+                    utterance.lang = selectedVoice.lang;
+                    window.speechSynthesis.cancel();
+                    window.speechSynthesis.speak(utterance);
+                } else {
+                    console.warn("Text-to-speech not ready or supported for quiz question.");
+                }
+            }
+        });
+
+
+        studyAgainButton.addEventListener('click', () => {
+            hideModal('study-again-modal');
+            showSection('learn-section');
+        });
+
+        congratsOkButton.addEventListener('click', () => {
+            hideModal('congratulations-modal');
+            showSection('main-menu');
+        });
+
+        learnButton.addEventListener('click', () => {
+            showSection('learn-section');
+        });
+
+        quizButton.addEventListener('click', () => {
+            nextQuestionButton.style.display = 'inline-block';
+            showSection('quiz-section');
+        });
+
+        backToMenuLearnButton.addEventListener('click', () => {
+            history.back();
+        });
+
+        backToMenuQuizButton.addEventListener('click', () => {
+            // NEW: If back from quiz, and it's not summary, go to main menu
+            // If it's summary, restart quiz should also trigger this.
+            // For now, let's keep it simple: any back from quiz returns to main menu
+            history.back();
+        });
+
+        nextQuestionButton.addEventListener('click', () => {
+            currentQuestionIndex++;
+            displayQuestion();
+        });
+
+        // NEW: Event listeners for summary buttons
+        restartQuizSummaryButton.addEventListener('click', () => {
+            quizSummary.style.display = 'none'; // Hide summary
+            // Hide quiz controls and show question container initially
+            document.querySelector('.quiz-question-container').style.display = 'flex';
+            quizOptionsElement.style.display = 'flex'; // Ensure options are visible
+            quizFeedbackElement.style.display = 'block'; // Ensure feedback is visible
+            quizControls.style.display = 'flex'; // Ensure controls are visible
+            startQuiz();
+        });
+
+        backToMenuSummaryButton.addEventListener('click', () => {
+            quizSummary.style.display = 'none'; // Hide summary
+            showSection('main-menu'); // Go back to main menu
+        });
+
+
+        const initialHashSection = window.location.hash.substring(1);
+        if (initialHashSection && ['main-menu', 'learn-section', 'quiz-section'].includes(initialHashSection)) {
+            showSection(initialHashSection, false);
+        } else {
+            showSection('main-menu', false);
+        }
+		    // PWA: Register Service Worker
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./service-worker.js')
+                .then(registration => {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                })
+                .catch(err => {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+        });
+    }
+    </script>
+</body>
+</html>

@@ -2,15 +2,15 @@
 <html>
 <head>
     <title>Chin Driving Phrases</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <style>
         /* Essential for full-height layout */
         html, body {
             margin: 0;
             padding: 0;
-            height: 100%; /* Make HTML and body take full viewport height */
+            height: 100%; /* Make HTML and body take full browser viewport height */
             width: 100%;
-            overflow: hidden; /* Prevents initial scrollbars, manage content overflow within sections */
+            /* Removed overflow: hidden from here to allow learn/quiz section to scroll */
         }
 
         body {
@@ -18,10 +18,10 @@
             background-color: #f4f4f4;
             color: #333;
             line-height: 1.6;
-            /* Remove padding-top from body, it will be handled by main content positioning */
-            /* padding-top: 75px; */
             display: flex; /* Use flexbox for overall layout */
             flex-direction: column; /* Stack header and content vertically */
+            /* Ensure content stretches to fill height. This works because html,body are 100% */
+            min-height: 100vh; /* Fallback for older browsers, ensures at least viewport height */
         }
 
         header {
@@ -38,9 +38,12 @@
             align-items: center;
             flex-wrap: wrap;
             box-sizing: border-box;
-            /* height: auto; */ /* Removed as we want it to conform to content */
-            min-height: 60px; /* Keep minimum height */
+            min-height: 60px;
             flex-shrink: 0; /* Prevent header from shrinking */
+
+            /* New: Account for safe area insets if available (iOS Notch etc.) */
+            padding-top: calc(10px + env(safe-area-inset-top, 0px));
+            padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
         }
 
         header h1 {
@@ -73,19 +76,19 @@
 
         /* --- Main Content Styling --- */
         .app-section {
-            max-width: 600px;
-            margin: 0 auto;
+            /* Removed max-width and margin-auto from here for full width on mobile */
+            /* max-width: 600px; */
+            /* margin: 0 auto; */
             background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
+            padding: 20px; /* Keep padding inside the section */
+            border-radius: 8px; /* Consider reducing this slightly for mobile to maximize content */
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             flex-grow: 1; /* Allow sections to take available vertical space */
-            display: none;
-            flex-direction: column;
-            box-sizing: border-box;
-            /* Key change for scrolling: */
-            overflow-y: auto; /* Allows vertical scrolling if content overflows */
-            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+            display: none; /* Hidden by default for sections */
+            flex-direction: column; /* Arrange content inside vertically */
+            box-sizing: border-box; /* Include padding in height */
+            overflow-y: auto; /* Enable vertical scrolling within the section if content overflows */
+            -webkit-overflow-scrolling: touch; /* Improves scrolling performance on iOS */
         }
         
         .app-section.active {
@@ -95,17 +98,17 @@
         /* Main Menu Specific Styles */
         #main-menu {
             text-align: center;
-            /* padding-top: 50px; */ /* Remove fixed padding-top here */
             justify-content: center; /* Center buttons vertically in flex container */
             align-items: center; /* Center buttons horizontally */
             height: 100%; /* Ensure it fills parent's height */
+            /* Removed padding-top here as flex centering handles it */
         }
 
         .menu-button {
             display: block;
-            width: 80%;
-            max-width: 300px;
-            margin: 20px auto;
+            width: 80%; /* Maintain percentage width */
+            max-width: 300px; /* Keep max-width for larger screens */
+            margin: 20px auto; /* Center buttons horizontally */
             padding: 20px;
             font-size: 1.2em;
             background-color: #007bff;
@@ -122,7 +125,7 @@
             background-color: #0056b3;
         }
 
-        /* Phrase Card Styles (existing) */
+        /* Phrase Card Styles (existing - fine as is) */
         .phrase {
             margin-bottom: 20px;
             padding: 15px;
@@ -249,114 +252,114 @@
             font-weight: bold;
             flex-shrink: 0;
         }
-/* NEW: Quiz Question Container for button alignment */
-.quiz-question-container {
-    display: flex;
-    align-items: center;
-    justify-content: center; /* Center the question and button */
-    gap: 10px; /* Space between question text and button */
-    margin-bottom: 20px; /* Adjust as needed */
-}
+        /* NEW: Quiz Question Container for button alignment */
+        .quiz-question-container {
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Center the question and button */
+            gap: 10px; /* Space between question text and button */
+            margin-bottom: 20px; /* Adjust as needed */
+        }
 
-#quiz-question {
-    font-size: 1.5em;
-    text-align: center;
-    font-weight: bold;
-    color: #0056b3;
-    margin: 0; /* Remove default paragraph margin */
-}
+        #quiz-question {
+            font-size: 1.5em;
+            text-align: center;
+            font-weight: bold;
+            color: #0056b3;
+            margin: 0; /* Remove default paragraph margin */
+        }
 
-/* NEW: Style for the play English button in quiz */
-.quiz-play-button {
-    background-color: #28a745; /* Green color */
-    color: white;
-    border: none;
-    border-radius: 50%; /* Make it round */
-    width: 35px; /* Slightly increased width from 30px, adjust if needed */
-    height: 35px; /* Slightly increased height from 30px, adjust if needed */
-    font-size: 1.1em; /* Adjusted font size for symbol */
-    line-height: 1; /* Crucial for vertical centering of text/symbols */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    flex-shrink: 0; /* Prevent it from shrinking */
-    margin-left: 8px; /* Added a little more space from the text */
-    overflow: hidden; /* NEW: Hide overflowing content */
-    padding: 0; /* NEW: Remove default padding */
-    box-sizing: border-box; /* NEW: Include padding/border in width/height */
-}
+        /* NEW: Style for the play English button in quiz */
+        .quiz-play-button {
+            background-color: #28a745; /* Green color */
+            color: white;
+            border: none;
+            border-radius: 50%; /* Make it round */
+            width: 35px; /* Slightly increased width from 30px, adjust if needed */
+            height: 35px; /* Slightly increased height from 30px, adjust if needed */
+            font-size: 1.1em; /* Adjusted font size for symbol */
+            line-height: 1; /* Crucial for vertical centering of text/symbols */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            flex-shrink: 0; /* Prevent it from shrinking */
+            margin-left: 8px; /* Added a little more space from the text */
+            overflow: hidden; /* NEW: Hide overflowing content */
+            padding: 0; /* NEW: Remove default padding */
+            box-sizing: border-box; /* NEW: Include padding/border in width/height */
+        }
 
-.quiz-play-button:hover {
-    background-color: #218838;
-}
+        .quiz-play-button:hover {
+            background-color: #218838;
+        }
 
-/* NEW: Quiz Summary Styling */
-#quiz-summary {
-    margin-top: 30px;
-    padding-top: 20px;
-    border-top: 1px solid #eee;
-    text-align: left; /* Align text to the left within the summary */
-}
+        /* NEW: Quiz Summary Styling */
+        #quiz-summary {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            text-align: left; /* Align text to the left within the summary */
+        }
 
-#quiz-summary h3 {
-    text-align: center;
-    color: #0056b3;
-    margin-top: 0;
-}
+        #quiz-summary h3 {
+            text-align: center;
+            color: #0056b3;
+            margin-top: 0;
+        }
 
-#quiz-summary #final-score,
-#quiz-summary #time-taken {
-    font-size: 1.2em;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 15px;
-}
+        #quiz-summary #final-score,
+        #quiz-summary #time-taken {
+            font-size: 1.2em;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 15px;
+        }
 
-#quiz-summary h4 {
-    color: #333;
-    margin-top: 20px;
-    margin-bottom: 10px;
-    text-align: center;
-}
+        #quiz-summary h4 {
+            color: #333;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
 
-#wrong-answers-list {
-    list-style: none; /* Remove bullet points */
-    padding: 0;
-    margin: 0;
-}
+        #wrong-answers-list {
+            list-style: none; /* Remove bullet points */
+            padding: 0;
+            margin: 0;
+        }
 
-#wrong-answers-list li {
-    background-color: #f8d7da; /* Light red background */
-    border: 1px solid #dc3545; /* Red border */
-    border-radius: 5px;
-    padding: 10px;
-    margin-bottom: 10px;
-    font-size: 0.95em;
-}
+        #wrong-answers-list li {
+            background-color: #f8d7da; /* Light red background */
+            border: 1px solid #dc3545; /* Red border */
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            font-size: 0.95em;
+        }
 
-#wrong-answers-list li .english-phrase {
-    font-weight: bold;
-    color: #721c24; /* Dark red text */
-}
+        #wrong-answers-list li .english-phrase {
+            font-weight: bold;
+            color: #721c24; /* Dark red text */
+        }
 
-#wrong-answers-list li .correct-chin {
-    font-style: italic;
-    color: #28a745; /* Green for correct answer */
-}
+        #wrong-answers-list li .correct-chin {
+            font-style: italic;
+            color: #28a745; /* Green for correct answer */
+        }
 
-.summary-buttons {
-    display: flex;
-    justify-content: space-around;
-    gap: 10px;
-    margin-top: 25px;
-    flex-wrap: wrap; /* Allow buttons to wrap on small screens */
-}
+        .summary-buttons {
+            display: flex;
+            justify-content: space-around;
+            gap: 10px;
+            margin-top: 25px;
+            flex-wrap: wrap; /* Allow buttons to wrap on small screens */
+        }
 
-.summary-buttons button {
-    flex-grow: 1; /* Allow buttons to expand */
-    min-width: 120px; /* Minimum width for buttons */
-}
+        .summary-buttons button {
+            flex-grow: 1; /* Allow buttons to expand */
+            min-width: 120px; /* Minimum width for buttons */
+        }
         #next-question-button {
             background-color: #007bff;
             color: white;
@@ -382,6 +385,8 @@
                 flex-direction: column;
                 align-items: flex-start;
                 padding: 10px;
+                 /* Also apply safe area inset to bottom for header if it can extend */
+                 padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
             }
             .voice-control {
                 margin-top: 10px;
@@ -392,8 +397,7 @@
                 flex-grow: 1;
             }
             body {
-                /* padding-top will be handled by JavaScript's adjustBodyPadding now */
-                /* Remove this line if you have the JS function calling it */
+                /* Remove this entirely, as header and app-section flex handles layout */
                 /* padding-top: 115px; */
             }
             .menu-button {
@@ -411,8 +415,21 @@
         }
         @media (max-width: 768px) {
             .app-section {
-                margin: 15px;
-                padding: 15px;
+                /* Remove fixed margins to allow it to span full width */
+                margin: 0; /* Remove top/bottom margin; only left/right margin if desired */
+                padding: 15px; /* Adjust padding as needed, but let it go to edges */
+                border-radius: 0; /* Remove border-radius on small screens for true edge-to-edge look */
+                box-shadow: none; /* Remove box-shadow on small screens */
+            }
+            /* Add some side padding to the body for content not within .app-section if needed */
+            body > *:not(header) { /* Select direct children of body, except header */
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+            /* Specific adjustment for app-section to override the above body padding if it's full width */
+            .app-section {
+                padding-left: 15px; /* Or whatever padding you want *inside* the cards */
+                padding-right: 15px;
             }
         }
 

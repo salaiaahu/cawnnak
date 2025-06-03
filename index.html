@@ -176,7 +176,7 @@
 
         /* --- Quiz Specific Styles --- */
         #quiz-question {
-            font-size: 1.5em;
+            font-size: 1.3em;
             text-align: center;
             margin-bottom: 20px;
             font-weight: bold;
@@ -243,7 +243,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 20px;
+            margin-top: 10px;
             flex-wrap: wrap;
             gap: 10px;
         }
@@ -259,7 +259,7 @@
             align-items: center;
             justify-content: center; /* Center the question and button */
             gap: 10px; /* Space between question text and button */
-            margin-bottom: 20px; /* Adjust as needed */
+            margin-bottom: 10px; /* Adjust as needed */
         }
 
         #quiz-question {
@@ -302,7 +302,11 @@
             border-top: 1px solid #eee;
             text-align: left; /* Align text to the left within the summary */
         }
-
+        #quiz-section h2{
+			margin-top: 0;
+			margin-bottom: 0;	
+        }
+		
         #quiz-summary h3 {
             text-align: center;
             color: #0056b3;
@@ -370,7 +374,7 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
             flex-grow: 1;
-            margin: 0 5px;
+            margin: 0 8px;
         }
 
         #next-question-button:hover {
@@ -411,7 +415,8 @@
             #quiz-score {
                 width: 100%;
                 text-align: center;
-                margin-bottom: 10px;
+                margin-bottom: 0;
+				margin-top: 0;
             }
         }
         @media (max-width: 768px) {
@@ -920,7 +925,7 @@
             { english: "Don't park here", chin: "Ka hin park hlah" },
             { english: "Stop right there", chin: "Ka khan dir" },
             { english: "Stop right here", chin: "Ka hin dir" },
-            { english: "Good job", chin: "Na thiam/ na ti ṭha" },
+            { english: "Good job", chin: "Na thiam/ na ti tha" },
             { english: "Congratulation!", chin: "Kan lawmh pi!" }
         ];
 

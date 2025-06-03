@@ -4,18 +4,28 @@
     <title>Chin Driving Phrases</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+        /* Essential for full-height layout */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%; /* Make HTML and body take full viewport height */
+            width: 100%;
+            overflow: hidden; /* Prevents initial scrollbars, manage content overflow within sections */
+        }
+
         body {
             font-family: sans-serif;
-            margin: 0;
             background-color: #f4f4f4;
             color: #333;
             line-height: 1.6;
-	    height: 100vh;
-            padding-top: 30px; /* Slightly reduced initial padding */
+            /* Remove padding-top from body, it will be handled by main content positioning */
+            /* padding-top: 75px; */
+            display: flex; /* Use flexbox for overall layout */
+            flex-direction: column; /* Stack header and content vertically */
         }
 
         header {
-            position: sticky;
+            position: sticky; /* Keep sticky for scrolling content */
             top: 0;
             width: 100%;
             background-color: #28a745;
@@ -28,8 +38,9 @@
             align-items: center;
             flex-wrap: wrap;
             box-sizing: border-box;
-            height: auto;
-            min-height: 60px;
+            /* height: auto; */ /* Removed as we want it to conform to content */
+            min-height: 60px; /* Keep minimum height */
+            flex-shrink: 0; /* Prevent header from shrinking */
         }
 
         header h1 {
@@ -63,24 +74,31 @@
         /* --- Main Content Styling --- */
         .app-section {
             max-width: 600px;
-            margin: 20px auto;
+            margin: 0 auto;
             background-color: #fff;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .app-section {
+            flex-grow: 1; /* Allow sections to take available vertical space */
             display: none;
+            flex-direction: column;
+            box-sizing: border-box;
+            /* Key change for scrolling: */
+            overflow-y: auto; /* Allows vertical scrolling if content overflows */
+            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
         }
+        
         .app-section.active {
-            display: block;
+            display: flex; /* Use flex for active section */
         }
 
         /* Main Menu Specific Styles */
         #main-menu {
             text-align: center;
-            padding-top: 50px;
+            /* padding-top: 50px; */ /* Remove fixed padding-top here */
+            justify-content: center; /* Center buttons vertically in flex container */
+            align-items: center; /* Center buttons horizontally */
+            height: 100%; /* Ensure it fills parent's height */
         }
 
         .menu-button {
@@ -374,7 +392,9 @@
                 flex-grow: 1;
             }
             body {
-                padding-top: 115px;
+                /* padding-top will be handled by JavaScript's adjustBodyPadding now */
+                /* Remove this line if you have the JS function calling it */
+                /* padding-top: 115px; */
             }
             .menu-button {
                 width: 90%;
@@ -527,7 +547,7 @@
             <p>Chin: Chuak / Leng ah chuak</p>
             <button class="play-button">Play</button>
         </div>
-		<div class="phrase">
+        <div class="phrase">
             <p>English: Turn left</p>
             <p>Chin: Kehlei ah ii kuai</p>
             <button class="play-button">Play</button>
@@ -552,7 +572,7 @@
             <p>Chin: Dir</p>
             <button class="play-button">Play</button>
         </div>
-		<div class="phrase">
+        <div class="phrase">
             <p>English: Go straight</p>
             <p>Chin: Hmailei ah ding te in kal</p>
             <button class="play-button">Play</button>
@@ -577,7 +597,7 @@
             <p>Chin: Orhlei kam lam ah khan kal/lut</p>
             <button class="play-button">Play</button>
         </div>
-		<div class="phrase">
+        <div class="phrase">
             <p>English: Slow down</p>
             <p>Chin: Nuar deuh/ duhsah deuh in kal</p>
             <button class="play-button">Play</button>
@@ -602,7 +622,7 @@
             <p>Chin: Noh soh/ hnulei ah kal</p>
             <button class="play-button">Play</button>
         </div>
-		<div class="phrase">
+        <div class="phrase">
             <p>English: Forward/ move forward</p>
             <p>Chin: Hmailei ah kal</p>
             <button class="play-button">Play</button>
@@ -627,7 +647,7 @@
             <p>Chin: Thlalang hnawhnak kha ong</p>
             <button class="play-button">Play</button>
         </div>
-		<div class="phrase">
+        <div class="phrase">
             <p>English: Turn the wiper off</p>
             <p>Chin: Thlalang hnawhnak kha phit</p>
             <button class="play-button">Play</p>
@@ -647,7 +667,7 @@
             <p>Chin: Na innka thlalang kha khar/kaiter</p>
             <button class="play-button">Play</button>
         </div>
-		<div class="phrase">
+        <div class="phrase">
             <p>English: Emergency brake</p>
             <p>Chin: Emergency brik</p>
             <button class="play-button">Play</button>
@@ -662,7 +682,7 @@
             <p>Chin: Emergency brik ka piah tuah</p>
             <button class="play-button">Play</button>
         </div>
-		<div class="phrase">
+        <div class="phrase">
             <p>English: Brake</p>
             <p>Chin: Brik/ brik kha lam</p>
             <button class="play-button">Play</button>
@@ -687,7 +707,7 @@
             <p>Chin: Na lungrethei hlah</p>
             <button class="play-button">Play</p>
         </div>
-		<div class="phrase">
+        <div class="phrase">
             <p>English: Are you excited?</p>
             <p>Chin: Naa ngaih ma?</p>
             <button class="play-button">Play</button>
@@ -702,7 +722,7 @@
             <p>Chin: Tih hlah.</p>
             <button class="play-button">Play</button>
         </div>
-		<div class="phrase">
+        <div class="phrase">
             <p>English: Relax</p>
             <p>Chin: Thadam tein um</p>
             <button class="play-button">Play</button>
@@ -727,12 +747,12 @@
             <p>Chin: Kal rih hlah</p>
             <button class="play-button">Play</button>
         </div>
-		<div class="phrase">
+        <div class="phrase">
             <p>English: Wait</p>
             <p>Chin: Um rih/ hngak rih</p>
             <button class="play-button">Play</button>
         </div>
-		<div class="phrase">
+        <div class="phrase">
             <p>English: Hazard light/ Emergency light</p>
             <p>Chin: Emergency mei</p>
             <button class="play-button">Play</button>
@@ -747,7 +767,7 @@
             <p>Chin: Ka hin park</p>
             <button class="play-button">Play</button>
         </div>
-		<div class="phrase">
+        <div class="phrase">
             <p>English: Don't park there</p>
             <p>Chin: Ka khan park hlah</p>
             <button class="play-button">Play</p>
@@ -769,10 +789,10 @@
         </div>
         <div class="phrase">
             <p>English: Good job</p>
-            <p>Chin: Na thiam/ na ti tha </p>
+            <p>Chin: Na thiam/ na ti ṭha</p>
             <button class="play-button">Play</button>
         </div>
-		<div class="phrase">
+        <div class="phrase">
             <p>English: Congratulation!</p>
             <p>Chin: Kan lawmh pi!</p>
             <button class="play-button">Play</button>
@@ -920,7 +940,7 @@
 
         const correctSound = document.getElementById('correctSound');
         const wrongSound = document.getElementById('wrongSound');
-        const retrySound = document.getElementById('retrySound');   // NEW Audio Element Reference
+        const retrySound = document.getElementById('retrySound'); 	// NEW Audio Element Reference
         const congratsSound = document.getElementById('congratsSound'); // NEW Audio Element Reference
 
         // --- Modal Elements ---
@@ -935,7 +955,7 @@
         let shuffledQuestions = [];
         let currentQuestionIndex = 0;
         let score = 0;
-        let consecutiveWrongAnswers = 0;
+        let wrongAnswersInARow = 0; // Corrected variable name for consistency
         let consecutiveCorrectAnswers = 0;
 
         // NEW: Timer variables
@@ -948,8 +968,8 @@
 
         const header = document.getElementById('app-header');
         function adjustBodyPadding() {
-            const headerHeight = header.offsetHeight;
-            document.body.style.paddingTop = `${headerHeight}px`;
+            // No longer need to adjust body padding directly as the flex layout handles it
+            // The header is now `flex-shrink: 0;` and `position: sticky;` within the body's flex column
         }
         
         window.addEventListener('load', adjustBodyPadding);
@@ -997,7 +1017,7 @@
             } else if (sectionId === 'main-menu') {
                 resetQuiz();
             }
-            adjustBodyPadding();
+            // adjustBodyPadding(); // No longer needed
         }
 
         // Event listener for browser/device back button
@@ -1110,7 +1130,7 @@
             wronglyAnsweredQuestions = []; // NEW: Clear wrong answers list for new quiz
             quizSummary.style.display = 'none'; // NEW: Hide summary when starting quiz
             
-            // NEW: Hide quiz controls and show question container initially
+            // NEW: Show quiz elements
             document.querySelector('.quiz-question-container').style.display = 'flex';
             quizOptionsElement.style.display = 'flex'; // Ensure options are visible
             quizFeedbackElement.style.display = 'block'; // Ensure feedback is visible
@@ -1136,7 +1156,7 @@
         function resetQuiz() {
             currentQuestionIndex = 0;
             score = 0;
-            consecutiveWrongAnswers = 0;
+            wrongAnswersInARow = 0;
             consecutiveCorrectAnswers = 0;
             wronglyAnsweredQuestions = []; // NEW: Important to clear this
             updateScoreDisplay();
@@ -1281,8 +1301,8 @@
                 wronglyAnsweredQuestions.forEach(item => {
                     const listItem = document.createElement('li');
                     listItem.innerHTML = `<span class="english-phrase">${item.english}</span><br>
-                                          Your answer: ${item.selectedChin}<br>
-                                          Correct: <span class="correct-chin">${item.correctChin}</span>`;
+                                            Your answer: ${item.selectedChin}<br>
+                                            Correct: <span class="correct-chin">${item.correctChin}</span>`;
                     wrongAnswersList.appendChild(listItem);
                 });
             } else {
@@ -1349,7 +1369,7 @@
             }
             // Reset consecutive counters AFTER dismissing modal
             wrongAnswersInARow = 0;
-            correctAnswersInARow = 0;
+            consecutiveCorrectAnswers = 0; // Corrected variable name
         }
 
         // --- Confetti Animation (Pure CSS particles) ---
@@ -1440,7 +1460,7 @@
         // NEW: Event listeners for summary buttons
         restartQuizSummaryButton.addEventListener('click', () => {
             quizSummary.style.display = 'none'; // Hide summary
-            // Hide quiz controls and show question container initially
+            // Show quiz controls and question container again
             document.querySelector('.quiz-question-container').style.display = 'flex';
             quizOptionsElement.style.display = 'flex'; // Ensure options are visible
             quizFeedbackElement.style.display = 'block'; // Ensure feedback is visible
@@ -1460,7 +1480,7 @@
         } else {
             showSection('main-menu', false);
         }
-		    // PWA: Register Service Worker
+		// PWA: Register Service Worker
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('./service-worker.js')

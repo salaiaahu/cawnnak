@@ -95,7 +95,7 @@
 
   function addDesktopHomeLayout() {
     const style = document.createElement('style');
-    style.textContent = `.quick-add-button{width:44px;height:44px;min-width:44px;padding:0;font-size:1.25rem;line-height:1}@media(min-width:760px){.view#home{display:none}.view#home.active{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}#home .community-preview{grid-column:auto}}`;
+    style.textContent = `.quick-add-button{width:44px;height:44px;min-width:44px;padding:0;font-size:1.25rem;line-height:1}@media(min-width:760px){.view:not(.active){display:none!important}.view#home.active{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))}#home .community-preview{grid-column:auto}}`;
     document.head.append(style);
   }
 

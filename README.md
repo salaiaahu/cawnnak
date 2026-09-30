@@ -1,6 +1,6 @@
 # Mirang Holh Cawnnak
 
-A mobile- and desktop-friendly learning app for Chin driving phrases. Learners can study phrase cards, hear English pronunciation, take a multiple-choice quiz, and keep progress either as a guest or in a Firebase account.
+A mobile- and desktop-friendly Chin language-learning app. Learners can choose a topic, study phrase cards, hear English pronunciation, take a multiple-choice quiz, and keep progress either as a guest or in a Firebase account.
 
 ## Ownership and stewardship
 
@@ -23,6 +23,10 @@ Implemented:
 - Admin-only Firebase content publishing for English, Chin, category, and quiz inclusion fields.
 - Firestore rules for public content reading, owner-only user data, and admin-only content writing.
 - Installable Progressive Web App: manifest, branded icon, install prompt, iPhone/iPad instructions, and offline app-shell caching.
+- Topic-based learning and testing, with category dropdowns that include built-in categories and any category found in Firebase content.
+- Admin editing for both existing starter phrases and Firebase-published phrases.
+
+The included non-driving Hakha Chin starter phrases are draft learning material assembled from public Hakha phrase references. A fluent Hakha Chin speaker should review them before they are treated as final course content.
 
 Before production launch:
 

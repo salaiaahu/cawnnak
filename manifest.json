@@ -1,7 +1,7 @@
 {
     "name": "Mirang Holh Cawnnak",
     "short_name": "Holh Cawnnak",
-    "description": "Learn essential Chin driving phrases and test your knowledge.",
+    "description": "Learn Chin language phrases by topic and test your knowledge.",
     "start_url": "./",
     "scope": "./",
     "display": "standalone",

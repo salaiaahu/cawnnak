@@ -1,4 +1,4 @@
-const CACHE = 'mirang-holh-cawnnak-v5';
+const CACHE = 'mirang-holh-cawnnak-v6';
 const APP_SHELL = ['./', './index.html', './home.js', './manager-enhancements.js', './quick-add.js', './manifest.json', './icons/icon.svg'];
 
 self.addEventListener('install', event => {

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="112" fill="#176b4d"/>
+  <path d="M123 295h266c12 0 22 10 22 22v50c0 12-10 22-22 22h-18c-4-31-27-55-59-55s-55 24-59 55h-35c-4-31-27-55-59-55s-55 24-59 55h-17c-12 0-22-10-22-22v-50c0-12 10-22 22-22Z" fill="#fffdfa"/>
+  <circle cx="159" cy="389" r="37" fill="#102e24"/><circle cx="312" cy="389" r="37" fill="#102e24"/>
+  <path d="M157 204h100l42 70H118l39-70Z" fill="#a9e1bf"/><path d="M176 220h61l18 38h-100l21-38Z" fill="#176b4d"/>
+  <text x="256" y="139" text-anchor="middle" font-family="Arial,sans-serif" font-size="82" font-weight="700" fill="#fffdfa">HC</text>
+</svg>

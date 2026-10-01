@@ -1,5 +1,5 @@
 const admin = require('firebase-admin');
-const { HttpsError, onCall } = require('firebase-functions/v2/https');
+const { HttpsError, onCall, onRequest } = require('firebase-functions/v2/https');
 const { onDocumentWritten, onDocumentCreated } = require('firebase-functions/v2/firestore');
 const { onSchedule } = require('firebase-functions/v2/scheduler');
 const functionsV1 = require('firebase-functions/v1');
@@ -82,6 +82,35 @@ async function ensureRateLimit(uid, operation, limit = 10, windowMs = 60_000) {
     }, { merge: true });
   });
 }
+
+function dailyIndex(length) {
+  const date = new Date().toISOString().slice(0, 10);
+  let value = 2166136261;
+  for (const character of date) {
+    value ^= character.charCodeAt(0);
+    value = Math.imul(value, 16777619);
+  }
+  return (value >>> 0) % length;
+}
+
+// A public, read-only endpoint. It deliberately returns only one learner-visible
+// phrase, never drafts/review/archived content or the full content collection.
+exports.getDailyPhrase = onRequest({ cors: true }, async (request, response) => {
+  if (request.method !== 'GET') return response.status(405).json({ error: 'Method not allowed' });
+  try {
+    const snapshot = await db.collection('content').get();
+    const phrases = snapshot.docs.map(card => card.data())
+      .filter(card => (!Object.prototype.hasOwnProperty.call(card, 'status') || card.status === 'published') && typeof card.english === 'string' && card.english.trim())
+      .sort((left, right) => left.english.localeCompare(right.english));
+    if (!phrases.length) return response.status(404).json({ error: 'No learner-visible phrases are available.' });
+    const phrase = phrases[dailyIndex(phrases.length)];
+    response.set('Cache-Control', 'public, max-age=3600');
+    return response.json({ english: phrase.english, chin: phrase.chin || '', category: phrase.category || '' });
+  } catch (error) {
+    console.error('Could not select daily phrase', error);
+    return response.status(500).json({ error: 'Daily phrase is unavailable.' });
+  }
+});
 
 exports.onAuthUserCreated = functionsV1.auth.user().onCreate(async user => {
   const profileRef = db.doc(`users/${user.uid}`);

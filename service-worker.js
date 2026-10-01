@@ -1,4 +1,4 @@
-const CACHE = 'mirang-holh-cawnnak-v19';
+const CACHE = 'mirang-holh-cawnnak-v20';
 const APP_SHELL = ['./', './index.html', './home.js', './manager-enhancements.js', './quick-add.js', './admin-functions.js', './notifications.js', './profile-storage.js', './history.js', './content-workflow.js', './content-tools.js', './secure-quiz.js', './learning-progress.js', './learning-sync.js', './account-controls.js', './firebase-security.js', './error-monitor.js', './achievements.js', './manifest.json', './icons/icon.svg'];
 
 self.addEventListener('install', event => {

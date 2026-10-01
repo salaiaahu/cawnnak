@@ -1,16 +1,7 @@
 (() => {
-  const phrases = [
-    ['Hello', 'Na ṭhangṭhang maw'],
-    ['Thank you', 'Na lungdam tawn'],
-    ['How are you?', ''],
-    ['I do not understand', 'Ka thei lo'],
-    ['Where is the bathroom?', ''],
-    ['Please speak slowly', ''],
-    ['Good job', 'Na thiam/ na ti ṭha']
-  ];
-
+  const DAILY_CACHE_KEY = 'cawnnak-daily-phrase-v2';
+  const DAILY_PHRASE_URL = 'https://us-central1-cawnnak-ca.cloudfunctions.net/getDailyPhrase';
   const byId = id => document.getElementById(id);
-  const phrase = phrases[Math.floor(Date.now() / 86400000) % phrases.length];
 
   function addLayerStyles() {
     const style = document.createElement('style');
@@ -30,14 +21,42 @@
     return node.innerHTML;
   }
 
-  function setDailyPhrase() {
-    byId('daily-english').textContent = phrase[0];
-    byId('daily-chin').textContent = phrase[1] || 'Hakha Chin translation coming soon';
+  function dayKey() { return new Date().toISOString().slice(0, 10); }
+
+  function renderDailyPhrase(phrase) {
+    const english = phrase?.english || 'Daily phrase is loading…';
+    const chin = phrase?.chin || 'Hakha Chin translation coming soon';
+    byId('daily-english').textContent = english;
+    byId('daily-chin').textContent = chin;
     byId('daily-listen').onclick = () => {
       if (!('speechSynthesis' in window)) return;
       speechSynthesis.cancel();
-      speechSynthesis.speak(new SpeechSynthesisUtterance(phrase[0]));
+      speechSynthesis.speak(new SpeechSynthesisUtterance(english));
     };
+  }
+
+  function readCachedDailyPhrase() {
+    try {
+      const cached = JSON.parse(localStorage.getItem(DAILY_CACHE_KEY) || 'null');
+      return cached?.phrase || null;
+    } catch (_) { return null; }
+  }
+
+  async function setDailyPhrase() {
+    renderDailyPhrase(readCachedDailyPhrase());
+    try {
+      const response = await fetch(DAILY_PHRASE_URL);
+      if (!response.ok) throw new Error('Daily phrase is unavailable');
+      const phrase = await response.json();
+      if (!phrase.english) throw new Error('No learner-visible phrases yet');
+      localStorage.setItem(DAILY_CACHE_KEY, JSON.stringify({ date: dayKey(), phrase }));
+      renderDailyPhrase(phrase);
+    } catch (_) {
+      if (!readCachedDailyPhrase()) {
+        byId('daily-english').textContent = 'Add a published phrase to see today’s lesson.';
+        byId('daily-chin').textContent = '';
+      }
+    }
   }
 
   function setContinueLearning() {

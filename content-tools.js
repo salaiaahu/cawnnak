@@ -1,11 +1,13 @@
 import { getApp, getApps } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
 import { getAuth } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
 import { getFirestore, collection, getDocs, doc, writeBatch, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
+import { getFunctions, httpsCallable } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-functions.js';
 
 const $ = id => document.getElementById(id);
 let records = [];
 let db;
 let auth;
+let functions;
 
 function escapeHtml(value) {
   const node = document.createElement('span');
@@ -42,7 +44,7 @@ function selectedIds() {
 function installUi() {
   const host = $('adminlist')?.parentElement;
   if (!host || $('content-tools')) return;
-  host.insertAdjacentHTML('afterbegin', `<div id="content-tools" class="content-tools"><div class="content-tools-row"><label>Status<select id="content-filter-status"><option value="">All statuses</option><option value="draft">Draft</option><option value="review">Review</option><option value="published">Published</option><option value="archived">Archived</option></select></label><button id="content-export" class="plain" type="button">Export CSV</button><label class="plain import-label">Import CSV<input id="content-import" type="file" accept=".csv,text/csv" hidden></label></div><div class="content-tools-row bulk-actions"><span id="content-selection" class="status">Select content for bulk actions.</span><button id="bulk-publish" class="plain" type="button">Publish selected</button><button id="bulk-archive" class="plain" type="button">Archive selected</button></div><div id="import-preview" class="status hidden"></div></div>`);
+  host.insertAdjacentHTML('afterbegin', `<div id="content-tools" class="content-tools"><div class="content-tools-row"><label>Status<select id="content-filter-status"><option value="">All statuses</option><option value="draft">Draft</option><option value="review">Review</option><option value="published">Published</option><option value="archived">Archived</option></select></label><button id="content-export" class="plain" type="button">Export CSV</button><label class="plain import-label">Import CSV<input id="content-import" type="file" accept=".csv,text/csv" hidden></label></div><div class="content-tools-row bulk-actions"><span id="content-selection" class="status">Select content for bulk actions.</span><button id="bulk-publish" class="plain" type="button">Publish selected</button><button id="bulk-archive" class="plain" type="button">Archive selected</button><button id="migrate-legacy-content" class="plain hidden" type="button">Publish legacy cards</button></div><div id="import-preview" class="status hidden"></div></div>`);
   const style = document.createElement('style');
   style.textContent = `.content-tools{display:grid;gap:10px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--l)}.content-tools-row{display:flex;flex-wrap:wrap;align-items:end;gap:10px}.content-tools label{display:grid;gap:4px;color:var(--m);font-size:.78rem}.import-label{cursor:pointer}.content-record{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:start;padding:12px 0;border-bottom:1px solid var(--l)}.content-record:last-child{border:0}.content-record small{display:block;color:var(--m);margin-top:3px}.content-record .plain{white-space:nowrap}.status-pill{display:inline-block;margin-left:6px;padding:2px 7px;border-radius:99px;background:#eef3f0;color:#345348;font-size:.72rem;font-weight:800}.status-pill.published{background:#e5f4eb;color:#14583f}.status-pill.review{background:#fff4c9;color:#5b4300}.status-pill.archived{background:#f2f2f2;color:#59645f}@media(max-width:600px){.content-record{grid-template-columns:auto minmax(0,1fr)}.content-record .plain{grid-column:2}.bulk-actions .plain{font-size:.82rem}}`;
   document.head.append(style);
@@ -51,6 +53,7 @@ function installUi() {
   $('content-import').onchange = previewImport;
   $('bulk-publish').onclick = () => bulkStatus('published');
   $('bulk-archive').onclick = () => bulkStatus('archived');
+  $('migrate-legacy-content').onclick = migrateLegacyContent;
 }
 
 function render() {
@@ -65,7 +68,30 @@ async function loadRecords() {
   if (!db) return;
   const snapshot = await getDocs(collection(db, 'content'));
   records = snapshot.docs.map(item => ({ id: item.id, ...item.data() })).sort((a, b) => a.english.localeCompare(b.english));
+  const legacy = records.filter(item => !Object.prototype.hasOwnProperty.call(item, 'status')).length;
+  const migrate = $('migrate-legacy-content');
+  if (migrate) {
+    migrate.classList.toggle('hidden', !legacy);
+    migrate.textContent = legacy ? `Publish ${legacy} legacy card${legacy === 1 ? '' : 's'}` : 'Publish legacy cards';
+  }
   render();
+}
+
+async function migrateLegacyContent() {
+  if (!functions || !auth.currentUser) return;
+  const legacy = records.filter(item => !Object.prototype.hasOwnProperty.call(item, 'status')).length;
+  if (!legacy || !window.confirm(`Publish ${legacy} legacy card${legacy === 1 ? '' : 's'}? This adds workflow metadata without changing the phrase text.`)) return;
+  const button = $('migrate-legacy-content');
+  button.disabled = true;
+  try {
+    const result = await httpsCallable(functions, 'migrateLegacyContent')();
+    $('content-selection').textContent = `Published ${result.data?.migrated || 0} legacy card(s).`;
+    await loadRecords();
+  } catch (error) {
+    $('content-selection').textContent = `Migration failed: ${error.message}`;
+  } finally {
+    button.disabled = false;
+  }
 }
 
 function beginEdit(id) {
@@ -143,7 +169,7 @@ async function previewImport(event) {
 
 window.addEventListener('load', async () => {
   if (!getApps().length || !$('adminlist')) return;
-  const app = getApp(); db = getFirestore(app); auth = getAuth(app);
+  const app = getApp(); db = getFirestore(app); auth = getAuth(app); functions = getFunctions(app);
   installUi();
   $('admin')?.addEventListener('click', () => setTimeout(loadRecords, 0));
   $('content-tools')?.addEventListener('change', () => { $('content-selection').textContent = `${selectedIds().length} selected`; });

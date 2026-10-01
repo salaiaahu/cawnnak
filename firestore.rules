@@ -1,20 +1,56 @@
 rules_version = '2';
 service cloud.firestore {
- match /databases/{database}/documents {
-  function signedIn(){return request.auth != null;}
-  function admin(){return signedIn() && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';}
-  match /content/{id}{allow read:if true;allow create,update,delete:if admin();}
-  match /users/{id}{
-    allow read: if signedIn() && (request.auth.uid == id || admin());
-    allow update: if admin() || (signedIn() && request.auth.uid == id && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['role']));
-    allow create: if signedIn() && request.auth.uid == id && !('role' in request.resource.data);
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function own(uid) { return signedIn() && request.auth.uid == uid; }
+    function admin() {
+      return signedIn()
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin'
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.disabled != true;
+    }
+    function allowedProfileKeys() {
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+        'displayName', 'photoURL', 'avatarPath', 'avatarURL', 'progress',
+        'achievementSummary', 'favorites', 'updatedAt'
+      ]);
+    }
+
+    match /content/{id} {
+      // Legacy documents without a status remain readable during migration.
+      allow read: if !('status' in resource.data) || resource.data.status == 'published' || admin();
+      allow create, update, delete: if admin();
+    }
+
+    match /users/{uid} {
+      allow get: if own(uid) || admin();
+      allow list: if admin();
+      // The Auth trigger normally creates profiles. This supports existing clients
+      // without allowing role, account-state, or avatar-path assignment.
+      allow create: if own(uid)
+        && !request.resource.data.keys().hasAny(['role', 'disabled', 'avatarPath', 'avatarURL']);
+      allow update: if admin() || (own(uid) && allowedProfileKeys());
+      allow delete: if false;
+    }
+
+    match /leaderboard/{uid} {
+      allow read: if true;
+      // submitQuizResult writes validated scores with the Admin SDK.
+      allow write: if false;
+    }
+
+    match /notifications/{id} {
+      allow get, list: if admin() || (signedIn() && resource.data.targetUid == request.auth.uid);
+      allow update: if signedIn()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['readBy']);
+      allow create, delete: if false;
+    }
+
+    match /audit/{id} {
+      allow read: if admin();
+      allow write: if false;
+    }
+
+    match /functionRateLimits/{id} { allow read, write: if false; }
+    match /operations/{id} { allow read: if admin(); allow write: if false; }
   }
-  match /leaderboard/{id}{
-    allow read: if true;
-    allow create, update: if signedIn() && request.auth.uid == id;
-  }
-  match /audit/{id}{
-    allow read, create: if admin();
-  }
- }
 }

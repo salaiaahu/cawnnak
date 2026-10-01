@@ -25,14 +25,16 @@ Implemented:
 - Installable Progressive Web App: manifest, branded icon, install prompt, iPhone/iPad instructions, and offline app-shell caching.
 - Topic-based learning and testing, with category dropdowns that include built-in categories and any category found in Firebase content.
 - Admin editing for both existing starter phrases and Firebase-published phrases.
+- Firebase Functions foundation for server-side role/account management, Auth user backfill, registration notifications, audit records, and validated quiz-score submission.
+- Firestore and Storage rules that reserve roles, account state, audits, notifications, leaderboard writes, and avatar paths for trusted server-side workflows.
 
 The included non-driving Hakha Chin starter phrases are draft learning material assembled from public Hakha phrase references. A fluent Hakha Chin speaker should review them before they are treated as final course content.
 
 Before production launch:
 
-- Enable Firebase Email/Password Authentication and deploy `firestore.rules`.
+- Deploy Functions, Firestore rules, and Storage rules following [FUNCTIONS_SETUP.md](FUNCTIONS_SETUP.md), then backfill Auth users.
 - Add `localhost` for development and the production domain under Firebase Auth authorized domains.
-- Create the first administrator and add `role: "admin"` to `users/{uid}`.
+- Create the first administrator and add `role: "admin"` to `users/{uid}` before calling `syncAuthUsers`.
 - Publish the final content collection, test account/content workflows, and test installation on Android, iOS, and desktop browsers.
 
 ## Project files
@@ -42,7 +44,11 @@ Before production launch:
 | `index.html` | Responsive app, Firebase integration, quiz, progress, effects, and PWA registration. |
 | `Cawnnak.html` | Legacy version retained as the original phrase-content reference. |
 | `firestore.rules` | Firestore access rules. |
+| `storage.rules` | Avatar upload access rules. |
+| `firebase.json` | Firebase deployment configuration. |
+| `functions/` | Server-side Admin SDK callables, Auth handling, audits, and scheduled operations. |
 | `FIREBASE_SETUP.md` | Firebase and administrator setup guide. |
+| `FUNCTIONS_SETUP.md` | Functions deployment, migration, and security rollout guide. |
 | `manifest.json` | PWA install metadata. |
 | `service-worker.js` | App-shell cache and offline fallback. |
 | `icons/icon.svg` | Install icon. |

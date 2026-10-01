@@ -6,6 +6,24 @@ This is the continuation note for an AI agent working from a machine with Fireba
 
 Implement all roadmap items below except accessibility improvements. The app is currently a static GitHub Pages client with Firebase Web SDK code embedded in `index.html`; there is no Functions project yet. Never place Admin SDK credentials in the browser or repository.
 
+## Implementation status — October 1, 2026
+
+Completed in the current pass:
+
+- Added the Functions project, Firebase deployment configuration, Storage rules, and secure Firestore rules.
+- Added Admin SDK profile creation, Auth-to-Firestore backfill, protected role/account callables, final-admin protection, server-side audit triggers, registration notifications, server-side quiz scoring, and callable rate limits.
+- Switched the admin User management entry point to call the server-side Auth sync before loading profiles; role changes use the callable endpoint.
+- Added realtime notification-document handling and Storage-backed avatar update/delete handling in the browser.
+- Added deployment, migration, and verification documentation in `FUNCTIONS_SETUP.md`.
+- Added an admin audit-history UI with newest-first paging and action, administrator UID, and date filters; included Firestore index definitions.
+- Added content status metadata (`draft`, `review`, `published`, `archived`), attribution, publish timestamps, and duplicate phrase checks to the admin save workflow.
+
+Still requires Firebase deployment/configuration and follow-up product work:
+
+- Configure FCM Web Push/VAPID and App Check in the Firebase console, then add the generated messaging configuration.
+- Deploy rules/functions, run the Auth backfill, and migrate legacy content to workflow statuses before removing legacy content-read compatibility.
+- Replace remaining legacy appended client handlers in `index.html` with a single maintained module, then add learning goals/review queues, content CSV/bulk workflow, automated emulator tests, and a tested scheduled-export implementation.
+
 Before substantial edits, consolidate the duplicated appended auth/navigation/menu blocks in `index.html`. The current file has multiple listeners and dynamic UI patches from earlier iterations; retain behavior but reduce duplicate handlers.
 
 ## Backend foundation (required first)
@@ -74,4 +92,3 @@ Strengthen Firestore and Storage rules so regular users can only update permitte
 - Test invalid/oversized avatar rejection.
 - Test offline progress and reconnect merges.
 - Test backup restore in a non-production Firebase project.
-

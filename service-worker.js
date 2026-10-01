@@ -1,5 +1,5 @@
-const CACHE = 'mirang-holh-cawnnak-v8';
-const APP_SHELL = ['./', './index.html', './home.js', './manager-enhancements.js', './quick-add.js', './manifest.json', './icons/icon.svg'];
+const CACHE = 'mirang-holh-cawnnak-v12';
+const APP_SHELL = ['./', './index.html', './home.js', './manager-enhancements.js', './quick-add.js', './admin-functions.js', './notifications.js', './profile-storage.js', './history.js', './content-workflow.js', './manifest.json', './icons/icon.svg'];
 
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(APP_SHELL)).then(() => self.skipWaiting()));

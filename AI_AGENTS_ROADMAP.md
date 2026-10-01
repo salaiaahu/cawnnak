@@ -24,6 +24,7 @@ Completed in the current pass:
 - Added queued, conflict-safe merging for the new learning-progress state, Firebase App Check/FCM client scaffolding, generic push notification handling, a native scheduled Firestore-export implementation, and emulator-rule test scaffolding.
 - Added calculated achievement summaries, milestone badges, and a shareable/downloadable achievement-card image for learners.
 - Installed the Functions dependencies with Node 22 and passed the local Auth, Firestore, and Storage Emulator rule suite.
+- Formatted the legacy client for maintainability and changed learner content reads to status-constrained Firestore queries, with a supporting `status + english` index.
 
 Still requires Firebase deployment/configuration and follow-up product work:
 

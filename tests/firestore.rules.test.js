@@ -18,6 +18,9 @@ test.before(async () => {
     await db.doc('users/learner').set({ role: 'user', disabled: false });
     await db.doc('content/published').set({ english: 'Hello', status: 'published' });
     await db.doc('content/draft').set({ english: 'Private', status: 'draft' });
+    await db.doc('content/legacy').set({ english: 'Existing card' });
+    await db.doc('notifications/learner-note').set({ targetUid: 'learner', readBy: {} });
+    await db.doc('notifications/admin-note').set({ targetUid: 'admins', readBy: {} });
   });
 });
 
@@ -26,7 +29,9 @@ test.after(async () => { if (environment) await environment.cleanup(); });
 test('public users can read published content but not drafts', { skip: !enabled }, async () => {
   const guest = environment.unauthenticatedContext().firestore();
   await assertSucceeds(guest.doc('content/published').get());
+  await assertSucceeds(guest.doc('content/legacy').get());
   await assertFails(guest.doc('content/draft').get());
+  await assertSucceeds(guest.collection('content').where('status', '==', 'published').get());
 });
 
 test('learners cannot list users, promote themselves, or write audit records', { skip: !enabled }, async () => {
@@ -34,6 +39,27 @@ test('learners cannot list users, promote themselves, or write audit records', {
   await assertFails(learner.collection('users').get());
   await assertFails(learner.doc('users/learner').update({ role: 'admin' }));
   await assertFails(learner.collection('audit').add({ action: 'forged' }));
+  await assertFails(learner.doc('leaderboard/learner').set({ bestScore: 100 }));
+});
+
+test('learners can save permitted progress but cannot alter account-sensitive fields', { skip: !enabled }, async () => {
+  const learner = environment.authenticatedContext('learner').firestore();
+  await assertSucceeds(learner.doc('users/learner').update({
+    progress: { studied: ['published'] },
+    achievementSummary: { studied: 1 },
+    updatedAt: new Date()
+  }));
+  await assertFails(learner.doc('users/learner').update({ disabled: true }));
+  await assertFails(learner.doc('users/learner').update({ avatarPath: 'avatars/other-user/image.jpg' }));
+  await assertSucceeds(learner.doc('users/learner').update({ avatarPath: 'avatars/learner/image.jpg' }));
+});
+
+test('learners can read and acknowledge only their own notifications', { skip: !enabled }, async () => {
+  const learner = environment.authenticatedContext('learner').firestore();
+  await assertSucceeds(learner.doc('notifications/learner-note').get());
+  await assertFails(learner.doc('notifications/admin-note').get());
+  await assertSucceeds(learner.doc('notifications/learner-note').update({ readBy: { learner: true } }));
+  await assertFails(learner.doc('notifications/learner-note').update({ targetUid: 'admin' }));
 });
 
 test('admins can read drafts and write content', { skip: !enabled }, async () => {

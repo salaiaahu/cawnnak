@@ -2137,23 +2137,15 @@
           const content = collection(db, "content");
           const snapshots = user?.admin
             ? [await getDocs(query(content, orderBy("english")))]
-            : await Promise.all([
-                getDocs(
+            : [
+                await getDocs(
                   query(
                     content,
                     where("status", "==", "published"),
                     orderBy("english"),
                   ),
                 ),
-                // Legacy cards stay readable until the status migration is complete.
-                getDocs(
-                  query(
-                    content,
-                    where("status", "==", null),
-                    orderBy("english"),
-                  ),
-                ),
-              ]);
+              ];
           const remote = snapshots.flatMap((snapshot) =>
             snapshot.docs.map((d) => ({ id: d.id, ...d.data() })),
           );

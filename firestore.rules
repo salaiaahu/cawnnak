@@ -14,6 +14,12 @@ service cloud.firestore {
         'achievementSummary', 'favorites', 'updatedAt'
       ]);
     }
+    function validAvatarPathChange() {
+      return !request.resource.data.diff(resource.data).affectedKeys().hasAny(['avatarPath'])
+        || !('avatarPath' in request.resource.data)
+        || (request.resource.data.avatarPath is string
+          && request.resource.data.avatarPath.matches('^avatars/' + request.auth.uid + '/[^/]+$'));
+    }
 
     match /content/{id} {
       // Legacy documents without a status remain readable during migration.
@@ -28,7 +34,7 @@ service cloud.firestore {
       // without allowing role, account-state, or avatar-path assignment.
       allow create: if own(uid)
         && !request.resource.data.keys().hasAny(['role', 'disabled', 'avatarPath', 'avatarURL']);
-      allow update: if admin() || (own(uid) && allowedProfileKeys());
+      allow update: if admin() || (own(uid) && allowedProfileKeys() && validAvatarPathChange());
       allow delete: if false;
     }
 

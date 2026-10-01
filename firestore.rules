@@ -5,8 +5,8 @@ service cloud.firestore {
   function admin(){return signedIn() && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';}
   match /content/{id}{allow read:if true;allow create,update,delete:if admin();}
   match /users/{id}{
-    allow read: if signedIn() && request.auth.uid == id;
-    allow update: if signedIn() && request.auth.uid == id && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['role']);
+    allow read: if signedIn() && (request.auth.uid == id || admin());
+    allow update: if admin() || (signedIn() && request.auth.uid == id && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['role']));
     allow create: if signedIn() && request.auth.uid == id && !('role' in request.resource.data);
   }
   match /leaderboard/{id}{

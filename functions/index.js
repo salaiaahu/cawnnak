@@ -3,6 +3,7 @@ const { HttpsError, onCall } = require('firebase-functions/v2/https');
 const { onDocumentWritten, onDocumentCreated } = require('firebase-functions/v2/firestore');
 const { onSchedule } = require('firebase-functions/v2/scheduler');
 const functionsV1 = require('firebase-functions/v1');
+const { google } = require('googleapis');
 
 admin.initializeApp();
 const db = admin.firestore();
@@ -186,11 +187,23 @@ exports.submitQuizResult = onCall(async request => {
   const answers = Array.isArray(request.data?.answers) ? request.data.answers.slice(0, 20) : [];
   if (!answers.length) throw new HttpsError('invalid-argument', 'Answers are required.');
   const ids = [...new Set(answers.map(answer => answer?.contentId).filter(id => typeof id === 'string'))];
-  const docs = await db.getAll(...ids.map(id => db.doc(`content/${id}`)));
-  const answerMap = new Map(answers.map(answer => [answer.contentId, String(answer.answer || '')]));
+  const directDocs = ids.length ? await db.getAll(...ids.map(id => db.doc(`content/${id}`))) : [];
+  const byEnglish = new Map();
+  for (const answer of answers.filter(answer => !answer?.contentId && typeof answer?.english === 'string')) {
+    if (byEnglish.has(answer.english)) continue;
+    const matches = await db.collection('content').where('english', '==', answer.english).limit(1).get();
+    if (!matches.empty) byEnglish.set(answer.english, matches.docs[0]);
+  }
+  const docs = [...directDocs, ...byEnglish.values()];
+  const answerMap = new Map(answers.map(answer => [answer.contentId || answer.english, String(answer.answer || '')]));
   let correct = 0;
-  docs.forEach(snapshot => { if (snapshot.exists && snapshot.get('chin') === answerMap.get(snapshot.id)) correct += 1; });
-  const score = Math.round((correct / ids.length) * 100);
+  docs.forEach(snapshot => {
+    const submitted = answerMap.get(snapshot.id) || answerMap.get(snapshot.get('english'));
+    if (snapshot.exists && snapshot.get('chin') === submitted) correct += 1;
+  });
+  const total = docs.length;
+  if (!total) throw new HttpsError('invalid-argument', 'No valid quiz content was submitted.');
+  const score = Math.round((correct / total) * 100);
   const profile = await db.doc(`users/${request.auth.uid}`).get();
   const oldBest = Number(profile.get('progress.bestScore') || 0);
   await db.doc(`users/${request.auth.uid}`).set({
@@ -202,7 +215,42 @@ exports.submitQuizResult = onCall(async request => {
     bestScore: Math.max(oldBest, score),
     updatedAt: FieldValue.serverTimestamp()
   }, { merge: true });
-  return { score, correct, total: ids.length };
+  return { score, correct, total };
+});
+
+exports.mergeLearningState = onCall(async request => {
+  if (!request.auth) throw new HttpsError('unauthenticated', 'Sign in is required to sync learning progress.');
+  await ensureRateLimit(request.auth.uid, 'mergeLearningState', 30, 60_000);
+  const incoming = clean(request.data?.learning || {});
+  const profileRef = db.doc(`users/${request.auth.uid}`);
+  const profile = await profileRef.get();
+  const current = profile.get('learning') || {};
+  const unique = value => [...new Set(Array.isArray(value) ? value.slice(0, 500) : [])];
+  const merged = {
+    goal: [5, 10, 15].includes(incoming.goal) ? incoming.goal : current.goal || 5,
+    days: { ...(current.days || {}), ...(incoming.days || {}) },
+    favorites: { ...(current.favorites || {}), ...(incoming.favorites || {}) },
+    missed: unique([...(current.missed || []), ...(incoming.missed || [])]).slice(-30),
+    categories: { ...(current.categories || {}), ...(incoming.categories || {}) },
+    updatedAt: FieldValue.serverTimestamp()
+  };
+  Object.keys(merged.days).forEach(day => { merged.days[day] = unique([...(current.days?.[day] || []), ...(incoming.days?.[day] || [])]); });
+  Object.keys(merged.categories).forEach(category => { merged.categories[category] = unique([...(current.categories?.[category] || []), ...(incoming.categories?.[category] || [])]); });
+  await profileRef.set({ learning: merged, updatedAt: FieldValue.serverTimestamp() }, { merge: true });
+  const { updatedAt, ...responseLearning } = merged;
+  return { learning: clean(responseLearning) };
+});
+
+exports.registerFcmToken = onCall(async request => {
+  if (!request.auth) throw new HttpsError('unauthenticated', 'Sign in is required to register notifications.');
+  await ensureRateLimit(request.auth.uid, 'registerFcmToken', 10, 60_000);
+  const token = String(request.data?.token || '');
+  if (token.length < 80 || token.length > 4096) throw new HttpsError('invalid-argument', 'Invalid messaging token.');
+  await db.doc(`users/${request.auth.uid}`).set({
+    fcmTokens: { [token]: { updatedAt: Timestamp.now(), userAgent: String(request.rawRequest?.headers?.['user-agent'] || '').slice(0, 300) } },
+    updatedAt: FieldValue.serverTimestamp()
+  }, { merge: true });
+  return { registered: true };
 });
 
 exports.auditContent = onDocumentWritten('content/{contentId}', async event => {
@@ -226,11 +274,21 @@ exports.auditNotification = onDocumentCreated('notifications/{id}', async event 
 });
 
 // Configure BACKUP_BUCKET as a Firebase runtime environment value before enabling this job.
-exports.backupReminder = onSchedule('every day 03:15', async () => {
+exports.exportFirestoreBackup = onSchedule('every day 03:15', async () => {
   const bucket = process.env.BACKUP_BUCKET;
   if (!bucket) {
-    console.warn('BACKUP_BUCKET is not configured; no export was started.');
+    console.warn('BACKUP_BUCKET is not configured; no Firestore export was started.');
     return;
   }
-  await db.collection('operations').doc('lastBackupReminder').set({ requestedAt: FieldValue.serverTimestamp(), bucket }, { merge: true });
+  if (!bucket.startsWith('gs://')) throw new Error('BACKUP_BUCKET must use gs://bucket-name format.');
+  const authClient = await new google.auth.GoogleAuth({ scopes: ['https://www.googleapis.com/auth/datastore'] }).getClient();
+  const firestoreApi = google.firestore({ version: 'v1', auth: authClient });
+  const projectId = process.env.GCLOUD_PROJECT;
+  const operation = await firestoreApi.projects.databases.exportDocuments({
+    name: `projects/${projectId}/databases/(default)`,
+    requestBody: { outputUriPrefix: `${bucket}/firestore/${new Date().toISOString().slice(0, 10)}` }
+  });
+  await db.collection('operations').doc('lastFirestoreExport').set({
+    requestedAt: FieldValue.serverTimestamp(), bucket, operation: operation.data.name || null
+  }, { merge: true });
 });

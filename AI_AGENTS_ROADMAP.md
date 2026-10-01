@@ -17,12 +17,17 @@ Completed in the current pass:
 - Added deployment, migration, and verification documentation in `FUNCTIONS_SETUP.md`.
 - Added an admin audit-history UI with newest-first paging and action, administrator UID, and date filters; included Firestore index definitions.
 - Added content status metadata (`draft`, `review`, `published`, `archived`), attribution, publish timestamps, and duplicate phrase checks to the admin save workflow.
+- Added admin content filters, bulk publish/archive actions, CSV export, and validated CSV import previews.
+- Connected signed-in quiz completion to the server-side score validator; validated scores now overwrite client-calculated leaderboard values after deployment.
+- Added guest- and learner-friendly daily goals, consecutive-day streaks, saved phrases, category study counts, and missed-question review tools.
+- Added User Management controls for disabling and re-enabling accounts through the protected server-side callable.
+- Added queued, conflict-safe merging for the new learning-progress state, Firebase App Check/FCM client scaffolding, generic push notification handling, a native scheduled Firestore-export implementation, and emulator-rule test scaffolding.
 
 Still requires Firebase deployment/configuration and follow-up product work:
 
 - Configure FCM Web Push/VAPID and App Check in the Firebase console, then add the generated messaging configuration.
 - Deploy rules/functions, run the Auth backfill, and migrate legacy content to workflow statuses before removing legacy content-read compatibility.
-- Replace remaining legacy appended client handlers in `index.html` with a single maintained module, then add learning goals/review queues, content CSV/bulk workflow, automated emulator tests, and a tested scheduled-export implementation.
+- Replace remaining legacy appended client handlers in `index.html` with a single maintained module, then run and expand the emulator test suite plus perform a non-production backup/restore test.
 
 Before substantial edits, consolidate the duplicated appended auth/navigation/menu blocks in `index.html`. The current file has multiple listeners and dynamic UI patches from earlier iterations; retain behavior but reduce duplicate handlers.
 

@@ -97,7 +97,15 @@ Auth account creation creates the profile and an admin-targeted registration not
 
 Before production, enable App Check for the web app and enforce it on callable Functions after testing. Configure Firebase Cloud Messaging in the service worker before requesting notification permission.
 
-The scheduled backup placeholder intentionally does not export until `BACKUP_BUCKET` is configured in the Functions runtime and a tested Cloud Firestore export process is approved. Document the destination bucket, retention policy, and a restore test in a non-production project before enabling exports.
+The scheduled `exportFirestoreBackup` function intentionally does not export until `BACKUP_BUCKET` is configured in the Functions runtime as a `gs://bucket-name` value. It starts a native Firestore export under `gs://bucket-name/firestore/YYYY-MM-DD` and records the long-running operation in `operations/lastFirestoreExport`.
+
+Before enabling it in production:
+
+1. Create a dedicated, access-controlled backup bucket and lifecycle/retention policy.
+2. Grant the Functions runtime service account permission to write to that bucket.
+3. Set `BACKUP_BUCKET` using your approved Cloud Functions environment-configuration process.
+4. In a separate non-production Firebase project, restore a copy with the Google Cloud Firestore import operation, validate users/content/audit records, then delete the test data.
+5. Record the tested restore date, source export path, and operator in your operational runbook.
 
 ## Verification
 

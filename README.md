@@ -49,6 +49,8 @@ Before production launch:
 | `functions/` | Server-side Admin SDK callables, Auth handling, audits, and scheduled operations. |
 | `FIREBASE_SETUP.md` | Firebase and administrator setup guide. |
 | `FUNCTIONS_SETUP.md` | Functions deployment, migration, and security rollout guide. |
+| `FIREBASE_SECURITY_SETUP.md` | App Check and Web Push/FCM configuration guide. |
+| `firebase-security-config.js` | Public App Check/VAPID browser configuration placeholders. |
 | `manifest.json` | PWA install metadata. |
 | `service-worker.js` | App-shell cache and offline fallback. |
 | `icons/icon.svg` | Install icon. |

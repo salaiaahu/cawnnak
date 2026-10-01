@@ -7,11 +7,16 @@
   },
   "scripts": {
     "lint": "node --check index.js",
+    "test": "node --test ../tests/firestore.rules.test.js",
     "serve": "firebase emulators:start --only functions,firestore,auth,storage",
     "deploy": "firebase deploy --only functions"
   },
   "dependencies": {
     "firebase-admin": "^12.7.0",
-    "firebase-functions": "^6.1.0"
+    "firebase-functions": "^6.1.0",
+    "googleapis": "^144.0.0"
+  },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "^3.0.4"
   }
 }

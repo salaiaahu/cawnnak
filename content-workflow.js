@@ -27,13 +27,14 @@ async function install() {
     const edit = event.target.closest?.('.edit-card');
     if (!edit) return;
     editingId = edit.dataset.id;
+    form.dataset.workflowEditingId = editingId;
     try {
       const content = await getDoc(doc(db, 'content', editingId));
       $('content-status').value = content.get('status') || 'published';
     } catch (_) {}
   }, true);
 
-  $('cancel-edit')?.addEventListener('click', () => { editingId = null; $('content-status').value = 'published'; });
+  $('cancel-edit')?.addEventListener('click', () => { editingId = null; form.dataset.workflowEditingId = ''; $('content-status').value = 'published'; });
   form.onsubmit = async event => {
     event.preventDefault();
     const user = auth.currentUser;
@@ -47,7 +48,8 @@ async function install() {
     try {
       message.textContent = 'Checking phrase…';
       const matches = await getDocs(query(collection(db, 'content'), where('englishNormalized', '==', englishNormalized), limit(2)));
-      if (matches.docs.some(item => item.id !== editingId)) {
+      const targetId = form.dataset.workflowEditingId || editingId;
+      if (matches.docs.some(item => item.id !== targetId)) {
         message.textContent = 'A phrase with the same English text already exists.';
         return;
       }
@@ -64,8 +66,8 @@ async function install() {
       };
       if (status === 'review') { data.reviewedBy = user.uid; data.reviewedByEmail = user.email || ''; }
       if (status === 'published') data.publishedAt = serverTimestamp();
-      if (editingId) {
-        await setDoc(doc(db, 'content', editingId), data, { merge: true });
+      if (targetId) {
+        await setDoc(doc(db, 'content', targetId), data, { merge: true });
       } else {
         data.createdBy = user.uid;
         data.createdByEmail = user.email || '';

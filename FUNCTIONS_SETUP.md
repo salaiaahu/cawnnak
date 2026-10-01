@@ -65,16 +65,17 @@ Do not enable Firebase Hosting: GitHub Pages remains the app host.
    Authentication account into `users/{uid}` and preserves existing `role`,
    `progress`, avatar, and achievement fields.
 
-5. Migrate every legacy `content` document with no `status` to one of `draft`,
-   `review`, `published`, or `archived` (normally `published` for existing
-   learner-visible material). Only then remove the temporary legacy read
-   compatibility from `firestore.rules`.
+5. From an administrator session, call `migrateLegacyContent`. It marks every
+   legacy `content` document without a status as `published`, preserves existing
+   timestamps when present, and writes an audit entry. Only then remove the
+   temporary legacy read compatibility from `firestore.rules`.
 
 ## Callable functions
 
 All admin callables verify `users/{uid}.role == "admin"` on the server:
 
 - `syncAuthUsers` — full Auth-to-Firestore backfill.
+- `migrateLegacyContent()` — one-time migration that publishes legacy cards with no workflow status.
 - `setUserRole({ uid, role })` — promotes/demotes a user; it refuses to demote the final admin.
 - `setUserDisabled({ uid, disabled })` — disables/re-enables Auth accounts; it refuses to disable the final admin.
 - `submitQuizResult({ answers })` — calculates a score from Firestore content before updating the public leaderboard.

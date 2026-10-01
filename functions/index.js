@@ -146,6 +146,37 @@ exports.syncAuthUsers = onCall({ timeoutSeconds: 540, memory: '512MiB' }, async 
   return { synced };
 });
 
+// One-time workflow migration for pre-status content. It intentionally publishes
+// existing cards so learners retain access after status-aware security rules deploy.
+exports.migrateLegacyContent = onCall({ timeoutSeconds: 540, memory: '512MiB' }, async request => {
+  const actor = await requireAdmin(request);
+  await ensureRateLimit(actor.uid, 'migrateLegacyContent', 1, 5 * 60_000);
+  const snapshot = await db.collection('content').get();
+  if (snapshot.size > 2000) {
+    throw new HttpsError('failed-precondition', 'More than 2,000 content cards require a paginated migration.');
+  }
+  const legacy = snapshot.docs.filter(card => !Object.prototype.hasOwnProperty.call(card.data(), 'status'));
+  for (let start = 0; start < legacy.length; start += 400) {
+    const batch = db.batch();
+    legacy.slice(start, start + 400).forEach(card => {
+      const data = card.data();
+      batch.set(card.ref, {
+        status: 'published',
+        createdAt: data.createdAt || FieldValue.serverTimestamp(),
+        updatedAt: FieldValue.serverTimestamp(),
+        publishedAt: data.publishedAt || FieldValue.serverTimestamp(),
+        migratedBy: actor.uid
+      }, { merge: true });
+    });
+    await batch.commit();
+  }
+  await writeAudit({
+    action: 'content.migrate_legacy', entityType: 'content', entityId: 'legacy',
+    after: { migrated: legacy.length, status: 'published' }, actorUid: actor.uid, actorEmail: actor.token.email || null
+  });
+  return { scanned: snapshot.size, migrated: legacy.length };
+});
+
 exports.setUserRole = onCall(async request => {
   const actor = await requireAdmin(request);
   await ensureRateLimit(actor.uid, 'setUserRole');

@@ -21,7 +21,10 @@ async function addAccountControls() {
       account.dataset.id = uid;
       account.dataset.disabled = String(!isDisabled);
       account.textContent = isDisabled ? 'Re-enable account' : 'Disable account';
-      roleButton.after(account);
+      const actions = document.createElement('div');
+      actions.className = 'user-actions';
+      roleButton.before(actions);
+      actions.append(roleButton, account);
       if (isDisabled) {
         const label = document.createElement('span');
         label.className = 'role-pill account-disabled';
@@ -44,6 +47,6 @@ window.addEventListener('load', () => {
   new MutationObserver(refresh).observe(list, { childList: true, subtree: true });
   $('users')?.addEventListener('click', refresh);
   const style = document.createElement('style');
-  style.textContent = `.user-row .account-toggle{margin-left:7px;background:#8d3d3d}.user-row .account-toggle:hover{background:#713030}.account-disabled{margin-left:6px;background:#fde3e1;color:#8d3d3d}`;
+  style.textContent = `.user-actions{display:flex;align-items:center;justify-content:flex-end;gap:7px}.user-actions .account-toggle{background:#8d3d3d}.user-actions .account-toggle:hover{background:#713030}.account-disabled{margin-left:6px;background:#fde3e1;color:#8d3d3d}@media(max-width:600px){.user-actions{width:100%;flex-direction:column;align-items:stretch}.user-actions .btn{width:100%}}`;
   document.head.append(style);
 }, { once: true });

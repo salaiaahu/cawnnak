@@ -25,12 +25,15 @@ Completed in the current pass:
 - Added calculated achievement summaries, milestone badges, and a shareable/downloadable achievement-card image for learners.
 - Installed the Functions dependencies with Node 22 and passed the local Auth, Firestore, and Storage Emulator rule suite.
 - Formatted the legacy client for maintainability and changed learner content reads to status-constrained Firestore queries, with a supporting `status + english` index.
+- Deployed the named secure Functions, Firestore rules/indexes, and Storage rules to `cawnnak-ca` while preserving the unrelated existing `backupReminder` Function.
+- Added an administrator Content Manager action that publishes legacy cards through the protected migration callable.
 
 Still requires Firebase deployment/configuration and follow-up product work:
 
 - Configure FCM Web Push/VAPID and App Check in the Firebase console, then add the generated messaging configuration.
-- Deploy rules/functions, run the Auth backfill, and migrate legacy content to workflow statuses before removing legacy content-read compatibility.
-- Replace remaining legacy appended client handlers in `index.html` with a single maintained module, expand the Emulator test suite, and perform a non-production backup/restore test.
+- From an existing administrator account, run the Auth backfill in User Management and use **Publish legacy cards** in Content Manager. Only then remove legacy content-read compatibility.
+- Configure a dedicated backup bucket and IAM access, then deploy the scheduled `exportFirestoreBackup` Function and perform a non-production backup/restore test.
+- Replace remaining legacy appended client handlers in `index.html` with a single maintained module and expand the Emulator test suite.
 
 Before substantial edits, consolidate the duplicated appended auth/navigation/menu blocks in `index.html`. The current file has multiple listeners and dynamic UI patches from earlier iterations; retain behavior but reduce duplicate handlers.
 

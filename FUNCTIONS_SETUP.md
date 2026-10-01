@@ -2,15 +2,45 @@
 
 The `functions/` project keeps privileged Firebase Admin SDK operations off the browser. Never copy service-account credentials into this repository or `index.html`.
 
+## Hosting model
+
+This project is hosted on **GitHub Pages**. Firebase Hosting is not used or
+required. The static site connects to the `cawnnak-ca` Firebase project for
+Authentication, Firestore, Cloud Storage, Cloud Functions, and optional FCM.
+
+## One-time Firebase Console setup
+
+Complete these steps in the Firebase console for `cawnnak-ca` before the first
+deployment. Region choices for Firestore and the default Storage bucket are
+long-lived, so choose the region closest to the app's users before continuing.
+
+1. Upgrade the project to the Blaze plan. Cloud Functions (Gen 2), Cloud Build,
+   Artifact Registry, Cloud Scheduler, and scheduled backups require billing to
+   be enabled. Configure a budget alert while doing this.
+2. In **Build → Firestore Database**, create the default Firestore database in
+   production mode and choose its region.
+3. In **Build → Storage**, click **Get started** and create the default bucket.
+   Choose the appropriate bucket region.
+4. In **Build → Authentication → Sign-in method**, enable Email/Password.
+5. In **Project settings → Your apps**, confirm that the existing web app has
+   `cawnnak-ca` in its configuration. Add the GitHub Pages domain to
+   Authentication's authorized domains if Firebase does not list it already.
+
+Do not enable Firebase Hosting: GitHub Pages remains the app host.
+
 ## First deployment
 
-1. Install the Firebase CLI and authenticate:
+1. Install the Firebase CLI and authenticate. This repository's `.firebaserc`
+   selects `cawnnak-ca` by default:
 
    ```bash
    npm install -g firebase-tools
    firebase login
    firebase use cawnnak-ca
    ```
+
+   Use Node.js 22 locally as well (`node --version` should report `v22.x`) so
+   emulator and deployment behavior matches the Functions runtime.
 
 2. Install function dependencies and check syntax:
 
@@ -21,14 +51,24 @@ The `functions/` project keeps privileged Firebase Admin SDK operations off the 
    cd ..
    ```
 
-3. Deploy in this order:
+3. Deploy Functions first, then the rules and indexes:
 
    ```bash
    firebase deploy --only functions
-   firebase deploy --only firestore:rules,storage
+   firebase deploy --only firestore:rules,firestore:indexes,storage
    ```
 
-4. Sign in as the existing administrator, then call `syncAuthUsers`. It backfills every Firebase Authentication account into `users/{uid}` and preserves existing `role`, `progress`, avatar, and achievement fields.
+4. Sign in as the initial administrator, then call `syncAuthUsers`. For the
+   first administrator, create the account in Firebase Authentication and set
+   `users/{uid}.role` to `admin` in the Firestore console once. Thereafter use
+   the app's secure role controls. `syncAuthUsers` backfills every Firebase
+   Authentication account into `users/{uid}` and preserves existing `role`,
+   `progress`, avatar, and achievement fields.
+
+5. Migrate every legacy `content` document with no `status` to one of `draft`,
+   `review`, `published`, or `archived` (normally `published` for existing
+   learner-visible material). Only then remove the temporary legacy read
+   compatibility from `firestore.rules`.
 
 ## Callable functions
 

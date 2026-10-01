@@ -27,6 +27,7 @@ Completed in the current pass:
 - Formatted the legacy client for maintainability and changed learner content reads to status-constrained Firestore queries, with a supporting `status + english` index.
 - Deployed the named secure Functions, Firestore rules/indexes, and Storage rules to `cawnnak-ca` while preserving the unrelated existing `backupReminder` Function.
 - Added an administrator Content Manager action that publishes legacy cards through the protected migration callable.
+- Expanded the Emulator rules suite to verify published/draft access, protected profiles and avatar paths, notifications, leaderboard integrity, and administrator workflow access; all five tests pass.
 
 Still requires Firebase deployment/configuration and follow-up product work:
 

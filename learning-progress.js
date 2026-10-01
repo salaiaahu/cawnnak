@@ -122,3 +122,5 @@ window.CawnnakLearning = {
   getState: () => JSON.parse(JSON.stringify(state)),
   applyMergedState: learning => { state = { ...state, ...learning }; localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); renderDashboard(); }
 };
+
+import('./achievements.js').catch(error => console.warn('Could not load achievements', error));

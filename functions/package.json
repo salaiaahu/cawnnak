@@ -7,7 +7,7 @@
   },
   "scripts": {
     "lint": "node --check index.js",
-    "test": "node --test ../tests/firestore.rules.test.js",
+    "test": "NODE_PATH=./node_modules node --test ../tests/firestore.rules.test.js",
     "serve": "firebase emulators:start --only functions,firestore,auth,storage",
     "deploy": "firebase deploy --only functions"
   },

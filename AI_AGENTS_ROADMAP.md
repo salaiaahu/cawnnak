@@ -22,12 +22,14 @@ Completed in the current pass:
 - Added guest- and learner-friendly daily goals, consecutive-day streaks, saved phrases, category study counts, and missed-question review tools.
 - Added User Management controls for disabling and re-enabling accounts through the protected server-side callable.
 - Added queued, conflict-safe merging for the new learning-progress state, Firebase App Check/FCM client scaffolding, generic push notification handling, a native scheduled Firestore-export implementation, and emulator-rule test scaffolding.
+- Added calculated achievement summaries, milestone badges, and a shareable/downloadable achievement-card image for learners.
+- Installed the Functions dependencies with Node 22 and passed the local Auth, Firestore, and Storage Emulator rule suite.
 
 Still requires Firebase deployment/configuration and follow-up product work:
 
 - Configure FCM Web Push/VAPID and App Check in the Firebase console, then add the generated messaging configuration.
 - Deploy rules/functions, run the Auth backfill, and migrate legacy content to workflow statuses before removing legacy content-read compatibility.
-- Replace remaining legacy appended client handlers in `index.html` with a single maintained module, then run and expand the emulator test suite plus perform a non-production backup/restore test.
+- Replace remaining legacy appended client handlers in `index.html` with a single maintained module, expand the Emulator test suite, and perform a non-production backup/restore test.
 
 Before substantial edits, consolidate the duplicated appended auth/navigation/menu blocks in `index.html`. The current file has multiple listeners and dynamic UI patches from earlier iterations; retain behavior but reduce duplicate handlers.
 

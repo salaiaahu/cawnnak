@@ -1244,6 +1244,10 @@
         text-align: center;
       }
       .practice-face small {
+        position: absolute;
+        top: 28px;
+        left: 24px;
+        right: 24px;
         color: rgba(255, 255, 255, 0.82);
         font-size: 0.75rem;
         font-weight: 800;
@@ -1252,10 +1256,20 @@
       }
       .practice-face h2 {
         max-width: 560px;
-        margin: 14px 0 8px;
+        margin: 0;
         font-size: clamp(1.7rem, 4vw, 2.5rem);
       }
+      .practice-face h2::before {
+        content: "“";
+      }
+      .practice-face h2::after {
+        content: "”";
+      }
       .practice-face p {
+        position: absolute;
+        right: 24px;
+        bottom: 24px;
+        left: 24px;
         margin: 0;
         color: rgba(255, 255, 255, 0.82);
       }
@@ -2348,6 +2362,52 @@
         "🌎",
         "🧰",
         "🏆",
+        "🎓",
+        "🏛️",
+        "🧑‍🤝‍🧑",
+        "👪",
+        "🤝",
+        "😊",
+        "😂",
+        "😌",
+        "😟",
+        "🙏",
+        "🎉",
+        "🎁",
+        "🎭",
+        "🎬",
+        "🎮",
+        "⚽",
+        "🏃",
+        "🚲",
+        "🚌",
+        "✈️",
+        "🚢",
+        "🗺️",
+        "🏕️",
+        "🌤️",
+        "🌱",
+        "🐾",
+        "🍎",
+        "🍽️",
+        "☕",
+        "🛍️",
+        "💰",
+        "📅",
+        "⏰",
+        "📍",
+        "📞",
+        "✉️",
+        "🔑",
+        "⚙️",
+        "✅",
+        "❓",
+        "❗",
+        "⚠️",
+        "🔒",
+        "💬",
+        "📖",
+        "📝",
       ].filter((icon, index, all) => all.indexOf(icon) === index);
       let activeCategory = "Driving",
         voices = [],

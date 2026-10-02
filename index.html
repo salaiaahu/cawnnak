@@ -908,7 +908,6 @@
         gap: 8px;
         margin-top: 10px;
         padding-top: 12px;
-        border-top: 1px solid var(--l);
       }
       .card-inline-edit label {
         display: grid;
@@ -1032,7 +1031,6 @@
         justify-content: space-between;
         gap: 14px;
         padding: 13px 0;
-        border-bottom: 1px solid var(--l);
       }
       .user-row:last-child {
         border: 0;
@@ -1264,6 +1262,15 @@
         #practice > .head {
           margin-bottom: 5px;
         }
+        .view h2 {
+          font-size: 1.25rem;
+        }
+        #profile-name {
+          font-size: 1.3rem;
+        }
+        .achievement {
+          font-size: 0.8rem;
+        }
         .practice-layout .panel {
           padding: 12px;
         }
@@ -1382,7 +1389,6 @@
       .home-section {
         border-color: rgba(255, 255, 255, 0.82);
       }
-      .stat::before,
       .home-section::before {
         display: block;
         height: 2px;
@@ -1421,7 +1427,6 @@
         .category {
           backdrop-filter: blur(10px);
         }
-        .stat::before,
         .home-section::before {
           margin-right: -15px;
           margin-left: -15px;
@@ -1512,7 +1517,6 @@
       </section>
       <section id="home" class="view active">
         <div class="hero">
-          <small>CHIN LANGUAGE LEARNING</small>
           <h2>Learn a phrase. Find your voice.</h2>
           <p>
             Choose a topic, study useful phrases, test yourself, and save
@@ -2524,7 +2528,8 @@
               (c.category || "Driving") === activeCategory &&
               (c.english + c.chin).toLowerCase().includes(q),
           );
-        $("learn-title").textContent = activeCategory + " phrases";
+        if ($("learn-title"))
+          $("learn-title").textContent = activeCategory + " phrases";
         $("count").textContent =
           a.length +
           " phrase" +
@@ -3442,11 +3447,26 @@
                     ) +
                     ": " +
                     esc(
-                      item.after?.english ||
-                        item.before?.english ||
-                        `${item.entityType || "content"} ${
-                          item.entityId || item.contentId || ""
-                        }`,
+                      item.action === "profile.update" ||
+                        item.action === "role.change"
+                        ? `${
+                            users.get(item.entityId)?.displayName ||
+                            users.get(item.entityId)?.email ||
+                            `User ${item.entityId || ""}`
+                          }${
+                            Object.keys(item.after || {})
+                              .filter((key) => key !== "updatedAt")
+                              .join(", ")
+                              ? ` (${Object.keys(item.after || {})
+                                  .filter((key) => key !== "updatedAt")
+                                  .join(", ")})`
+                              : ""
+                          }`
+                        : item.after?.english ||
+                          item.before?.english ||
+                          `${item.entityType || "content"} ${
+                            item.entityId || item.contentId || ""
+                          }`,
                     ) +
                     "</b><small>" +
                     "Updated by " +
@@ -3628,7 +3648,6 @@
         "beforeend",
         "<style>@media(max-width:600px){#profileview,#auditview,#adminview,#categories,#practice{padding-top:8px}#profileview>.head,#auditview>.head,#adminview>.head,#categories>.head,#practice>.head{margin-bottom:8px}#profileview>.head h1,#auditview>.head h1,#adminview>.head h1,#categories>.head h1,#practice>.head h1{margin:0}#profileview>.panel,#auditview>.panel,#adminview .panel{padding:12px}.cards .card{min-height:0}.cards .card footer{margin-top:8px}}</style>",
       );
-      $("auditview").querySelector("h1").textContent = "Edit history";
       $("history-menu").onclick = () => goAuditV3("auditview");
       if (ready)
         onAuthStateChanged(auth, async (account) => {

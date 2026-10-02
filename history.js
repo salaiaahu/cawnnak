@@ -70,7 +70,13 @@ async function loadHistory(append = false) {
       const actorUid = audit.actorUid || audit.actorId;
       const actor = users.get(actorUid);
       const actorName = audit.actorName || actor?.displayName || audit.actorEmail || actor?.email || actorUid || 'Server';
-      const subject = audit.after?.english || audit.before?.english || `${entityType} ${entityId}`;
+      const target = users.get(entityId);
+      const changedFields = Object.keys(audit.after || {})
+        .filter(key => key !== 'updatedAt')
+        .join(', ');
+      const subject = audit.action === 'profile.update' || audit.action === 'role.change'
+        ? `${target?.displayName || target?.email || `User ${entityId}`}${changedFields ? ` (${changedFields})` : ''}`
+        : audit.after?.english || audit.before?.english || `${entityType} ${entityId}`;
       return `<div class="user-row"><div class="user-meta"><b>${escapeHtml(action)}: ${escapeHtml(subject)}</b><small>Updated by ${escapeHtml(actorName)} · ${escapeHtml(formatDate(timestamp))}</small></div></div>`;
     }).join('') || (!append ? '<p class="status">No matching history.</p>' : '');
     list.innerHTML = append ? list.innerHTML + markup : markup;

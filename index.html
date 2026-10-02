@@ -2621,6 +2621,8 @@
                   chin: f.chin.value.trim(),
                   category: c.category || "Driving",
                   quiz: f.quiz.checked,
+                  updatedBy: user.uid,
+                  updatedByEmail: user.email || "",
                   updatedAt: serverTimestamp(),
                 };
               try {
@@ -2810,6 +2812,8 @@
             chin: f.get("chin").trim(),
             category: f.get("category"),
             quiz: f.get("quiz") === "true",
+            updatedBy: user.uid,
+            updatedByEmail: user.email || "",
             updatedAt: serverTimestamp(),
           };
         try {
@@ -2818,6 +2822,8 @@
           else
             await addDoc(collection(db, "content"), {
               ...data,
+              createdBy: user.uid,
+              createdByEmail: user.email || "",
               createdAt: serverTimestamp(),
             });
           await load();
@@ -3414,20 +3420,6 @@
             }),
         );
       };
-      async function auditLogV3(action, content) {
-        try {
-          await addDoc(collection(db, "audit"), {
-            action,
-            contentId: content.id || null,
-            phrase: content.english || "",
-            actorId: user.uid,
-            actorEmail: user.email || "",
-            at: serverTimestamp(),
-          });
-        } catch (error) {
-          console.warn("Could not write audit entry", error);
-        }
-      }
       async function loadAuditV3() {
         if (!user?.admin) return;
         let list = $("auditlist");
@@ -3436,19 +3428,25 @@
           let snapshot = await getDocs(collection(db, "audit")),
             items = snapshot.docs
               .map((item) => item.data())
-              .sort((a, b) => (b.at?.seconds || 0) - (a.at?.seconds || 0));
+              .sort(
+                (a, b) =>
+                  (b.createdAt?.seconds || b.at?.seconds || 0) -
+                  (a.createdAt?.seconds || a.at?.seconds || 0),
+              );
           list.innerHTML = items.length
             ? items
                 .map(
                   (item) =>
                     '<div class="user-row"><div class="user-meta"><b>' +
                     esc(item.action) +
-                    " phrase: " +
-                    esc(item.phrase || "Unknown") +
-                    "</b><small>" +
-                    esc(item.actorEmail || "Unknown administrator") +
                     " · " +
-                    esc(dateV2(item.at)) +
+                    esc(item.entityType || "content") +
+                    " " +
+                    esc(item.entityId || item.contentId || "") +
+                    "</b><small>" +
+                    esc(item.actorEmail || item.actorUid || item.actorId || "Server") +
+                    " · " +
+                    esc(dateV2(item.createdAt || item.at)) +
                     "</small></div></div>",
                 )
                 .join("")
@@ -3499,9 +3497,10 @@
             chin: form.get("chin").trim(),
             category: form.get("category"),
             quiz: form.get("quiz") === "true",
+            updatedBy: user.uid,
+            updatedByEmail: user.email || "",
             updatedAt: serverTimestamp(),
           },
-          action = editingId ? "Updated" : "Added",
           contentId = editingId;
         try {
           if (contentId)
@@ -3509,11 +3508,12 @@
           else {
             let saved = await addDoc(collection(db, "content"), {
               ...data,
+              createdBy: user.uid,
+              createdByEmail: user.email || "",
               createdAt: serverTimestamp(),
             });
             contentId = saved.id;
           }
-          await auditLogV3(action, { ...data, id: contentId });
           await load();
           resetEditor();
           manage();
@@ -3533,11 +3533,12 @@
               chin: form.chin.value.trim(),
               category: content.category || "Driving",
               quiz: form.quiz.checked,
+              updatedBy: user.uid,
+              updatedByEmail: user.email || "",
               updatedAt: serverTimestamp(),
             };
           try {
             await setDoc(doc(db, "content", content.id), data, { merge: true });
-            await auditLogV3("Updated", { ...data, id: content.id });
             await load();
             render();
           } catch (error) {

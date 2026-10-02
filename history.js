@@ -13,7 +13,9 @@ function escapeHtml(value) {
 }
 
 function formatDate(value) {
-  return value?.toDate ? value.toDate().toLocaleString() : 'Pending timestamp';
+  if (value?.toDate) return value.toDate().toLocaleString();
+  if (value instanceof Date) return value.toLocaleString();
+  return 'Pending timestamp';
 }
 
 function addStyles() {
@@ -51,7 +53,11 @@ async function loadHistory(append = false) {
     const snapshot = await getDocs(query(collection(db, 'audit'), ...constraints));
     const markup = snapshot.docs.map(item => {
       const audit = item.data();
-      return `<div class="user-row"><div class="user-meta"><b>${escapeHtml(audit.action)} · ${escapeHtml(audit.entityType)} ${escapeHtml(audit.entityId)}</b><small>${escapeHtml(audit.actorEmail || audit.actorUid || 'Server') } · ${escapeHtml(formatDate(audit.createdAt))}</small></div></div>`;
+      const action = audit.action || (audit.at ? 'content.update' : 'Unknown action');
+      const entityType = audit.entityType || 'content';
+      const entityId = audit.entityId || audit.contentId || '';
+      const timestamp = audit.createdAt || audit.at;
+      return `<div class="user-row"><div class="user-meta"><b>${escapeHtml(action)} · ${escapeHtml(entityType)} ${escapeHtml(entityId)}</b><small>${escapeHtml(audit.actorEmail || audit.actorUid || audit.actorId || 'Server')} · ${escapeHtml(formatDate(timestamp))}</small></div></div>`;
     }).join('') || (!append ? '<p class="status">No matching history.</p>' : '');
     list.innerHTML = append ? list.innerHTML + markup : markup;
     lastDocument = snapshot.docs.at(-1) || null;

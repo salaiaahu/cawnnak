@@ -317,7 +317,16 @@ exports.auditContent = onDocumentWritten('content/{contentId}', async event => {
   const before = event.data.before.exists ? event.data.before.data() : null;
   const after = event.data.after.exists ? event.data.after.data() : null;
   const action = !before ? 'content.create' : !after ? 'content.delete' : 'content.update';
-  await writeAudit({ action, entityType: 'content', entityId: event.params.contentId, before, after, actorUid: event.authId || after?.updatedBy || before?.updatedBy || null });
+  const actorUid = event.authId || after?.updatedBy || before?.updatedBy || null;
+  await writeAudit({
+    action,
+    entityType: 'content',
+    entityId: event.params.contentId,
+    before,
+    after,
+    actorUid,
+    actorEmail: after?.updatedByEmail || before?.updatedByEmail || null
+  });
 });
 
 exports.auditUserProfile = onDocumentWritten('users/{uid}', async event => {
@@ -326,7 +335,20 @@ exports.auditUserProfile = onDocumentWritten('users/{uid}', async event => {
   if (!before || !after) return;
   const changed = Object.keys(after).filter(key => JSON.stringify(clean(after[key])) !== JSON.stringify(clean(before[key])));
   if (!changed.length) return;
-  await writeAudit({ action: 'profile.update', entityType: 'user', entityId: event.params.uid, before: Object.fromEntries(changed.map(key => [key, before[key]])), after: Object.fromEntries(changed.map(key => [key, after[key]])), actorUid: event.authId || after.updatedBy || event.params.uid });
+  const actorUid = event.authId || after.updatedBy || event.params.uid;
+  const actorEmail = after.updatedByEmail
+    || before.updatedByEmail
+    || (actorUid === event.params.uid ? after.email : null)
+    || null;
+  await writeAudit({
+    action: 'profile.update',
+    entityType: 'user',
+    entityId: event.params.uid,
+    before: Object.fromEntries(changed.map(key => [key, before[key]])),
+    after: Object.fromEntries(changed.map(key => [key, after[key]])),
+    actorUid,
+    actorEmail
+  });
 });
 
 exports.auditNotification = onDocumentCreated('notifications/{id}', async event => {

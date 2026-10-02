@@ -2687,7 +2687,7 @@
           visible = categories.filter(([name]) =>
             name.toLowerCase().includes(search),
           );
-        $("category-grid").innerHTML = visible.length
+        $("category-grid").innerHTML = visible
           .map(
             ([name, icon]) =>
               '<button class="category" data-category="' +

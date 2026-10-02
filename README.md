@@ -84,7 +84,7 @@ An installed app opens in its own window and preserves the local app shell for o
 `users/{uid}`:
 
 ```js
-{ role: "admin", progress: { studied: ["content-card-id"], bestScore: 90 }, updatedAt: serverTimestamp() }
+{ role: "admin", progress: { studied: ["content-card-id"], bestScore: 90, totalPoints: 12 }, updatedAt: serverTimestamp() }
 ```
 
 ## Admin workflow

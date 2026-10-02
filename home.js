@@ -78,11 +78,11 @@
         const fields = document.fields || {};
         return {
           name: fields.name?.stringValue || 'Learner',
-          score: Number(fields.bestScore?.integerValue || fields.bestScore?.doubleValue || 0)
+          totalPoints: Number(fields.totalPoints?.integerValue || fields.totalPoints?.doubleValue || 0)
         };
-      }).sort((a, b) => b.score - a.score).slice(0, 3);
+      }).sort((a, b) => b.totalPoints - a.totalPoints).slice(0, 3);
       target.innerHTML = top.length
-        ? top.map((entry, index) => `<div class="leaderboard-row"><b>${index + 1}. ${escapeHtml(entry.name)}</b><span>${entry.score}%</span></div>`).join('')
+        ? top.map((entry, index) => `<div class="leaderboard-row"><b>${['🏆', '🥈', '🥉'][index] || '🏅'} ${index + 1}. ${escapeHtml(entry.name)}</b><span>${entry.totalPoints} point${entry.totalPoints === 1 ? '' : 's'}</span></div>`).join('')
         : 'Be the first learner on the leaderboard.';
     } catch (_) {
       target.textContent = 'Leaderboard will appear when scores are available.';

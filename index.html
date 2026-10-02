@@ -1680,10 +1680,13 @@
             <label class="field"
               >Quiz category<select id="quiz-category"></select
             ></label>
+            <label class="field"
+              >Number of questions<select id="quiz-length"></select
+            ></label>
             <div class="stats">
               <div class="stat"><b id="lobby-best">—</b>Best score</div>
               <div class="stat"><b id="lobby-tests">0</b>Tests taken</div>
-              <div class="stat"><b id="lobby-rank">—</b>Your best</div>
+              <div class="stat"><b id="lobby-rank">—</b>Total points</div>
             </div>
             <h3>Recent tests</h3>
             <div id="quiz-history" class="status">No tests yet.</div>
@@ -1961,7 +1964,7 @@
         cards = seed,
         p = JSON.parse(
           localStorage.getItem("cawnnak-progress") ||
-            '{"studied":[],"bestScore":null}',
+            '{"studied":[],"bestScore":null,"totalPoints":0}',
         ),
         quiz = [],
         i = 0,
@@ -2286,7 +2289,7 @@
           p.bestScore == null ? "—" : p.bestScore + "%";
         $("lobby-tests").textContent = h.length;
         $("lobby-rank").textContent =
-          p.bestScore == null ? "Start now" : p.bestScore + "%";
+          p.totalPoints ? p.totalPoints : "Start now";
         $("quiz-history").textContent = h.length
           ? h
               .slice(0, 5)
@@ -2298,19 +2301,23 @@
             .then((s) => {
               let top = s.docs
                 .map((d) => d.data())
-                .sort((a, b) => (b.bestScore || 0) - (a.bestScore || 0))
+                .sort(
+                  (a, b) =>
+                    (b.totalPoints || 0) - (a.totalPoints || 0),
+                )
                 .slice(0, 5);
               $("leaderboard").textContent = top.length
                 ? top
                     .map(
                       (x, n) =>
-                        n +
-                        1 +
-                        ". " +
-                        (x.name || "Learner") +
-                        " — " +
-                        x.bestScore +
-                        "%",
+                        (["🏆", "🥈", "🥉"][n] || "🏅") +
+                          " " +
+                          (n + 1) +
+                          ". " +
+                          (x.name || "Learner") +
+                          " — " +
+                          (x.totalPoints || 0) +
+                          " points",
                     )
                     .join(" · ")
                 : "No scores yet.";
@@ -2321,6 +2328,13 @@
       }
       window.addEventListener("cawnnak-leaderboard-updated", () => {
         if ($("quiz").classList.contains("active")) renderQuizLobby();
+      });
+      window.addEventListener("cawnnak-leaderboard-updated", (event) => {
+        let points = Number(event.detail?.totalPoints);
+        if (Number.isFinite(points)) {
+          p.totalPoints = points;
+          save();
+        }
       });
       let practiceCards = [],
         practiceIndex = 0,
@@ -2641,6 +2655,38 @@
         buildSelect($("content-category"));
         buildSelect($("quiz-category"));
         buildSelect($("practice-category"));
+        updateQuizLengthOptions();
+      }
+      function updateQuizLengthOptions() {
+        let category = $("quiz-category").value || "all",
+          total = cards.filter(
+            (c) =>
+              c.quiz !== false &&
+              (category === "all" || (c.category || "Driving") === category),
+          ).length,
+          select = $("quiz-length"),
+          current = Number(select.value),
+          maximum = Math.min(total, 20),
+          lengths =
+            total >= 4
+              ? Array.from({ length: maximum - 3 }, (_, index) => index + 4)
+              : [];
+        if (total > 20) lengths.push(total);
+        select.innerHTML = lengths.length
+          ? lengths
+              .map(
+                (length) =>
+                  '<option value="' +
+                  length +
+                  '">' +
+                  (length === total ? "All " : "") +
+                  length +
+                  " questions</option>",
+              )
+              .join("")
+          : '<option value="">At least 4 quiz phrases required</option>';
+        if (lengths.includes(current)) select.value = String(current);
+        else if (lengths.length) select.value = String(Math.min(10, total));
       }
       function dash() {
         let email = user ? user.email : "Guest learner",
@@ -2902,6 +2948,7 @@
         );
       }
       $("search").oninput = render;
+      $("quiz-category").onchange = updateQuizLengthOptions;
       function sh(a) {
         return [...a].sort(() => Math.random() - 0.5);
       }
@@ -2926,7 +2973,8 @@
           $("next").disabled = true;
           return;
         }
-        quiz = sh(a).slice(0, 10);
+        let requested = Number($("quiz-length").value) || Math.min(10, a.length);
+        quiz = sh(a).slice(0, Math.min(requested, a.length));
         i = good = 0;
         $("summary").classList.add("hidden");
         $("qcard").classList.remove("hidden");
@@ -3375,6 +3423,7 @@
             ...Object.values(learning.days || {}).flat(),
           ]).size,
           favorites = Object.keys(learning.favorites || {}).length,
+          totalPoints = Number(p.totalPoints || profileV2.progress?.totalPoints || 0),
           history = p.history || [],
           streak = 0,
           cursor = new Date();
@@ -3393,6 +3442,8 @@
           '</b><span>Phrases learned</span></div><div class="profile-metric"><b>' +
           favorites +
           '</b><span>Saved phrases</span></div><div class="profile-metric"><b>' +
+          totalPoints +
+          '</b><span>Total points</span></div><div class="profile-metric"><b>' +
           (p.bestScore == null ? "—" : p.bestScore + "%") +
           '</b><span>Best quiz</span></div><div class="profile-metric"><b>' +
           streak +
@@ -3511,6 +3562,7 @@
         if (view === "adminview") manage();
         if (view === "usersview") loadManagedUsers();
         if (view === "profileview") profileViewV2();
+        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
         $("menu-drawer").classList.add("hidden");
         document.body.classList.remove("menu-open");
       }
@@ -3967,6 +4019,7 @@
         if (view === "profileview") profileViewV2();
         if (view === "auditview") loadAuditV3();
         if (view === "practice") renderPractice();
+        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
         if (recordHistory && view !== currentView)
           history.pushState({ view }, "", location.href);
         $("menu-drawer").classList.add("hidden");

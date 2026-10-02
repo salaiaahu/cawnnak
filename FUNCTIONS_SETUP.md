@@ -78,7 +78,7 @@ All admin callables verify `users/{uid}.role == "admin"` on the server:
 - `migrateLegacyContent()` — one-time migration that publishes legacy cards with no workflow status.
 - `setUserRole({ uid, role })` — promotes/demotes a user; it refuses to demote the final admin.
 - `setUserDisabled({ uid, disabled })` — disables/re-enables Auth accounts; it refuses to disable the final admin.
-- `submitQuizResult({ answers })` — calculates a score from Firestore content before updating the public leaderboard.
+- `submitQuizResult({ answers })` — calculates a verified score from Firestore content, awards one point per correct answer, and updates the learner's cumulative public leaderboard total.
 
 The browser must call these using the Firebase Functions Web SDK; it must not write roles, account state, audits, or leaderboard scores directly.
 

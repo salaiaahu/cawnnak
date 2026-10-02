@@ -20,9 +20,11 @@ async function submitValidatedResult() {
     const score = result.data.score;
     const resultNode = $('result');
     if (resultNode && !resultNode.classList.contains('hidden')) {
-      resultNode.textContent += ` · Verified score: ${score}%.`;
+      resultNode.textContent += ` · Verified score: ${score}% · Total points: ${result.data.totalPoints}.`;
     }
-    window.dispatchEvent(new CustomEvent('cawnnak-leaderboard-updated'));
+    window.dispatchEvent(new CustomEvent('cawnnak-leaderboard-updated', {
+      detail: { totalPoints: result.data.totalPoints }
+    }));
   } catch (error) {
     const resultNode = $('result');
     if (resultNode && !resultNode.classList.contains('hidden')) {

@@ -265,18 +265,32 @@ exports.submitQuizResult = onCall(async request => {
   const total = docs.length;
   if (!total) throw new HttpsError('invalid-argument', 'No valid quiz content was submitted.');
   const score = Math.round((correct / total) * 100);
-  const profile = await db.doc(`users/${request.auth.uid}`).get();
-  const oldBest = Number(profile.get('progress.bestScore') || 0);
-  await db.doc(`users/${request.auth.uid}`).set({
-    progress: { bestScore: Math.max(oldBest, score), lastQuizAt: FieldValue.serverTimestamp() },
-    updatedAt: FieldValue.serverTimestamp()
-  }, { merge: true });
-  await db.doc(`leaderboard/${request.auth.uid}`).set({
-    name: profile.get('displayName') || request.auth.token.email?.split('@')[0] || 'Learner',
-    bestScore: Math.max(oldBest, score),
-    updatedAt: FieldValue.serverTimestamp()
-  }, { merge: true });
-  return { score, correct, total };
+  const profileRef = db.doc(`users/${request.auth.uid}`);
+  const leaderboardRef = db.doc(`leaderboard/${request.auth.uid}`);
+  let totalPoints = 0;
+  await db.runTransaction(async transaction => {
+    const profile = await transaction.get(profileRef);
+    const currentProgress = profile.get('progress') || {};
+    const oldBest = Number(currentProgress.bestScore || 0);
+    const oldTotalPoints = Math.max(0, Number(currentProgress.totalPoints || 0));
+    totalPoints = oldTotalPoints + correct;
+    const nextProgress = {
+      ...currentProgress,
+      bestScore: Math.max(oldBest, score),
+      totalPoints,
+      lastQuizAt: FieldValue.serverTimestamp()
+    };
+    transaction.set(profileRef, {
+      progress: nextProgress,
+      updatedAt: FieldValue.serverTimestamp()
+    }, { merge: true });
+    transaction.set(leaderboardRef, {
+      name: profile.get('displayName') || request.auth.token.email?.split('@')[0] || 'Learner',
+      totalPoints,
+      updatedAt: FieldValue.serverTimestamp()
+    }, { merge: true });
+  });
+  return { score, correct, total, totalPoints };
 });
 
 exports.mergeLearningState = onCall(async request => {

@@ -33,7 +33,7 @@ Still requires Firebase deployment/configuration and follow-up product work:
 
 - Configure FCM Web Push/VAPID and App Check in the Firebase console, then add the generated messaging configuration.
 - From an existing administrator account, run the Auth backfill in User Management and use **Publish legacy cards** in Content Manager. Only then remove legacy content-read compatibility.
-- Configure a dedicated backup bucket and IAM access, then deploy the scheduled `exportFirestoreBackup` Function and perform a non-production backup/restore test.
+- Configure a dedicated backup bucket and IAM access, then complete the scheduled `backupReminder` Function and perform a non-production backup/restore test.
 - Replace remaining legacy appended client handlers in `index.html` with a single maintained module and expand the Emulator test suite.
 
 Before substantial edits, consolidate the duplicated appended auth/navigation/menu blocks in `index.html`. The current file has multiple listeners and dynamic UI patches from earlier iterations; retain behavior but reduce duplicate handlers.

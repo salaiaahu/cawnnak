@@ -377,7 +377,7 @@ exports.auditNotification = onDocumentCreated('notifications/{id}', async event 
 });
 
 // Configure BACKUP_BUCKET as a Firebase runtime environment value before enabling this job.
-exports.exportFirestoreBackup = onSchedule('every day 03:15', async () => {
+exports.backupReminder = onSchedule('every day 03:15', async () => {
   const bucket = process.env.BACKUP_BUCKET;
   if (!bucket) {
     console.warn('BACKUP_BUCKET is not configured; no Firestore export was started.');

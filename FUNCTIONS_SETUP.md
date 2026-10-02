@@ -98,7 +98,7 @@ Auth account creation creates the profile and an admin-targeted registration not
 
 Before production, enable App Check for the web app and enforce it on callable Functions after testing. Configure Firebase Cloud Messaging in the service worker before requesting notification permission.
 
-The scheduled `exportFirestoreBackup` function intentionally does not export until `BACKUP_BUCKET` is configured in the Functions runtime as a `gs://bucket-name` value. It starts a native Firestore export under `gs://bucket-name/firestore/YYYY-MM-DD` and records the long-running operation in `operations/lastFirestoreExport`.
+The scheduled `backupReminder` function intentionally does not export until `BACKUP_BUCKET` is configured in the Functions runtime as a `gs://bucket-name` value. It starts a native Firestore export under `gs://bucket-name/firestore/YYYY-MM-DD` and records the long-running operation in `operations/lastFirestoreExport`.
 
 Before enabling it in production:
 

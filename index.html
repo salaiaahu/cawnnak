@@ -227,6 +227,66 @@
         max-width: 700px;
         margin: auto;
       }
+      .quiz-insights {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        margin: 18px 0;
+      }
+      .quiz-insight {
+        min-width: 0;
+        padding: 14px;
+        border: 1px solid var(--l);
+        border-radius: 14px;
+        background: linear-gradient(145deg, #ffffff, #eef8f2);
+      }
+      .quiz-insight-title {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        margin-bottom: 10px;
+        color: var(--i);
+      }
+      .quiz-insight-title span {
+        font-size: 1.3rem;
+      }
+      .quiz-history,
+      .quiz-leaderboard {
+        display: grid;
+        gap: 7px;
+        color: var(--m);
+        font-size: 0.82rem;
+      }
+      .quiz-history-item,
+      .quiz-rank-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        padding: 8px 9px;
+        border-radius: 9px;
+        background: #fff9;
+      }
+      .quiz-history-item b,
+      .quiz-rank-item b {
+        color: var(--g);
+      }
+      .quiz-rank-item strong {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: var(--i);
+      }
+      @media (max-width: 600px) {
+        .quiz-insights {
+          grid-template-columns: 1fr;
+          gap: 9px;
+          margin: 14px 0;
+        }
+        .quiz-insight {
+          padding: 12px;
+        }
+      }
       .options {
         grid-template-columns: 1fr 1fr;
       }
@@ -1929,10 +1989,16 @@
               <div class="stat"><b id="lobby-tests">0</b>Tests taken</div>
               <div class="stat"><b id="lobby-rank">—</b>Total points</div>
             </div>
-            <h3>Recent tests</h3>
-            <div id="quiz-history" class="status">No tests yet.</div>
-            <h3>Top performers</h3>
-            <div id="leaderboard" class="status">Loading leaderboard…</div>
+            <div class="quiz-insights">
+              <section class="quiz-insight">
+                <div class="quiz-insight-title"><span>🕘</span><b>Recent runs</b></div>
+                <div id="quiz-history" class="quiz-history">No tests yet.</div>
+              </section>
+              <section class="quiz-insight">
+                <div class="quiz-insight-title"><span>🏆</span><b>Top performers</b></div>
+                <div id="leaderboard" class="quiz-leaderboard">Loading leaderboard…</div>
+              </section>
+            </div>
             <button id="start-quiz" class="btn take-quiz">Start quiz</button>
           </article>
           <p id="score" class="hidden"></p>
@@ -2639,12 +2705,19 @@
         $("lobby-tests").textContent = h.length;
         $("lobby-rank").textContent =
           p.totalPoints ? p.totalPoints : "Start now";
-        $("quiz-history").textContent = h.length
+        $("quiz-history").innerHTML = h.length
           ? h
-              .slice(0, 5)
-              .map((x) => x.score + "% · " + x.category)
-              .join(" · ")
-          : "No tests yet.";
+              .slice(0, 4)
+              .map(
+                (x) =>
+                  '<div class="quiz-history-item"><b>' +
+                  esc(x.score + "%") +
+                  '</b><span>' +
+                  esc(x.category || "All categories") +
+                  "</span></div>",
+              )
+              .join("")
+          : '<span class="status">No tests yet.</span>';
         if (db)
           getDocs(collection(db, "leaderboard"))
             .then((s) => {
@@ -2655,21 +2728,22 @@
                     (b.totalPoints || 0) - (a.totalPoints || 0),
                 )
                 .slice(0, 5);
-              $("leaderboard").textContent = top.length
+              $("leaderboard").innerHTML = top.length
                 ? top
                     .map(
                       (x, n) =>
-                        (["🏆", "🥈", "🥉"][n] || "🏅") +
+                        '<div class="quiz-rank-item"><span>' +
+                          (["🏆", "🥈", "🥉"][n] || "🏅") +
                           " " +
                           (n + 1) +
-                          ". " +
-                          (x.name || "Learner") +
-                          " — " +
-                          (x.totalPoints || 0) +
-                          " points",
+                          '</span><strong>' +
+                          esc(x.name || "Learner") +
+                          '</strong><b>' +
+                          esc((x.totalPoints || 0) + " pts") +
+                          "</b></div>",
                     )
-                    .join(" · ")
-                : "No scores yet.";
+                    .join("")
+                : '<span class="status">No scores yet.</span>';
             })
             .catch(() => {
               $("leaderboard").textContent = "Leaderboard unavailable.";
@@ -4459,8 +4533,16 @@
         if (view === "practice") renderPractice();
         if (view === "review") window.CawnnakLearning?.renderReview?.();
         window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-        if (recordHistory && view !== currentView)
-          history.pushState({ view }, "", location.href);
+        if (recordHistory && view !== currentView) {
+          if (view === "home") {
+            history.replaceState({ view: "home" }, "", location.href);
+          } else if (currentView === "home") {
+            history.pushState({ view: "home" }, "", location.href);
+            history.replaceState({ view }, "", location.href);
+          } else {
+            history.replaceState({ view }, "", location.href);
+          }
+        }
         $("menu-drawer").classList.add("hidden");
         document.body.classList.remove("menu-open");
         $("menu-toggle").setAttribute("aria-expanded", "false");

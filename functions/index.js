@@ -105,7 +105,7 @@ exports.getDailyPhrase = onRequest({ cors: true }, async (request, response) => 
       .sort((left, right) => left.english.localeCompare(right.english));
     if (!phrases.length) return response.status(404).json({ error: 'No learner-visible phrases are available.' });
     const phrase = phrases[dailyIndex(phrases.length)];
-    response.set('Cache-Control', 'public, max-age=3600');
+    response.set('Cache-Control', 'no-store, max-age=0');
     return response.json({ english: phrase.english, chin: phrase.chin || '', category: phrase.category || '' });
   } catch (error) {
     console.error('Could not select daily phrase', error);

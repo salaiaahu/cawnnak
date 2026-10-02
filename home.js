@@ -1,7 +1,9 @@
 (() => {
-  const DAILY_CACHE_KEY = 'cawnnak-daily-phrase-v2';
+  const DAILY_CACHE_KEY = 'cawnnak-daily-phrase-v3';
   const DAILY_PHRASE_URL = 'https://us-central1-cawnnak-ca.cloudfunctions.net/getDailyPhrase';
+  const DAILY_REFRESH_MS = 15 * 60 * 1000;
   const byId = id => document.getElementById(id);
+  let lastDailyFetchAt = 0;
 
   function addLayerStyles() {
     const style = document.createElement('style');
@@ -38,18 +40,22 @@
   function readCachedDailyPhrase() {
     try {
       const cached = JSON.parse(localStorage.getItem(DAILY_CACHE_KEY) || 'null');
-      return cached?.phrase || null;
+      return cached?.date === dayKey() ? cached.phrase : null;
     } catch (_) { return null; }
   }
 
   async function setDailyPhrase() {
     renderDailyPhrase(readCachedDailyPhrase());
     try {
-      const response = await fetch(DAILY_PHRASE_URL);
+      const response = await fetch(`${DAILY_PHRASE_URL}?date=${encodeURIComponent(dayKey())}`, {
+        cache: 'no-store',
+        headers: { 'Cache-Control': 'no-cache' }
+      });
       if (!response.ok) throw new Error('Daily phrase is unavailable');
       const phrase = await response.json();
       if (!phrase.english) throw new Error('No learner-visible phrases yet');
       localStorage.setItem(DAILY_CACHE_KEY, JSON.stringify({ date: dayKey(), phrase }));
+      lastDailyFetchAt = Date.now();
       renderDailyPhrase(phrase);
     } catch (_) {
       if (!readCachedDailyPhrase()) {
@@ -96,6 +102,10 @@
     setContinueLearning();
     loadLeaderboard();
     byId('view-leaderboard').onclick = () => document.querySelector('[data-v="quiz"]')?.click();
+    setInterval(() => setDailyPhrase(), DAILY_REFRESH_MS);
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden && Date.now() - lastDailyFetchAt >= DAILY_REFRESH_MS) setDailyPhrase();
+    });
   }
 
   window.CawnnakHome = { refreshLeaderboard: loadLeaderboard };

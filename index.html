@@ -343,6 +343,48 @@
         grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
         gap: 14px;
       }
+      .category-toolbar {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 16px;
+      }
+      .category-toolbar .search {
+        flex: 1;
+        min-width: 0;
+      }
+      .category-toolbar .btn {
+        width: 48px;
+        padding: 0;
+        font-size: 1.5rem;
+      }
+      #category-dialog {
+        width: min(520px, calc(100vw - 28px));
+        border: 0;
+        border-radius: 18px;
+        padding: 22px;
+      }
+      #category-dialog::backdrop {
+        background: #0d2019aa;
+      }
+      .category-icon-picker {
+        display: grid;
+        grid-template-columns: repeat(8, 1fr);
+        gap: 7px;
+        margin: 8px 0 14px;
+      }
+      .category-icon-option {
+        min-height: 42px;
+        padding: 5px;
+        border: 1px solid var(--l);
+        border-radius: 9px;
+        background: #fff;
+        font-size: 1.35rem;
+      }
+      .category-icon-option.selected {
+        border-color: var(--g);
+        background: #e5f4eb;
+        box-shadow: 0 0 0 2px #b9dfc9;
+      }
       .category {
         min-height: 150px;
         text-align: left;
@@ -376,6 +418,9 @@
         width: 100%;
       }
       @media (max-width: 600px) {
+        .category-icon-picker {
+          grid-template-columns: repeat(6, 1fr);
+        }
         .brand {
           font-size: 0.98rem;
         }
@@ -1657,6 +1702,10 @@
         <p id="status" class="status"></p>
       </section>
       <section id="categories" class="view">
+        <div class="category-toolbar">
+          <input id="category-search" class="search" placeholder="Search categories" />
+          <button id="add-category" class="btn hidden" type="button" aria-label="Add new category">+</button>
+        </div>
         <div id="category-grid" class="category-grid"></div>
       </section>
       <section id="learn" class="view">
@@ -1750,6 +1799,7 @@
 
       <section id="adminview" class="view">
         <div class="admin">
+          <button id="admin-new-category" class="btn" type="button">+ New category</button>
           <form id="form" class="panel">
             <h2 id="form-title">Add content</h2>
             <label class="field"
@@ -1781,6 +1831,19 @@
         </div>
       </section>
     </main>
+    <dialog id="category-dialog">
+      <form id="category-form">
+        <h2>New category</h2>
+        <label class="field">Category name<input name="name" maxlength="50" required /></label>
+        <label class="field">Category icon<input id="category-icon-value" name="icon" readonly required /></label>
+        <div id="category-icon-picker" class="category-icon-picker" role="radiogroup" aria-label="Choose category icon"></div>
+        <p id="category-message" class="status"></p>
+        <div class="actions">
+          <button id="cancel-category" class="plain" type="button">Cancel</button>
+          <button class="btn" type="submit">Create category</button>
+        </div>
+      </form>
+    </dialog>
     <dialog id="dialog">
       <form id="loginform">
         <h2>Save your progress</h2>
@@ -2254,7 +2317,7 @@
             .register("./service-worker.js")
             .catch(console.warn),
         );
-      const categories = [
+      const builtInCategories = [
         ["Driving", "🚗"],
         ["Greetings & basics", "👋"],
         ["Directions", "🧭"],
@@ -2269,6 +2332,23 @@
         ["Family & home", "🏠"],
         ["Travel", "🧳"],
       ];
+      let categories = builtInCategories.slice(),
+        customCategories = [];
+      const categoryIcons = [
+        ...builtInCategories.map((category) => category[1]),
+        "⭐",
+        "🎯",
+        "🎨",
+        "🎵",
+        "🌿",
+        "💡",
+        "🔤",
+        "🧠",
+        "🗣️",
+        "🌎",
+        "🧰",
+        "🏆",
+      ].filter((icon, index, all) => all.indexOf(icon) === index);
       let activeCategory = "Driving",
         voices = [],
         selectedVoice,
@@ -2277,6 +2357,27 @@
         let e = document.createElement("i");
         e.textContent = x;
         return e.innerHTML;
+      }
+      async function loadCustomCategories() {
+        if (!db) return;
+        try {
+          let snapshot = await getDocs(collection(db, "categories"));
+          customCategories = snapshot.docs
+            .map((item) => ({
+              id: item.id,
+              name: item.data().name,
+              icon: item.data().icon,
+            }))
+            .filter((item) => item.name && item.icon);
+          categories = [...builtInCategories, ...customCategories.map((item) => [
+            item.name,
+            item.icon,
+          ])];
+          fillCategories();
+          if ($("categories").classList.contains("active")) renderCategories();
+        } catch (error) {
+          console.warn("Could not load custom categories", error);
+        }
       }
       function renderQuizLobby() {
         $("quiz-lobby").classList.remove("hidden");
@@ -2582,20 +2683,28 @@
           ),
           {},
         );
-        $("category-grid").innerHTML = categories
+        let search = $("category-search").value.trim().toLowerCase(),
+          visible = categories.filter(([name]) =>
+            name.toLowerCase().includes(search),
+          );
+        $("category-grid").innerHTML = visible.length
           .map(
             ([name, icon]) =>
               '<button class="category" data-category="' +
-              name +
+              esc(name) +
               '"><span class="icon">' +
-              icon +
+              esc(icon) +
               "</span><b>" +
-              name +
+              esc(name) +
               "</b><small>" +
               (counts[name] || 0) +
               " phrases</small></button>",
           )
           .join("");
+        if (!visible.length)
+          $("category-grid").innerHTML =
+            '<p class="status">No categories match your search.</p>';
+        $("add-category").classList.toggle("hidden", !user?.admin);
         document.querySelectorAll(".category").forEach(
           (b) =>
             (b.onclick = () => {
@@ -2605,6 +2714,85 @@
             }),
         );
       }
+      function openCategoryDialog() {
+        if (!user?.admin) return;
+        let form = $("category-form"),
+            picker = $("category-icon-picker");
+        form.reset();
+        $("category-message").textContent = "";
+        $("category-icon-value").value = categoryIcons[0];
+        picker.innerHTML = categoryIcons
+            .map(
+              (icon) =>
+                '<button class="category-icon-option" type="button" data-icon="' +
+                esc(icon) +
+                '" aria-label="Use ' +
+                esc(icon) +
+                '">' +
+                esc(icon) +
+                "</button>",
+            )
+            .join("");
+        picker.querySelectorAll(".category-icon-option").forEach((button) => {
+            button.classList.toggle(
+              "selected",
+              button.dataset.icon === $("category-icon-value").value,
+            );
+            button.onclick = () => {
+              $("category-icon-value").value = button.dataset.icon;
+              picker
+                .querySelectorAll(".category-icon-option")
+                .forEach((item) =>
+                  item.classList.toggle("selected", item === button),
+                );
+            };
+        });
+        $("category-dialog").showModal();
+      }
+      $("category-search").oninput = renderCategories;
+      $("add-category").onclick = openCategoryDialog;
+      $("admin-new-category").onclick = openCategoryDialog;
+      $("cancel-category").onclick = () => $("category-dialog").close();
+      $("category-form").onsubmit = async (event) => {
+        event.preventDefault();
+        let form = new FormData(event.target),
+            name = String(form.get("name") || "").trim(),
+            icon = String(form.get("icon") || "").trim();
+        if (!user?.admin || !db) return;
+        if (categories.some(([item]) => item.toLowerCase() === name.toLowerCase())) {
+            $("category-message").textContent = "That category already exists.";
+            return;
+        }
+        if (!name || !icon) {
+            $("category-message").textContent = "Choose a name and icon.";
+            return;
+        }
+        try {
+            let id =
+              name
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, "-")
+                .replace(/^-|-$/g, "") || "category-" + Date.now();
+            await setDoc(doc(db, "categories", id), {
+              name,
+              icon,
+              createdBy: user.uid,
+              createdAt: serverTimestamp(),
+              updatedAt: serverTimestamp(),
+            });
+            customCategories.push({ id, name, icon });
+            categories = [
+              ...builtInCategories,
+              ...customCategories.map((item) => [item.name, item.icon]),
+            ];
+            fillCategories();
+            renderCategories();
+            $("category-dialog").close();
+        } catch (error) {
+            $("category-message").textContent =
+              "Could not create category: " + error.message;
+        }
+      };
       function fillCategories() {
         let currentContent = $("content-category").value,
           currentQuiz = $("quiz-category").value,
@@ -3214,6 +3402,7 @@
         let app = initializeApp(firebaseConfig);
         auth = getAuth(app);
         db = getFirestore(app);
+        loadCustomCategories();
         onAuthStateChanged(auth, async (a) => {
           user = a;
           if (user) {

@@ -27,6 +27,11 @@ service cloud.firestore {
       allow create, update, delete: if admin();
     }
 
+    match /categories/{id} {
+      allow read: if true;
+      allow create, update, delete: if admin();
+    }
+
     match /users/{uid} {
       allow get: if own(uid) || admin();
       allow list: if admin();

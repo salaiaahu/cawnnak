@@ -118,6 +118,7 @@ async function bulkStatus(status) {
     status,
     updatedBy: auth.currentUser.uid,
     updatedByEmail: auth.currentUser.email || '',
+    updatedByName: auth.currentUser.displayName || '',
     updatedAt: serverTimestamp(),
     ...(status === 'published' ? { publishedAt: serverTimestamp() } : {})
   }));
@@ -158,7 +159,7 @@ async function previewImport(event) {
       const status = row.status || 'published';
       batch.set(reference, {
         english: row.english.trim(), englishNormalized: normalize(row.english), chin: row.chin || '', category: row.category || 'Greetings & basics', quiz: row.quiz !== 'false', status,
-        createdBy: auth.currentUser.uid, createdByEmail: auth.currentUser.email || '', updatedBy: auth.currentUser.uid, updatedByEmail: auth.currentUser.email || '', createdAt: serverTimestamp(), updatedAt: serverTimestamp(), ...(status === 'published' ? { publishedAt: serverTimestamp() } : {})
+        createdBy: auth.currentUser.uid, createdByEmail: auth.currentUser.email || '', createdByName: auth.currentUser.displayName || '', updatedBy: auth.currentUser.uid, updatedByEmail: auth.currentUser.email || '', updatedByName: auth.currentUser.displayName || '', createdAt: serverTimestamp(), updatedAt: serverTimestamp(), ...(status === 'published' ? { publishedAt: serverTimestamp() } : {})
       });
     });
     await batch.commit();

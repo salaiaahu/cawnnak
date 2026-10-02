@@ -50,14 +50,28 @@ async function loadHistory(append = false) {
   if (append && lastDocument) constraints.push(startAfter(lastDocument));
   constraints.push(limit(PAGE_SIZE));
   try {
-    const snapshot = await getDocs(query(collection(db, 'audit'), ...constraints));
+    const [snapshot, usersSnapshot] = await Promise.all([
+      getDocs(query(collection(db, 'audit'), ...constraints)),
+      getDocs(collection(db, 'users'))
+    ]);
+    const users = new Map(usersSnapshot.docs.map(item => [item.id, item.data()]));
     const markup = snapshot.docs.map(item => {
       const audit = item.data();
-      const action = audit.action || (audit.at ? 'content.update' : 'Unknown action');
+      const action = {
+        'content.create': 'Added',
+        'content.update': 'Updated',
+        'content.delete': 'Deleted',
+        'role.change': 'Role changed',
+        'profile.update': 'Profile updated'
+      }[audit.action] || audit.action || (audit.at ? 'Updated' : 'Unknown action');
       const entityType = audit.entityType || 'content';
       const entityId = audit.entityId || audit.contentId || '';
       const timestamp = audit.createdAt || audit.at;
-      return `<div class="user-row"><div class="user-meta"><b>${escapeHtml(action)} · ${escapeHtml(entityType)} ${escapeHtml(entityId)}</b><small>${escapeHtml(audit.actorEmail || audit.actorUid || audit.actorId || 'Server')} · ${escapeHtml(formatDate(timestamp))}</small></div></div>`;
+      const actorUid = audit.actorUid || audit.actorId;
+      const actor = users.get(actorUid);
+      const actorName = audit.actorName || actor?.displayName || audit.actorEmail || actor?.email || actorUid || 'Server';
+      const subject = audit.after?.english || audit.before?.english || `${entityType} ${entityId}`;
+      return `<div class="user-row"><div class="user-meta"><b>${escapeHtml(action)}: ${escapeHtml(subject)}</b><small>Updated by ${escapeHtml(actorName)} · ${escapeHtml(formatDate(timestamp))}</small></div></div>`;
     }).join('') || (!append ? '<p class="status">No matching history.</p>' : '');
     list.innerHTML = append ? list.innerHTML + markup : markup;
     lastDocument = snapshot.docs.at(-1) || null;

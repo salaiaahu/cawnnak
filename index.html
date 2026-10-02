@@ -1494,10 +1494,6 @@
     </aside>
     <main>
       <section id="usersview" class="view">
-        <div class="head">
-          <h1>User management</h1>
-          <button data-v="home" class="btn">Home</button>
-        </div>
         <div class="panel">
           <div class="head">
             <div>
@@ -1577,33 +1573,21 @@
         <p id="status" class="status"></p>
       </section>
       <section id="categories" class="view">
-        <div class="head">
-          <div>
-            <h1>Choose a category</h1>
-            <p class="status">Ka hin na cawn duh mi thimpiak</p>
-          </div>
-          <button data-v="home" class="btn">Home</button>
-        </div>
         <div id="category-grid" class="category-grid"></div>
       </section>
       <section id="learn" class="view">
-        <h1 id="learn-title">Learn phrases</h1>
         <div class="head learn-controls">
           <input
             id="search"
             class="search"
             placeholder="Search phrases"
-          /><button data-v="categories" class="btn">Categories</button>
+          />
         </div>
         <p id="count"></p>
         <div id="cards" class="cards"></div>
       </section>
       <section id="quiz" class="view">
         <div class="quiz">
-          <div class="head">
-            <h1>Quick quiz</h1>
-            <button data-v="home" class="btn">Exit</button>
-          </div>
           <article id="quiz-lobby" class="panel">
             <h2>Test your knowledge</h2>
             <p class="status">
@@ -1642,10 +1626,6 @@
         </div>
       </section>
       <section id="practice" class="view">
-        <div class="head">
-          <h1>Practice</h1>
-          <button data-v="home" class="btn">Exit</button>
-        </div>
         <div class="practice-layout">
           <article class="panel">
             <div class="head">
@@ -1682,10 +1662,6 @@
       </section>
 
       <section id="adminview" class="view">
-        <div class="head">
-          <h1>Content manager</h1>
-          <button data-v="home" class="btn">Home</button>
-        </div>
         <div class="admin">
           <form id="form" class="panel">
             <h2 id="form-title">Add content</h2>
@@ -2315,6 +2291,8 @@
       $("practice-prev").onclick = () => movePracticeCard(-1);
       $("practice-next").onclick = () => movePracticeCard(1);
       function go(v) {
+        return showAppView(v);
+        /*
         ["home", "categories", "learn", "quiz", "adminview"].forEach((x) =>
           $(x).classList.toggle("active", x === v),
         );
@@ -2325,6 +2303,7 @@
         $("menu-drawer").classList.add("hidden");
         document.body.classList.remove("menu-open");
         $("menu-toggle").setAttribute("aria-expanded", "false");
+        */
       }
       document
         .querySelectorAll("[data-v]")
@@ -2357,7 +2336,7 @@
             (b.onclick = () => {
               activeCategory = b.dataset.category;
               $("search").value = "";
-              go("learn");
+              showAppView("learn");
             }),
         );
       }
@@ -2623,6 +2602,7 @@
                   quiz: f.quiz.checked,
                   updatedBy: user.uid,
                   updatedByEmail: user.email || "",
+                  updatedByName: user.displayName || "",
                   updatedAt: serverTimestamp(),
                 };
               try {
@@ -2766,7 +2746,7 @@
         fillCategories();
       }
       function manage() {
-        if (!user?.admin) return go("home");
+        if (!user?.admin) return showAppView("home");
         fillCategories();
         $("adminlist").innerHTML = cards
           .filter(
@@ -2814,6 +2794,7 @@
             quiz: f.get("quiz") === "true",
             updatedBy: user.uid,
             updatedByEmail: user.email || "",
+            updatedByName: user.displayName || "",
             updatedAt: serverTimestamp(),
           };
         try {
@@ -2824,6 +2805,7 @@
               ...data,
               createdBy: user.uid,
               createdByEmail: user.email || "",
+              createdByName: user.displayName || "",
               createdAt: serverTimestamp(),
             });
           await load();
@@ -3056,6 +3038,8 @@
         registrationUnsubscribe = () => clearInterval(timer);
       }
       function goWithUsers(v) {
+        return showAppView(v);
+        /*
         if (v === "usersview" && !user?.admin) return goWithUsers("home");
         [
           "home",
@@ -3073,6 +3057,7 @@
         $("menu-drawer").classList.add("hidden");
         document.body.classList.remove("menu-open");
         $("menu-toggle").setAttribute("aria-expanded", "false");
+        */
       }
       document
         .querySelectorAll("[data-v]")
@@ -3087,7 +3072,7 @@
           window.Notification.requestPermission();
         unreadRegistrations = 0;
         updateRegistrationBadge();
-        goWithUsers("usersview");
+        showAppView("usersview");
       };
       if (ready)
         onAuthStateChanged(auth, async (account) => {
@@ -3130,7 +3115,7 @@
         .querySelector("main")
         .insertAdjacentHTML(
           "afterbegin",
-          '<section id="profileview" class="view"><div class="head"><h1>My profile</h1><button data-v="home" class="btn">Home</button></div><div class="panel"><div class="profile-top"><img id="profile-avatar" class="profile-avatar" alt="Your profile picture"><div><h2 id="profile-name">Learner</h2><span id="profile-badge" class="achievement"></span></div></div><form id="profile-form"><label class="field">Display name<input name="displayName" maxlength="50"></label><label class="field">Profile picture<input id="avatar-file" type="file" accept="image/*"></label><button class="btn">Save profile</button><button id="share-badge" type="button" class="plain">Share achievement</button><p id="profile-message" class="status"></p></form></div></section>',
+          '<section id="profileview" class="view"><div class="panel"><div class="profile-top"><img id="profile-avatar" class="profile-avatar" alt="Your profile picture"><div><h2 id="profile-name">Learner</h2><span id="profile-badge" class="achievement"></span></div></div><form id="profile-form"><label class="field">Display name<input name="displayName" maxlength="50"></label><label class="field">Profile picture<input id="avatar-file" type="file" accept="image/*"></label><button class="btn">Save profile</button><button id="share-badge" type="button" class="plain">Share achievement</button><p id="profile-message" class="status"></p></form></div></section>',
         );
       document.body.insertAdjacentHTML(
         "beforeend",
@@ -3352,7 +3337,7 @@
         .querySelector("main")
         .insertAdjacentHTML(
           "afterbegin",
-          '<section id="auditview" class="view"><div class="head"><h1>Edit history</h1><button data-v="home" class="btn">Home</button></div><div class="panel"><div class="head"><div><h2>Content activity</h2><p class="status">Adds and edits made by administrators.</p></div><button id="refresh-audit" class="plain">Refresh</button></div><div id="auditlist" class="user-list"><p class="status">Loading history…</p></div></div></section>',
+          '<section id="auditview" class="view"><div class="panel"><div class="head"><div><h2>Content activity</h2><p class="status">Adds and edits made by administrators.</p></div><button id="refresh-audit" class="plain">Refresh</button></div><div id="auditlist" class="user-list"><p class="status">Loading history…</p></div></div></section>',
         );
       $("users").insertAdjacentHTML(
         "afterend",
@@ -3425,7 +3410,13 @@
         let list = $("auditlist");
         list.innerHTML = '<p class="status">Loading history…</p>';
         try {
-          let snapshot = await getDocs(collection(db, "audit")),
+          let [snapshot, usersSnapshot] = await Promise.all([
+              getDocs(collection(db, "audit")),
+              getDocs(collection(db, "users")),
+            ]),
+            users = new Map(
+              usersSnapshot.docs.map((item) => [item.id, item.data()]),
+            ),
             items = snapshot.docs
               .map((item) => item.data())
               .sort(
@@ -3438,13 +3429,36 @@
                 .map(
                   (item) =>
                     '<div class="user-row"><div class="user-meta"><b>' +
-                    esc(item.action) +
-                    " · " +
-                    esc(item.entityType || "content") +
-                    " " +
-                    esc(item.entityId || item.contentId || "") +
+                    esc(
+                      {
+                        "content.create": "Added",
+                        "content.update": "Updated",
+                        "content.delete": "Deleted",
+                        "role.change": "Role changed",
+                        "profile.update": "Profile updated",
+                      }[item.action] ||
+                        item.action ||
+                        (item.at ? "Updated" : "Unknown action"),
+                    ) +
+                    ": " +
+                    esc(
+                      item.after?.english ||
+                        item.before?.english ||
+                        `${item.entityType || "content"} ${
+                          item.entityId || item.contentId || ""
+                        }`,
+                    ) +
                     "</b><small>" +
-                    esc(item.actorEmail || item.actorUid || item.actorId || "Server") +
+                    "Updated by " +
+                    esc(
+                      item.actorName ||
+                        users.get(item.actorUid || item.actorId)?.displayName ||
+                        item.actorEmail ||
+                        users.get(item.actorUid || item.actorId)?.email ||
+                        item.actorUid ||
+                        item.actorId ||
+                        "Server",
+                    ) +
                     " · " +
                     esc(dateV2(item.createdAt || item.at)) +
                     "</small></div></div>",
@@ -3459,6 +3473,8 @@
         }
       }
       function goAuditV3(view) {
+        return showAppView(view);
+        /*
         if ((view === "usersview" || view === "auditview") && !user?.admin)
           view = "home";
         if (view === "profileview" && !user) view = "home";
@@ -3481,6 +3497,7 @@
         if (view === "auditview") loadAuditV3();
         $("menu-drawer").classList.add("hidden");
         document.body.classList.remove("menu-open");
+        */
       }
       $("audit").onclick = () => goAuditV3("auditview");
       $("refresh-audit").onclick = loadAuditV3;
@@ -3499,6 +3516,7 @@
             quiz: form.get("quiz") === "true",
             updatedBy: user.uid,
             updatedByEmail: user.email || "",
+            updatedByName: user.displayName || "",
             updatedAt: serverTimestamp(),
           },
           contentId = editingId;
@@ -3510,6 +3528,7 @@
               ...data,
               createdBy: user.uid,
               createdByEmail: user.email || "",
+              createdByName: user.displayName || "",
               createdAt: serverTimestamp(),
             });
             contentId = saved.id;
@@ -3535,6 +3554,7 @@
               quiz: form.quiz.checked,
               updatedBy: user.uid,
               updatedByEmail: user.email || "",
+              updatedByName: user.displayName || "",
               updatedAt: serverTimestamp(),
             };
           try {
@@ -3637,7 +3657,10 @@
         "auditview",
         "practice",
       ];
-      function showAppView(view) {
+      history.replaceState({ view: "home" }, "", location.href);
+      function showAppView(view, recordHistory = true) {
+        const currentView =
+          appViewIds.find((id) => $(id)?.classList.contains("active")) || "home";
         if (
           (view === "adminview" ||
             view === "usersview" ||
@@ -3657,10 +3680,15 @@
         if (view === "profileview") profileViewV2();
         if (view === "auditview") loadAuditV3();
         if (view === "practice") renderPractice();
+        if (recordHistory && view !== currentView)
+          history.pushState({ view }, "", location.href);
         $("menu-drawer").classList.add("hidden");
         document.body.classList.remove("menu-open");
         $("menu-toggle").setAttribute("aria-expanded", "false");
       }
+      window.addEventListener("popstate", (event) => {
+        showAppView(event.state?.view || "home", false);
+      });
       document.querySelectorAll("[data-v]").forEach((button) => {
         button.onclick = () => showAppView(button.dataset.v);
       });

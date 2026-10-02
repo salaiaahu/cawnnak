@@ -62,6 +62,7 @@ async function install() {
         status,
         updatedBy: user.uid,
         updatedByEmail: user.email || '',
+        updatedByName: user.displayName || '',
         updatedAt: serverTimestamp()
       };
       if (status === 'review') { data.reviewedBy = user.uid; data.reviewedByEmail = user.email || ''; }
@@ -71,6 +72,7 @@ async function install() {
       } else {
         data.createdBy = user.uid;
         data.createdByEmail = user.email || '';
+        data.createdByName = user.displayName || '';
         data.createdAt = serverTimestamp();
         await addDoc(collection(db, 'content'), data);
       }

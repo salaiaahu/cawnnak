@@ -48,7 +48,7 @@ function validUid(uid) {
   return uid.trim();
 }
 
-async function writeAudit({ action, entityType, entityId, before = null, after = null, actorUid = null, actorEmail = null }) {
+async function writeAudit({ action, entityType, entityId, before = null, after = null, actorUid = null, actorEmail = null, actorName = null }) {
   await db.collection('audit').add({
     action,
     entityType,
@@ -57,6 +57,7 @@ async function writeAudit({ action, entityType, entityId, before = null, after =
     after: clean(after),
     actorUid,
     actorEmail,
+    actorName,
     createdAt: FieldValue.serverTimestamp()
   });
 }
@@ -171,7 +172,7 @@ exports.syncAuthUsers = onCall({ timeoutSeconds: 540, memory: '512MiB' }, async 
     }
     pageToken = page.pageToken;
   } while (pageToken);
-  await writeAudit({ action: 'auth.sync', entityType: 'users', entityId: 'all', actorUid: actor.uid, actorEmail: actor.token.email || null, after: { synced } });
+  await writeAudit({ action: 'auth.sync', entityType: 'users', entityId: 'all', actorUid: actor.uid, actorEmail: actor.token.email || null, actorName: actor.token.name || null, after: { synced } });
   return { synced };
 });
 
@@ -201,7 +202,7 @@ exports.migrateLegacyContent = onCall({ timeoutSeconds: 540, memory: '512MiB' },
   }
   await writeAudit({
     action: 'content.migrate_legacy', entityType: 'content', entityId: 'legacy',
-    after: { migrated: legacy.length, status: 'published' }, actorUid: actor.uid, actorEmail: actor.token.email || null
+    after: { migrated: legacy.length, status: 'published' }, actorUid: actor.uid, actorEmail: actor.token.email || null, actorName: actor.token.name || null
   });
   return { scanned: snapshot.size, migrated: legacy.length };
 });
@@ -220,7 +221,7 @@ exports.setUserRole = onCall(async request => {
     throw new HttpsError('failed-precondition', 'The final administrator cannot be demoted.');
   }
   await target.ref.set({ role, updatedAt: FieldValue.serverTimestamp(), updatedBy: actor.uid }, { merge: true });
-  await writeAudit({ action: 'role.change', entityType: 'user', entityId: uid, before: { role: before.role }, after: { role }, actorUid: actor.uid, actorEmail: actor.token.email || null });
+  await writeAudit({ action: 'role.change', entityType: 'user', entityId: uid, before: { role: before.role }, after: { role }, actorUid: actor.uid, actorEmail: actor.token.email || null, actorName: actor.token.name || null });
   return { uid, role };
 });
 
@@ -237,7 +238,7 @@ exports.setUserDisabled = onCall(async request => {
   }
   await auth.updateUser(uid, { disabled });
   await target.ref.set({ disabled, updatedAt: FieldValue.serverTimestamp(), updatedBy: actor.uid }, { merge: true });
-  await writeAudit({ action: disabled ? 'account.disable' : 'account.enable', entityType: 'user', entityId: uid, before: { disabled: before.disabled === true }, after: { disabled }, actorUid: actor.uid, actorEmail: actor.token.email || null });
+  await writeAudit({ action: disabled ? 'account.disable' : 'account.enable', entityType: 'user', entityId: uid, before: { disabled: before.disabled === true }, after: { disabled }, actorUid: actor.uid, actorEmail: actor.token.email || null, actorName: actor.token.name || null });
   return { uid, disabled };
 });
 
@@ -325,7 +326,8 @@ exports.auditContent = onDocumentWritten('content/{contentId}', async event => {
     before,
     after,
     actorUid,
-    actorEmail: after?.updatedByEmail || before?.updatedByEmail || null
+    actorEmail: after?.updatedByEmail || before?.updatedByEmail || null,
+    actorName: after?.updatedByName || before?.updatedByName || null
   });
 });
 
@@ -340,6 +342,10 @@ exports.auditUserProfile = onDocumentWritten('users/{uid}', async event => {
     || before.updatedByEmail
     || (actorUid === event.params.uid ? after.email : null)
     || null;
+  const actorName = after.updatedByName
+    || before.updatedByName
+    || (actorUid === event.params.uid ? after.displayName : null)
+    || null;
   await writeAudit({
     action: 'profile.update',
     entityType: 'user',
@@ -347,7 +353,8 @@ exports.auditUserProfile = onDocumentWritten('users/{uid}', async event => {
     before: Object.fromEntries(changed.map(key => [key, before[key]])),
     after: Object.fromEntries(changed.map(key => [key, after[key]])),
     actorUid,
-    actorEmail
+    actorEmail,
+    actorName
   });
 });
 

@@ -68,16 +68,13 @@ function addDashboard() {
   section.className = 'home-section learning-dashboard';
   section.innerHTML = '<div class="section-heading"><div><small class="eyebrow">YOUR LEARNING</small><h2>Daily progress</h2></div><button id="learning-review" class="plain" type="button">Review →</button></div><div class="learning-metrics"><div><b id="daily-progress">0 / 5</b><span>Today’s goal</span></div><div><b id="learning-streak">0</b><span>Day streak</span></div><div><b id="favorite-count">0</b><span>Saved phrases</span></div></div><div class="learning-actions"><button id="change-goal" class="plain" type="button">Change goal</button><span id="missed-count" class="status"></span></div>';
   home.querySelector('#status')?.before(section);
-  const dialog = document.createElement('dialog');
-  dialog.id = 'review-dialog';
-  document.body.append(dialog);
   $('learning-review').onclick = openReview;
   $('change-goal').onclick = () => {
     state.goal = state.goal === 5 ? 10 : state.goal === 10 ? 15 : 5;
     save();
   };
   const style = document.createElement('style');
-  style.textContent = `.learning-dashboard{background:linear-gradient(135deg,#edf8ff,#f8fff9)}.learning-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:15px 0}.learning-metrics div{padding:10px;border:1px solid var(--l);border-radius:11px;background:#fff}.learning-metrics b{display:block;font-size:1.12rem;color:var(--g)}.learning-metrics span{font-size:.72rem;color:var(--m)}.learning-actions{display:flex;align-items:center;justify-content:space-between;gap:10px}.favorite{font-size:.9rem}#review-dialog{width:min(560px,calc(100vw - 28px));max-height:80vh;padding:22px;border:0;border-radius:16px}#review-dialog::backdrop{background:#0d2019aa}.review-list{display:grid;gap:9px;margin:14px 0}.review-item{padding:10px;border:1px solid var(--l);border-radius:10px}.review-item b,.review-item span{display:block}.review-item span{margin-top:3px;color:var(--m)}@media(max-width:600px){.learning-metrics{gap:6px}.learning-metrics div{padding:8px}.learning-metrics b{font-size:1rem}}`;
+  style.textContent = `.learning-dashboard{background:linear-gradient(135deg,#edf8ff,#f8fff9)}.learning-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:15px 0}.learning-metrics div{padding:10px;border:1px solid var(--l);border-radius:11px;background:#fff}.learning-metrics b{display:block;font-size:1.12rem;color:var(--g)}.learning-metrics span{font-size:.72rem;color:var(--m)}.learning-actions{display:flex;align-items:center;justify-content:space-between;gap:10px}.favorite{font-size:.9rem}@media(max-width:600px){.learning-metrics{gap:6px}.learning-metrics div{padding:8px}.learning-metrics b{font-size:1rem}}`;
   document.head.append(style);
 }
 
@@ -91,14 +88,24 @@ function renderDashboard() {
 }
 
 function openReview() {
-  const dialog = $('review-dialog');
+  window.dispatchEvent(new CustomEvent('cawnnak-open-view', { detail: 'review' }));
+}
+
+function renderReview() {
+  const content = $('review-content');
+  if (!content) return;
   const favorites = Object.values(state.favorites);
   const misses = state.missed;
-  dialog.innerHTML = `<div class="head"><h2>Review phrases</h2><button id="close-review" class="plain" type="button">Close</button></div><h3>Missed in quizzes</h3><div class="review-list">${misses.length ? misses.map(item => `<div class="review-item"><b>${escapeHtml(item.english)}</b><span>Correct: ${escapeHtml(item.correct)}</span><button class="plain review-remove" data-english="${escapeHtml(item.english)}">Mark reviewed</button></div>`).join('') : '<p class="status">Nothing to review yet.</p>'}</div><h3>Saved phrases</h3><div class="review-list">${favorites.length ? favorites.map(item => `<div class="review-item"><b>${escapeHtml(item.english)}</b><span>${escapeHtml(item.chin)} · ${escapeHtml(item.category)}</span><button class="plain review-listen" data-english="${escapeHtml(item.english)}">🔊 Listen</button></div>`).join('') : '<p class="status">Save phrases from a category to find them here.</p>'}</div>`;
-  $('close-review').onclick = () => dialog.close();
-  dialog.querySelectorAll('.review-remove').forEach(button => button.onclick = () => { state.missed = state.missed.filter(item => item.english !== button.dataset.english); save(); openReview(); });
-  dialog.querySelectorAll('.review-listen').forEach(button => button.onclick = () => { speechSynthesis.cancel(); speechSynthesis.speak(new SpeechSynthesisUtterance(button.dataset.english)); });
-  dialog.showModal();
+  content.innerHTML = `<section class="panel review-section"><h2>Missed in quizzes</h2><div class="review-list">${misses.length ? misses.map(item => `<div class="review-item"><div><b>${escapeHtml(item.english)}</b><span>Correct answer: ${escapeHtml(item.correct)}</span></div><button class="plain review-remove" data-english="${escapeHtml(item.english)}">Mark reviewed</button></div>`).join('') : '<p class="status">Nothing to review yet.</p>'}</div></section><section class="panel review-section"><h2>Saved phrases</h2><div class="review-list">${favorites.length ? favorites.map(item => `<div class="review-item"><div><b>${escapeHtml(item.english)}</b><span>${escapeHtml(item.chin)} · ${escapeHtml(item.category)}</span></div><button class="plain review-listen" data-english="${escapeHtml(item.english)}">🔊 Listen</button></div>`).join('') : '<p class="status">Save phrases from a category to find them here.</p>'}</div></section>`;
+  content.querySelectorAll('.review-remove').forEach(button => button.onclick = () => {
+    state.missed = state.missed.filter(item => item.english !== button.dataset.english);
+    save();
+    renderReview();
+  });
+  content.querySelectorAll('.review-listen').forEach(button => button.onclick = () => {
+    speechSynthesis.cancel();
+    speechSynthesis.speak(new SpeechSynthesisUtterance(button.dataset.english));
+  });
 }
 
 window.addEventListener('load', () => {
@@ -127,7 +134,8 @@ window.addEventListener('load', () => {
 
 window.CawnnakLearning = {
   getState: () => JSON.parse(JSON.stringify(state)),
-  applyMergedState: learning => { state = { ...state, ...learning }; localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); renderDashboard(); }
+  applyMergedState: learning => { state = { ...state, ...learning }; localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); renderDashboard(); },
+  renderReview
 };
 
 import('./achievements.js').catch(error => console.warn('Could not load achievements', error));

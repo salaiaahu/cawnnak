@@ -33,14 +33,30 @@
         color: var(--i);
         font: 16px system-ui;
       }
+      body::before {
+        content: "";
+        position: fixed;
+        z-index: -1;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.28;
+        background-image:
+          linear-gradient(115deg, transparent 0 49%, #176b4d08 50% 51%, transparent 52%),
+          radial-gradient(#176b4d16 0.7px, transparent 0.8px);
+        background-size: 180px 180px, 13px 13px;
+        mask-image: linear-gradient(to bottom, #000, transparent 85%);
+      }
       .bar {
         position: sticky;
         top: 0;
-        background: #fff;
+        z-index: 60;
+        background: #ffffffd9;
+        backdrop-filter: blur(18px);
         border-bottom: 1px solid var(--l);
         padding: 14px 5%;
         display: flex;
         justify-content: space-between;
+        box-shadow: 0 5px 18px #17342b0a;
       }
       .brand {
         font-weight: 800;
@@ -79,6 +95,19 @@
       }
       .active {
         display: block;
+      }
+      .view.active {
+        animation: view-arrive 280ms ease both;
+      }
+      @keyframes view-arrive {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
       .hero {
         position: relative;
@@ -490,6 +519,81 @@
       }
       #loginform .btn {
         width: 100%;
+      }
+      .review-page {
+        max-width: 760px;
+        margin: auto;
+      }
+      .review-hero {
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 16px;
+        padding: 24px;
+        border-radius: 20px;
+        background: linear-gradient(135deg, #123f31, #176b4d 58%, #269b71);
+        color: #fff;
+        box-shadow: 0 18px 34px #176b4d26;
+      }
+      .review-hero::after {
+        content: "↻";
+        position: absolute;
+        top: -26px;
+        right: 22px;
+        color: #ffffff25;
+        font-size: 8rem;
+        line-height: 1;
+      }
+      .review-hero h1 {
+        position: relative;
+        z-index: 1;
+        margin: 0 0 6px;
+        font-size: clamp(1.7rem, 5vw, 2.5rem);
+      }
+      .review-hero p {
+        position: relative;
+        z-index: 1;
+        max-width: 520px;
+        margin: 0;
+        color: #ffffffc9;
+      }
+      .review-section {
+        margin-top: 16px;
+      }
+      .review-section h2 {
+        margin-bottom: 8px;
+      }
+      .review-list {
+        display: grid;
+        gap: 10px;
+        margin: 0;
+      }
+      .review-item {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 6px 14px;
+        align-items: center;
+        padding: 15px;
+        border: 1px solid var(--l);
+        border-radius: 14px;
+        background: #ffffffdd;
+        box-shadow: 0 7px 18px #17342b0b;
+      }
+      .review-item b,
+      .review-item span {
+        display: block;
+      }
+      .review-item span {
+        color: var(--m);
+        font-size: 0.9rem;
+      }
+      .review-item .plain {
+        grid-column: 2;
+        grid-row: 1 / span 2;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .view.active {
+          animation: none;
+        }
       }
       @media (max-width: 600px) {
         .category-icon-picker {
@@ -1882,6 +1986,16 @@
               <button id="practice-next" class="plain" type="button">Next →</button>
             </div>
           </article>
+        </div>
+      </section>
+
+      <section id="review" class="view">
+        <div class="review-page">
+          <div class="review-hero">
+            <h1>Review phrases</h1>
+            <p>Strengthen the phrases you missed and revisit the ones you want to remember.</p>
+          </div>
+          <div id="review-content"></div>
         </div>
       </section>
 
@@ -4318,6 +4432,7 @@
         "profileview",
         "auditview",
         "practice",
+        "review",
       ];
       history.replaceState({ view: "home" }, "", location.href);
       function showAppView(view, recordHistory = true) {
@@ -4342,6 +4457,7 @@
         if (view === "profileview") profileViewV2();
         if (view === "auditview") loadAuditV3();
         if (view === "practice") renderPractice();
+        if (view === "review") window.CawnnakLearning?.renderReview?.();
         window.scrollTo({ top: 0, left: 0, behavior: "auto" });
         if (recordHistory && view !== currentView)
           history.pushState({ view }, "", location.href);
@@ -4351,6 +4467,9 @@
       }
       window.addEventListener("popstate", (event) => {
         showAppView(event.state?.view || "home", false);
+      });
+      window.addEventListener("cawnnak-open-view", (event) => {
+        if (event.detail) showAppView(event.detail);
       });
       document.querySelectorAll("[data-v]").forEach((button) => {
         button.onclick = () => showAppView(button.dataset.v);

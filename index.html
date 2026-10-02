@@ -1188,6 +1188,53 @@
           position: sticky;
           padding-top: max(8px, env(safe-area-inset-top));
         }
+        .view > .head h1,
+        .quiz .head h1 {
+          font-size: 1.45rem;
+        }
+        .hero {
+          padding: 24px 18px;
+        }
+        .hero h2 {
+          font-size: 1.6rem;
+          line-height: 1.12;
+        }
+        .hero > .btn {
+          display: inline-block;
+          width: calc((100% - 12px) / 3);
+          min-width: 0;
+          padding: 8px 3px;
+          font-size: 0.7rem;
+          white-space: nowrap;
+        }
+        #practice > .head {
+          margin-bottom: 5px;
+        }
+        .practice-layout .panel {
+          padding: 12px;
+        }
+        .practice-layout .head h2 {
+          margin: 0 0 4px;
+          font-size: 1.2rem;
+        }
+        .practice-layout .head p {
+          margin: 0;
+          line-height: 1.35;
+        }
+        .practice-layout .field {
+          gap: 3px;
+          margin: 7px 0;
+        }
+        .practice-count {
+          margin: 5px 0;
+        }
+        .practice-card {
+          min-height: 205px;
+          margin: 11px 0 10px;
+        }
+        .practice-card-inner {
+          min-height: 205px;
+        }
         .view.active {
           animation: app-view-in 180ms ease-out both;
         }
@@ -1312,7 +1359,7 @@
       <section id="home" class="view active">
         <div class="hero">
           <small>CHIN LANGUAGE LEARNING</small>
-          <h2>Build everyday language confidence</h2>
+          <h2>Learn a phrase. Find your voice.</h2>
           <p>
             Choose a topic, study useful phrases, test yourself, and save
             progress when you sign in.

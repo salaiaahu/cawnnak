@@ -466,7 +466,9 @@
       .category b {
         font-size: 1rem;
       }
-      .mark.saved {
+      .mark.saved,
+      .favorite.saved,
+      .mark.learned {
         color: var(--g);
       }
       .brand {
@@ -1101,6 +1103,8 @@
         margin: auto;
       }
       .practice-card {
+        position: relative;
+        overflow: hidden;
         min-height: 280px;
         margin: 22px 0 16px;
         perspective: 1100px;
@@ -1120,22 +1124,62 @@
       .practice-card.flipped .practice-card-inner {
         transform: rotateY(180deg);
       }
-      .practice-card.swipe-next {
-        animation: practice-swipe-next 240ms ease-out;
+      .practice-card.slide-in-next > .practice-card-inner {
+        animation: practice-slide-in-right 280ms cubic-bezier(0.22, 0.7, 0.25, 1);
       }
-      .practice-card.swipe-previous {
-        animation: practice-swipe-previous 240ms ease-out;
+      .practice-card.slide-in-previous > .practice-card-inner {
+        animation: practice-slide-in-left 280ms cubic-bezier(0.22, 0.7, 0.25, 1);
       }
-      @keyframes practice-swipe-next {
-        50% {
-          opacity: 0.25;
-          transform: translateX(-24px) scale(0.98);
+      .practice-slide-clone {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        pointer-events: none;
+      }
+      .practice-swipe-preview {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        pointer-events: none;
+      }
+      .practice-slide-clone.slide-out-left {
+        animation: practice-slide-out-left 280ms cubic-bezier(0.55, 0, 0.8, 0.35)
+          forwards;
+      }
+      .practice-slide-clone.slide-out-right {
+        animation: practice-slide-out-right 280ms cubic-bezier(0.55, 0, 0.8, 0.35)
+          forwards;
+      }
+      @keyframes practice-slide-in-right {
+        from {
+          opacity: 0;
+          transform: translateX(100%);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
         }
       }
-      @keyframes practice-swipe-previous {
-        50% {
-          opacity: 0.25;
-          transform: translateX(24px) scale(0.98);
+      @keyframes practice-slide-in-left {
+        from {
+          opacity: 0;
+          transform: translateX(-100%);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      @keyframes practice-slide-out-left {
+        to {
+          opacity: 0;
+          transform: translateX(-100%);
+        }
+      }
+      @keyframes practice-slide-out-right {
+        to {
+          opacity: 0;
+          transform: translateX(100%);
         }
       }
       .practice-face {
@@ -1180,8 +1224,9 @@
         color: var(--g);
       }
       @media (prefers-reduced-motion: reduce) {
-        .practice-card.swipe-next,
-        .practice-card.swipe-previous {
+        .practice-card.slide-in-next > .practice-card-inner,
+        .practice-card.slide-in-previous > .practice-card-inner,
+        .practice-slide-clone {
           animation: none;
         }
       }
@@ -2274,12 +2319,18 @@
               $("leaderboard").textContent = "Leaderboard unavailable.";
             });
       }
+      window.addEventListener("cawnnak-leaderboard-updated", () => {
+        if ($("quiz").classList.contains("active")) renderQuizLobby();
+      });
       let practiceCards = [],
         practiceIndex = 0,
         practiceFlipped = false;
       let practiceTouchStartX = 0,
         practiceTouchStartY = 0,
-        practiceSwipeHandled = false;
+        practiceSwipeHandled = false,
+        practiceSwipeDirection = 0,
+        practiceSwipePreview = null,
+        practiceSwipeWasFlipped = false;
       function renderPractice() {
         let category = $("practice-category").value || "Driving";
         practiceCards = sh(
@@ -2319,36 +2370,164 @@
       function movePracticeCard(direction) {
         if (!practiceCards.length) return;
         let surface = $("practice-card"),
-          animation = direction < 0 ? "swipe-previous" : "swipe-next";
-        surface.classList.remove("swipe-next", "swipe-previous");
-        void surface.offsetWidth;
-        surface.classList.add(animation);
+          inner = surface.querySelector(".practice-card-inner"),
+          outgoing = inner.cloneNode(true),
+          incomingClass =
+            direction < 0 ? "slide-in-previous" : "slide-in-next",
+          outgoingClass =
+            direction < 0 ? "slide-out-right" : "slide-out-left";
+        outgoing.querySelectorAll("[id]").forEach((element) =>
+          element.removeAttribute("id"),
+        );
+        outgoing.classList.add("practice-slide-clone", outgoingClass);
+        outgoing.style.transform = practiceFlipped ? "rotateY(180deg)" : "";
+        surface.classList.remove("flipped", "slide-in-next", "slide-in-previous");
+        surface.append(outgoing);
         practiceIndex =
           (practiceIndex + direction + practiceCards.length) %
           practiceCards.length;
         practiceFlipped = false;
         updatePracticeCard();
+        surface.classList.add(incomingClass);
         buzz(18);
-        setTimeout(() => surface.classList.remove(animation), 240);
+        setTimeout(() => {
+          outgoing.remove();
+          surface.classList.remove(incomingClass);
+        }, 280);
+      }
+      function clearPracticeSwipePreview(restore = true) {
+        let surface = $("practice-card"),
+          inner = surface.querySelector(".practice-card-inner");
+        let hadPreview = Boolean(practiceSwipePreview);
+        practiceSwipePreview?.remove();
+        practiceSwipePreview = null;
+        inner.style.transition = restore ? "" : "none";
+        inner.style.transform = "";
+        inner.style.opacity = "";
+        if (restore && hadPreview) {
+          practiceFlipped = practiceSwipeWasFlipped;
+          surface.classList.toggle("flipped", practiceFlipped);
+        }
+        practiceSwipeDirection = 0;
+      }
+      function createPracticeSwipePreview(direction) {
+        let surface = $("practice-card"),
+          inner = surface.querySelector(".practice-card-inner"),
+          card =
+            practiceCards[
+              (practiceIndex - direction + practiceCards.length) %
+                practiceCards.length
+            ],
+          preview = inner.cloneNode(true),
+          width = surface.offsetWidth;
+        preview.querySelectorAll("[id]").forEach((element) =>
+          element.removeAttribute("id"),
+        );
+        preview.querySelector(".practice-front h2").textContent = card.english;
+        preview.querySelector(".practice-back h2").textContent = card.chin;
+        preview.className = "practice-card-inner practice-swipe-preview";
+        preview.style.transition = "none";
+        preview.style.transform = `translateX(${-direction * width}px)`;
+        surface.append(preview);
+        practiceSwipePreview = preview;
+        practiceSwipeDirection = direction;
+        practiceSwipeWasFlipped = practiceFlipped;
+        surface.classList.remove("flipped");
+        inner.style.transition = "none";
+        inner.style.transform = "translateX(0)";
+      }
+      function finishPracticeSwipe() {
+        let surface = $("practice-card"),
+          inner = surface.querySelector(".practice-card-inner"),
+          width = surface.offsetWidth,
+          direction = practiceSwipeDirection,
+          complete = true;
+        if (!practiceSwipePreview || !direction) return;
+        inner.style.transition =
+          "transform 220ms cubic-bezier(0.22, 0.7, 0.25, 1), opacity 220ms ease";
+        practiceSwipePreview.style.transition =
+          "transform 220ms cubic-bezier(0.22, 0.7, 0.25, 1)";
+        requestAnimationFrame(() => {
+          inner.style.transform = complete
+            ? `translateX(${direction * width}px)`
+            : "translateX(0)";
+          inner.style.opacity = complete ? "0" : "1";
+          practiceSwipePreview.style.transform = complete
+            ? "translateX(0)"
+            : `translateX(${-direction * width}px)`;
+        });
+        setTimeout(() => {
+          if (complete) {
+            let incoming = practiceSwipePreview;
+            inner.remove();
+            incoming.className = "practice-card-inner";
+            incoming.style.transition = "";
+            incoming.style.transform = "";
+            incoming.style.opacity = "";
+            incoming.querySelector(".practice-front h2").id =
+              "practice-english";
+            incoming.querySelector(".practice-back h2").id = "practice-chin";
+            practiceSwipePreview = null;
+            practiceSwipeDirection = 0;
+            practiceIndex =
+              (practiceIndex - direction + practiceCards.length) %
+              practiceCards.length;
+            practiceFlipped = false;
+            surface.classList.remove("flipped");
+            updatePracticeCard();
+            buzz(18);
+          } else {
+            clearPracticeSwipePreview();
+          }
+        }, 220);
       }
       $("practice-category").onchange = renderPractice;
       $("practice-card").ontouchstart = (event) => {
         let touch = event.changedTouches[0];
+        if (practiceSwipePreview) clearPracticeSwipePreview();
         practiceTouchStartX = touch.clientX;
         practiceTouchStartY = touch.clientY;
         practiceSwipeHandled = false;
+      };
+      $("practice-card").ontouchmove = (event) => {
+        let touch = event.changedTouches[0],
+          deltaX = touch.clientX - practiceTouchStartX,
+          deltaY = touch.clientY - practiceTouchStartY;
+        if (
+          Math.abs(deltaX) < 8 ||
+          Math.abs(deltaX) <= Math.abs(deltaY) ||
+          !practiceCards.length
+        )
+          return;
+        event.preventDefault();
+        practiceSwipeHandled = true;
+        let direction = deltaX < 0 ? -1 : 1;
+        if (practiceSwipeDirection !== direction) {
+          clearPracticeSwipePreview();
+          createPracticeSwipePreview(direction);
+        }
+        let width = $("practice-card").offsetWidth,
+          clampedDelta = Math.max(-width, Math.min(width, deltaX)),
+          inner = $("practice-card").querySelector(".practice-card-inner");
+        inner.style.transform = `translateX(${clampedDelta}px)`;
+        inner.style.opacity = String(1 - Math.min(0.45, Math.abs(clampedDelta) / width));
+        practiceSwipePreview.style.transform = `translateX(${
+          -direction * width + clampedDelta
+        }px)`;
       };
       $("practice-card").ontouchend = (event) => {
         let touch = event.changedTouches[0],
           deltaX = touch.clientX - practiceTouchStartX,
           deltaY = touch.clientY - practiceTouchStartY;
-        if (Math.abs(deltaX) < 45 || Math.abs(deltaX) <= Math.abs(deltaY))
+        if (!practiceSwipePreview || Math.abs(deltaX) <= Math.abs(deltaY)) {
+          clearPracticeSwipePreview();
           return;
+        }
         practiceSwipeHandled = true;
-        movePracticeCard(deltaX < 0 ? 1 : -1);
-        event.preventDefault();
+        finishPracticeSwipe();
         setTimeout(() => (practiceSwipeHandled = false), 0);
       };
+      $("practice-card").ontouchcancel = clearPracticeSwipePreview;
       $("practice-card").onclick = () => {
         if (practiceSwipeHandled) return;
         flipPracticeCard();
@@ -2623,13 +2802,13 @@
               '</p><footer><button class="plain say" data-t="' +
               esc(c.english) +
               '">🔊 Listen</button><button class="plain mark' +
-              (p.studied.includes(c.id) ? " saved" : "") +
+              (p.studied.includes(c.id) ? " learned" : "") +
               '" data-id="' +
               c.id +
               '" aria-pressed="' +
               p.studied.includes(c.id) +
               '">' +
-              (p.studied.includes(c.id) ? "★ Saved" : "☆ Save") +
+              (p.studied.includes(c.id) ? "✓ Learned" : "Mark learned") +
               "</button></footer>" +
               (user?.admin
                 ? '<form class="card-inline-edit hidden" data-id="' +
@@ -2648,13 +2827,13 @@
               let index = p.studied.indexOf(b.dataset.id);
               if (index === -1) {
                 p.studied.push(b.dataset.id);
-                b.textContent = "★ Saved";
-                b.classList.add("saved");
+                b.textContent = "✓ Learned";
+                b.classList.add("learned");
                 b.setAttribute("aria-pressed", "true");
               } else {
                 p.studied.splice(index, 1);
-                b.textContent = "☆ Save";
-                b.classList.remove("saved");
+                b.textContent = "Mark learned";
+                b.classList.remove("learned");
                 b.setAttribute("aria-pressed", "false");
               }
               buzz(12);
@@ -2826,16 +3005,6 @@
           ...(p.history || []),
         ].slice(0, 10);
         save();
-        if (user && db)
-          setDoc(
-            doc(db, "leaderboard", user.uid),
-            {
-              name: (user.email || "Learner").split("@")[0],
-              bestScore: p.bestScore,
-              updatedAt: serverTimestamp(),
-            },
-            { merge: true },
-          ).catch(() => {});
         $("qcard").classList.add("hidden");
         $("summary").classList.remove("hidden");
         $("result").textContent =
@@ -3159,6 +3328,14 @@
           "afterbegin",
           '<section id="profileview" class="view"><div class="panel"><div class="profile-top"><img id="profile-avatar" class="profile-avatar" alt="Your profile picture"><div><h2 id="profile-name">Learner</h2><span id="profile-badge" class="achievement"></span></div></div><form id="profile-form"><label class="field">Display name<input name="displayName" maxlength="50"></label><label class="field">Profile picture<input id="avatar-file" type="file" accept="image/*"></label><button class="btn">Save profile</button><button id="share-badge" type="button" class="plain">Share achievement</button><p id="profile-message" class="status"></p></form></div></section>',
         );
+      $("profile-form").insertAdjacentHTML(
+        "beforebegin",
+        '<p id="profile-joined" class="profile-joined"></p><div id="profile-metrics" class="profile-metrics"></div><div class="profile-columns"><section class="profile-subpanel"><div class="profile-section-heading"><h3>Recent learning</h3><span>Activity</span></div><div id="profile-activity" class="profile-activity"></div></section><section class="profile-subpanel"><div class="profile-section-heading"><h3>Achievements</h3><span>Milestones</span></div><div id="profile-achievements" class="profile-achievements"></div></section></div>',
+      );
+      document.head.insertAdjacentHTML(
+        "beforeend",
+        "<style>.profile-top{padding:4px 0 18px;border-bottom:1px solid var(--l)}.profile-top>div{min-width:0}.profile-name{overflow-wrap:anywhere}.profile-joined{margin:0 0 16px;color:var(--m);font-size:.86rem}.profile-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:0 0 18px}.profile-metric{padding:13px 10px;border:1px solid var(--l);border-radius:13px;background:linear-gradient(145deg,#fff,#f4fbf7)}.profile-metric b,.profile-metric span{display:block}.profile-metric b{font-size:1.3rem;color:var(--g)}.profile-metric span{margin-top:3px;color:var(--m);font-size:.72rem}.profile-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:18px}.profile-subpanel{padding:14px;border:1px solid var(--l);border-radius:14px;background:#fbfffc}.profile-section-heading{display:flex;align-items:baseline;justify-content:space-between;gap:8px}.profile-section-heading h3{margin:0;font-size:1rem}.profile-section-heading span{color:var(--m);font-size:.72rem}.profile-activity,.profile-achievements{display:grid;gap:8px;margin-top:12px}.profile-activity-item,.profile-achievement{padding:9px 10px;border-radius:10px;background:#eef8f1}.profile-activity-item b,.profile-activity-item small,.profile-achievement b,.profile-achievement small{display:block}.profile-activity-item small,.profile-achievement small{margin-top:2px;color:var(--m);font-size:.74rem}.profile-achievement.locked{background:#f2f4f3;opacity:.72}.profile-edit{margin-top:4px;padding-top:18px;border-top:1px solid var(--l)}.profile-edit-title{margin:0 0 10px;font-size:1rem}@media(max-width:600px){.profile-metrics{grid-template-columns:repeat(2,1fr)}.profile-columns{grid-template-columns:1fr}.profile-subpanel{padding:12px}.profile-metric{padding:11px 9px}.profile-metric b{font-size:1.15rem}}</style>",
+      );
       document.body.insertAdjacentHTML(
         "beforeend",
         '<aside id="notification-panel" class="notification-panel hidden" aria-live="polite"></aside>',
@@ -3192,9 +3369,65 @@
       function profileViewV2() {
         let name =
           profileV2.displayName || user?.email?.split("@")[0] || "Learner";
+        let learning = window.CawnnakLearning?.getState?.() || {},
+          learned = new Set([
+            ...(p.studied || []),
+            ...Object.values(learning.days || {}).flat(),
+          ]).size,
+          favorites = Object.keys(learning.favorites || {}).length,
+          history = p.history || [],
+          streak = 0,
+          cursor = new Date();
+        while (learning.days?.[cursor.toISOString().slice(0, 10)]?.length) {
+          streak++;
+          cursor.setDate(cursor.getDate() - 1);
+        }
         $("profile-avatar").src = profileV2.avatar || "./icons/icon.svg";
         $("profile-name").textContent = name;
         $("profile-badge").textContent = badgeV2();
+        $("profile-joined").textContent =
+          "Joined " + dateV2(profileV2.createdAt);
+        $("profile-metrics").innerHTML =
+          '<div class="profile-metric"><b>' +
+          learned +
+          '</b><span>Phrases learned</span></div><div class="profile-metric"><b>' +
+          favorites +
+          '</b><span>Saved phrases</span></div><div class="profile-metric"><b>' +
+          (p.bestScore == null ? "—" : p.bestScore + "%") +
+          '</b><span>Best quiz</span></div><div class="profile-metric"><b>' +
+          streak +
+          '</b><span>Day streak</span></div>';
+        $("profile-activity").innerHTML = history.length
+          ? history
+              .slice(0, 4)
+              .map(
+                (item) =>
+                  '<div class="profile-activity-item"><b>Quiz completed</b><small>' +
+                  esc(item.score + "% · " + item.category) +
+                  "</small></div>",
+              )
+              .join("")
+          : '<p class="status">Complete a quiz to build your activity history.</p>';
+        let achievements = [
+          [learned >= 1, "🌱 First steps", "Study your first phrase"],
+          [learned >= 20, "📚 Dedicated learner", "Study 20 phrases"],
+          [streak >= 3, "🔥 On a streak", "Learn for three days in a row"],
+          [favorites >= 10, "💚 Curator", "Save 10 favorite phrases"],
+          [p.bestScore >= 80, "🏅 Quiz achiever", "Reach an 80% quiz score"],
+          [p.bestScore === 100, "⭐ Perfect score", "Earn 100% on a quiz"],
+        ];
+        $("profile-achievements").innerHTML = achievements
+          .map(
+            (item) =>
+              '<div class="profile-achievement ' +
+              (item[0] ? "" : "locked") +
+              '"><b>' +
+              item[1] +
+              "</b><small>" +
+              item[2] +
+              "</small></div>",
+          )
+          .join("");
         $("profile-form").displayName.value = profileV2.displayName || "";
       }
       function notifyViewV2() {

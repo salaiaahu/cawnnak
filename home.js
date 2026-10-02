@@ -98,6 +98,8 @@
     byId('view-leaderboard').onclick = () => document.querySelector('[data-v="quiz"]')?.click();
   }
 
+  window.CawnnakHome = { refreshLeaderboard: loadLeaderboard };
+  window.addEventListener('cawnnak-leaderboard-updated', loadLeaderboard);
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
 })();

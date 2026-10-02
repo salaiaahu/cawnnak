@@ -47,7 +47,14 @@ function enhanceCards() {
     button.type = 'button';
     button.className = 'plain favorite';
     button.textContent = state.favorites[id] ? '★ Saved' : '☆ Save';
-    button.onclick = () => toggleFavorite(card);
+    button.setAttribute('aria-pressed', String(Boolean(state.favorites[id])));
+    button.onclick = () => {
+      toggleFavorite(card);
+      button.textContent = state.favorites[id] ? '★ Saved' : '☆ Save';
+      button.setAttribute('aria-pressed', String(Boolean(state.favorites[id])));
+      button.classList.toggle('saved', Boolean(state.favorites[id]));
+    };
+    button.classList.toggle('saved', Boolean(state.favorites[id]));
     footer.insertBefore(button, footer.firstChild);
   });
 }

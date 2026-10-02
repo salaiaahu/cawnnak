@@ -22,7 +22,12 @@ async function submitValidatedResult() {
     if (resultNode && !resultNode.classList.contains('hidden')) {
       resultNode.textContent += ` · Verified score: ${score}%.`;
     }
+    window.dispatchEvent(new CustomEvent('cawnnak-leaderboard-updated'));
   } catch (error) {
+    const resultNode = $('result');
+    if (resultNode && !resultNode.classList.contains('hidden')) {
+      resultNode.textContent += ' · Score verification is currently unavailable.';
+    }
     console.warn('Quiz score could not be verified.', error);
   }
 }

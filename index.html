@@ -466,6 +466,9 @@
       .category b {
         font-size: 1rem;
       }
+      .mark.saved {
+        color: var(--g);
+      }
       .brand {
         font-size: 1.25rem;
         display: flex;
@@ -888,6 +891,8 @@
         }
         .stat {
           padding: 15px 13px;
+          font-size: 0.82rem;
+          white-space: nowrap;
         }
         .panel {
           padding: 16px;
@@ -1115,6 +1120,24 @@
       .practice-card.flipped .practice-card-inner {
         transform: rotateY(180deg);
       }
+      .practice-card.swipe-next {
+        animation: practice-swipe-next 240ms ease-out;
+      }
+      .practice-card.swipe-previous {
+        animation: practice-swipe-previous 240ms ease-out;
+      }
+      @keyframes practice-swipe-next {
+        50% {
+          opacity: 0.25;
+          transform: translateX(-24px) scale(0.98);
+        }
+      }
+      @keyframes practice-swipe-previous {
+        50% {
+          opacity: 0.25;
+          transform: translateX(24px) scale(0.98);
+        }
+      }
       .practice-face {
         position: absolute;
         inset: 0;
@@ -1123,15 +1146,16 @@
         align-items: center;
         justify-content: center;
         padding: 32px;
-        border: 1px solid var(--l);
+        border: 2px solid rgba(18, 107, 80, 0.34);
         border-radius: 18px;
         backface-visibility: hidden;
-        background: linear-gradient(145deg, #ffffff, #f1f8f4);
-        box-shadow: var(--shadow-md);
+        background: linear-gradient(135deg, #126b50, #23956d);
+        box-shadow: 0 18px 38px rgba(18, 92, 69, 0.28);
+        color: #fff;
         text-align: center;
       }
       .practice-face small {
-        color: var(--g);
+        color: rgba(255, 255, 255, 0.82);
         font-size: 0.75rem;
         font-weight: 800;
         letter-spacing: 0.12em;
@@ -1144,11 +1168,22 @@
       }
       .practice-face p {
         margin: 0;
-        color: var(--m);
+        color: rgba(255, 255, 255, 0.82);
       }
       .practice-back {
         transform: rotateY(180deg);
         background: linear-gradient(145deg, #eaf6ef, #d8eee2);
+        color: var(--i);
+      }
+      .practice-back small,
+      .practice-back p {
+        color: var(--g);
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .practice-card.swipe-next,
+        .practice-card.swipe-previous {
+          animation: none;
+        }
       }
       .practice-controls {
         display: flex;
@@ -1757,6 +1792,7 @@
         doc,
         setDoc,
         getDoc,
+        deleteDoc,
         serverTimestamp,
         query,
         orderBy,
@@ -2111,7 +2147,9 @@
         }
       }
       function buzz(pattern) {
-        if (navigator.vibrate) navigator.vibrate(pattern);
+        try {
+          if (navigator.vibrate) navigator.vibrate(pattern);
+        } catch (_) {}
       }
       function celebrate(percent) {
         sound("win");
@@ -2239,6 +2277,9 @@
       let practiceCards = [],
         practiceIndex = 0,
         practiceFlipped = false;
+      let practiceTouchStartX = 0,
+        practiceTouchStartY = 0,
+        practiceSwipeHandled = false;
       function renderPractice() {
         let category = $("practice-category").value || "Driving";
         practiceCards = sh(
@@ -2277,14 +2318,41 @@
       }
       function movePracticeCard(direction) {
         if (!practiceCards.length) return;
+        let surface = $("practice-card"),
+          animation = direction < 0 ? "swipe-previous" : "swipe-next";
+        surface.classList.remove("swipe-next", "swipe-previous");
+        void surface.offsetWidth;
+        surface.classList.add(animation);
         practiceIndex =
           (practiceIndex + direction + practiceCards.length) %
           practiceCards.length;
         practiceFlipped = false;
         updatePracticeCard();
+        buzz(18);
+        setTimeout(() => surface.classList.remove(animation), 240);
       }
       $("practice-category").onchange = renderPractice;
-      $("practice-card").onclick = flipPracticeCard;
+      $("practice-card").ontouchstart = (event) => {
+        let touch = event.changedTouches[0];
+        practiceTouchStartX = touch.clientX;
+        practiceTouchStartY = touch.clientY;
+        practiceSwipeHandled = false;
+      };
+      $("practice-card").ontouchend = (event) => {
+        let touch = event.changedTouches[0],
+          deltaX = touch.clientX - practiceTouchStartX,
+          deltaY = touch.clientY - practiceTouchStartY;
+        if (Math.abs(deltaX) < 45 || Math.abs(deltaX) <= Math.abs(deltaY))
+          return;
+        practiceSwipeHandled = true;
+        movePracticeCard(deltaX < 0 ? 1 : -1);
+        event.preventDefault();
+        setTimeout(() => (practiceSwipeHandled = false), 0);
+      };
+      $("practice-card").onclick = () => {
+        if (practiceSwipeHandled) return;
+        flipPracticeCard();
+      };
       $("practice-card").onkeydown = (event) => {
         if (event.key === "Enter" || event.key === " ") {
           event.preventDefault();
@@ -2505,7 +2573,7 @@
       });
       function tapFeedback(target) {
         let b = target.closest?.("button");
-        if (b && !b.disabled && navigator.vibrate) navigator.vibrate(12);
+        if (b && !b.disabled) buzz(12);
       }
       document.addEventListener("pointerdown", (e) => tapFeedback(e.target), {
         passive: true,
@@ -2522,6 +2590,7 @@
           );
       }
       function render() {
+        p.studied ||= [];
         let q = $("search").value.toLowerCase(),
           a = cards.filter(
             (c) =>
@@ -2545,9 +2614,7 @@
                   c.id +
                   '" aria-label="Edit phrase">✎</button>'
                 : "") +
-              '<small class="label">' +
-              esc(c.category || "Driving") +
-              "</small><h3>" +
+              "<h3>" +
               esc(c.english) +
               "</h3><p>" +
               (c.chin
@@ -2555,13 +2622,19 @@
                 : '<span class="status">Translation needed</span>') +
               '</p><footer><button class="plain say" data-t="' +
               esc(c.english) +
-              '">🔊 Listen</button><button class="plain mark" data-id="' +
+              '">🔊 Listen</button><button class="plain mark' +
+              (p.studied.includes(c.id) ? " saved" : "") +
+              '" data-id="' +
               c.id +
-              '">Mark studied</button></footer>' +
+              '" aria-pressed="' +
+              p.studied.includes(c.id) +
+              '">' +
+              (p.studied.includes(c.id) ? "★ Saved" : "☆ Save") +
+              "</button></footer>" +
               (user?.admin
                 ? '<form class="card-inline-edit hidden" data-id="' +
                   c.id +
-                  '"><label>English<input name="english"></label><label>Hakha Chin<input name="chin"></label><label class="inline-check"><input name="quiz" type="checkbox"> Use in quiz</label><div><button class="btn small">Save</button><button class="plain cancel-inline" type="button">Cancel</button></div><p class="status"></p></form>'
+                  '"><label>English<input name="english"></label><label>Hakha Chin<input name="chin"></label><label class="inline-check"><input name="quiz" type="checkbox"> Use in quiz</label><div><button class="btn small">Save</button><button class="plain cancel-inline" type="button">Cancel</button><button class="plain delete-card" type="button">Delete phrase</button></div><p class="status"></p></form>'
                 : "") +
               "</article>",
           )
@@ -2572,10 +2645,20 @@
         document.querySelectorAll(".mark").forEach(
           (b) =>
             (b.onclick = () => {
-              if (!p.studied.includes(b.dataset.id))
+              let index = p.studied.indexOf(b.dataset.id);
+              if (index === -1) {
                 p.studied.push(b.dataset.id);
+                b.textContent = "★ Saved";
+                b.classList.add("saved");
+                b.setAttribute("aria-pressed", "true");
+              } else {
+                p.studied.splice(index, 1);
+                b.textContent = "☆ Save";
+                b.classList.remove("saved");
+                b.setAttribute("aria-pressed", "false");
+              }
+              buzz(12);
               save();
-              b.textContent = "Studied ✓";
             }),
         );
         document.querySelectorAll(".card-edit-top").forEach(
@@ -2595,6 +2678,23 @@
         document
           .querySelectorAll(".cancel-inline")
           .forEach((b) => (b.onclick = () => render()));
+        document.querySelectorAll(".delete-card").forEach(
+          (b) =>
+            (b.onclick = async () => {
+              let form = b.closest(".card-inline-edit"),
+                content = cards.find((x) => x.id === form?.dataset.id);
+              if (!content || !db) return;
+              if (!window.confirm(`Delete "${content.english}"?`)) return;
+              try {
+                await deleteDoc(doc(db, "content", content.id));
+                await load();
+                render();
+              } catch (error) {
+                form.querySelector("p").textContent =
+                  "Could not delete: " + error.message;
+              }
+            }),
+        );
         document.querySelectorAll(".card-inline-edit").forEach(
           (f) =>
             (f.onsubmit = async (e) => {
@@ -2917,21 +3017,12 @@
           "Starter content ready. Add Firebase config for accounts, sync, and admin publishing.";
       dash();
 
-      let managedUsers = [],
-        registrationUnsubscribe = null,
-        registrationReady = false,
-        unreadRegistrations = 0;
+      let managedUsers = [];
       function userDate(profile) {
         let value = profile.createdAt;
         return value?.toDate
           ? value.toDate().toLocaleString()
           : "Registration date unavailable";
-      }
-      function updateRegistrationBadge() {
-        let badge = $("notification-badge");
-        badge.textContent =
-          unreadRegistrations > 99 ? "99+" : unreadRegistrations;
-        badge.classList.toggle("hidden", !unreadRegistrations);
       }
       function renderManagedUsers() {
         let list = $("userlist");
@@ -3003,45 +3094,6 @@
             "</p>";
         }
       }
-      function watchRegistrations() {
-        registrationUnsubscribe?.();
-        registrationReady = false;
-        let poll = async () => {
-          try {
-            let snapshot = await getDocs(collection(db, "users")),
-              previous = new Set(managedUsers.map((profile) => profile.id));
-            managedUsers = snapshot.docs.map((item) => ({
-              id: item.id,
-              ...item.data(),
-            }));
-            if (registrationReady) {
-              let added = managedUsers.filter(
-                (profile) =>
-                  !previous.has(profile.id) && profile.id !== user?.uid,
-              );
-              if (added.length) {
-                unreadRegistrations += added.length;
-                updateRegistrationBadge();
-                if (window.Notification?.permission === "granted")
-                  added.forEach(
-                    (profile) =>
-                      new Notification("New user registered", {
-                        body: profile.email || "A new user joined.",
-                      }),
-                  );
-              }
-            }
-            registrationReady = true;
-            if ($("usersview").classList.contains("active"))
-              renderManagedUsers();
-          } catch (error) {
-            console.warn("Could not check registrations", error);
-          }
-        };
-        poll();
-        let timer = setInterval(poll, 20000);
-        registrationUnsubscribe = () => clearInterval(timer);
-      }
       function goWithUsers(v) {
         return showAppView(v);
         /*
@@ -3072,23 +3124,9 @@
       $("admin").onclick = () => goWithUsers("adminview");
       $("users").onclick = () => goWithUsers("usersview");
       $("refresh-users").onclick = loadManagedUsers;
-      $("notifications").onclick = () => {
-        if (window.Notification?.permission === "default")
-          window.Notification.requestPermission();
-        unreadRegistrations = 0;
-        updateRegistrationBadge();
-        showAppView("usersview");
-      };
       if (ready)
         onAuthStateChanged(auth, async (account) => {
-          if (registrationUnsubscribe) {
-            registrationUnsubscribe();
-            registrationUnsubscribe = null;
-          }
-          registrationReady = false;
           managedUsers = [];
-          unreadRegistrations = 0;
-          updateRegistrationBadge();
           if (!account) {
             $("admin").classList.add("hidden");
             $("users").classList.add("hidden");
@@ -3110,7 +3148,6 @@
           $("users").classList.toggle("hidden", !user.admin);
           $("notifications").classList.toggle("hidden", !user.admin);
           dash();
-          if (user.admin) watchRegistrations();
         });
       document.head.insertAdjacentHTML(
         "beforeend",
@@ -3132,8 +3169,7 @@
       );
       let profileV2 = {},
         notificationsV2 = [],
-        knownUserIdsV2 = new Set(),
-        registrationTimerV2;
+        knownUserIdsV2 = new Set();
       function badgeV2() {
         return p.bestScore >= 100
           ? "Perfect score champion"
@@ -3273,7 +3309,8 @@
           (button) => (button.onclick = () => navigateV2(button.dataset.v)),
         );
       $("profile").onclick = () => navigateV2("profileview");
-      $("notifications").onclick = () => {
+      $("notifications").onclick = async () => {
+        await pollUsersV2();
         notifyViewV2();
         $("notification-panel").classList.toggle("hidden");
       };
@@ -3307,7 +3344,6 @@
       };
       if (ready)
         onAuthStateChanged(auth, async (account) => {
-          clearInterval(registrationTimerV2);
           if (!account) {
             $("profile").classList.add("hidden");
             return;
@@ -3335,7 +3371,6 @@
           $("notifications").classList.toggle("hidden", !user.admin);
           if (user.admin) {
             await pollUsersV2();
-            registrationTimerV2 = setInterval(pollUsersV2, 20000);
           }
         });
       document
@@ -3720,10 +3755,9 @@
       $("home-practice").onclick = () => showAppView("practice");
       function vibrateInteraction() {
         if (
-          navigator.vibrate &&
           window.matchMedia("(pointer: coarse)").matches
         )
-          navigator.vibrate(8);
+          buzz(8);
       }
       function isInteractiveTarget(target) {
         return (

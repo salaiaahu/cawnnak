@@ -1323,6 +1323,110 @@
           animation: none;
         }
       }
+      body::before {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        background:
+          radial-gradient(circle at 8% 12%, rgba(184, 226, 204, 0.32), transparent 24rem),
+          radial-gradient(circle at 92% 76%, rgba(224, 193, 104, 0.12), transparent 22rem);
+        content: "";
+        pointer-events: none;
+      }
+      .bar {
+        background: rgba(255, 255, 255, 0.72);
+        box-shadow:
+          0 1px 0 rgba(255, 255, 255, 0.9),
+          0 8px 24px rgba(23, 53, 44, 0.06);
+      }
+      .hero {
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.2),
+          0 18px 42px rgba(18, 92, 69, 0.2);
+      }
+      .hero::before {
+        position: absolute;
+        top: -45%;
+        left: -18%;
+        width: 70%;
+        height: 180%;
+        background: linear-gradient(
+          105deg,
+          transparent 38%,
+          rgba(255, 255, 255, 0.13) 48%,
+          transparent 58%
+        );
+        content: "";
+        pointer-events: none;
+        transform: rotate(8deg);
+      }
+      .stat,
+      .card,
+      .panel,
+      .home-section,
+      .category {
+        background: linear-gradient(
+          145deg,
+          rgba(255, 255, 255, 0.92),
+          rgba(247, 251, 248, 0.76)
+        );
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.92),
+          0 12px 30px rgba(23, 53, 44, 0.075);
+        backdrop-filter: blur(14px);
+      }
+      .stat,
+      .card,
+      .panel,
+      .home-section {
+        border-color: rgba(255, 255, 255, 0.82);
+      }
+      .stat::before,
+      .home-section::before {
+        display: block;
+        height: 2px;
+        margin: -20px -20px 16px;
+        border-radius: 99px;
+        background: linear-gradient(90deg, rgba(18, 107, 80, 0.5), transparent);
+        content: "";
+      }
+      .home-section {
+        overflow: hidden;
+      }
+      .home-section::before {
+        margin: -20px -20px 16px;
+      }
+      .btn {
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.2),
+          0 7px 16px rgba(18, 107, 80, 0.2);
+      }
+      .plain:hover {
+        box-shadow: inset 0 0 0 1px rgba(18, 107, 80, 0.08);
+      }
+      .practice-face {
+        border-color: rgba(255, 255, 255, 0.82);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.92),
+          0 16px 34px rgba(23, 53, 44, 0.11);
+        backdrop-filter: blur(14px);
+      }
+      @media (max-width: 600px) {
+        .stat,
+        .card,
+        .panel,
+        .home-section,
+        .category {
+          backdrop-filter: blur(10px);
+        }
+        .stat::before,
+        .home-section::before {
+          margin-right: -15px;
+          margin-left: -15px;
+        }
+      }
       @media (max-width: 600px) {
         .practice-face {
           padding: 24px 18px;

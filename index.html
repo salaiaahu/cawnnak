@@ -18,13 +18,18 @@
         --i: #17342b;
         --m: #61746d;
         --l: #dce6e0;
+        --gold: #e7b84b;
+        --mint: #e8f7ef;
       }
       * {
         box-sizing: border-box;
       }
       body {
         margin: 0;
-        background: #f3f7f4;
+        background:
+          radial-gradient(circle at 8% 8%, #e4f5eb 0, transparent 28%),
+          radial-gradient(circle at 92% 22%, #fff4d8 0, transparent 24%),
+          #f3f7f4;
         color: var(--i);
         font: 16px system-ui;
       }
@@ -50,9 +55,15 @@
         border: 0;
         border-radius: 10px;
         padding: 10px 15px;
-        background: var(--g);
+        background: linear-gradient(135deg, #176b4d, #269b71);
         color: #fff;
         font-weight: 700;
+        box-shadow: 0 7px 16px #126b5030;
+        transition: transform 160ms ease, box-shadow 160ms ease;
+      }
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px #126b5040;
       }
       .plain {
         border: 0;
@@ -70,10 +81,37 @@
         display: block;
       }
       .hero {
+        position: relative;
+        isolation: isolate;
+        overflow: hidden;
         padding: clamp(30px, 8vw, 80px);
-        background: linear-gradient(120deg, #176b4d, #25946d);
+        background:
+          radial-gradient(circle at 88% 18%, #ffffff30 0 7%, transparent 7.5%),
+          radial-gradient(circle at 96% 78%, #e7b84b55 0 11%, transparent 11.5%),
+          linear-gradient(120deg, #125b43, #269b71);
         color: white;
         border-radius: 22px;
+        box-shadow: 0 20px 42px #176b4d30;
+      }
+      .hero::before {
+        content: "✦";
+        position: absolute;
+        z-index: -1;
+        top: -42px;
+        right: 8%;
+        color: #ffffff24;
+        font-size: 13rem;
+        line-height: 1;
+        transform: rotate(18deg);
+      }
+      .hero::after {
+        content: "◌  ◌  ◌";
+        position: absolute;
+        right: 5%;
+        bottom: 16px;
+        color: #ffffff55;
+        font-size: 1.1rem;
+        letter-spacing: 0.5rem;
       }
       .hero h1 {
         font-size: clamp(2.3rem, 6vw, 4.2rem);
@@ -94,14 +132,36 @@
       .card,
       .panel {
         padding: 18px;
-        background: #fff;
+        background: #ffffffde;
         border: 1px solid var(--l);
         border-radius: 15px;
+        box-shadow: 0 8px 22px #17342b0d;
       }
       .stat b {
         font-size: 1.5rem;
         color: var(--g);
         display: block;
+      }
+      .stats .stat {
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(145deg, #fff, var(--mint));
+      }
+      .stats .stat::after {
+        position: absolute;
+        right: 12px;
+        bottom: 5px;
+        opacity: 0.2;
+        font-size: 2.4rem;
+      }
+      .stats .stat:nth-child(1)::after {
+        content: "📚";
+      }
+      .stats .stat:nth-child(2)::after {
+        content: "🏆";
+      }
+      .stats .stat:nth-child(3)::after {
+        content: "⚡";
       }
       .cards {
         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -359,9 +419,12 @@
       }
       #category-dialog {
         width: min(520px, calc(100vw - 28px));
+        max-height: calc(100dvh - 28px);
+        overflow: hidden;
         border: 0;
         border-radius: 18px;
         padding: 22px;
+        box-shadow: 0 24px 70px #0d201955;
       }
       #category-dialog::backdrop {
         background: #0d2019aa;
@@ -370,6 +433,10 @@
         display: grid;
         grid-template-columns: repeat(8, 1fr);
         gap: 7px;
+        max-height: min(38vh, 300px);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        padding: 4px;
         margin: 8px 0 14px;
       }
       .category-icon-option {
@@ -389,19 +456,26 @@
         min-height: 150px;
         text-align: left;
         padding: 18px;
-        background: #fff;
+        background:
+          radial-gradient(circle at 88% 15%, #e7b84b33 0 14%, transparent 14.5%),
+          linear-gradient(145deg, #ffffff, #edf9f2);
         border: 1px solid var(--l);
         border-radius: 15px;
         color: var(--i);
+        box-shadow: 0 8px 18px #176b4d12;
+        transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
       }
       .category:hover {
+        transform: translateY(-4px) rotate(-1deg);
         border-color: var(--g);
         background: #f0faf4;
+        box-shadow: 0 14px 24px #176b4d24;
       }
       .category .icon {
         display: block;
         font-size: 2rem;
         margin-bottom: 12px;
+        filter: drop-shadow(0 4px 3px #17342b20);
       }
       .category b {
         display: block;

@@ -492,6 +492,10 @@
         grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
         gap: 14px;
       }
+      .category-tile {
+        position: relative;
+        min-width: 0;
+      }
       .category-toolbar {
         display: flex;
         gap: 10px;
@@ -559,6 +563,22 @@
         border-color: var(--g);
         background: #f0faf4;
         box-shadow: 0 14px 24px #176b4d24;
+      }
+      .category-tile .category-delete {
+        position: absolute;
+        right: 9px;
+        bottom: 9px;
+        z-index: 2;
+        padding: 4px 7px;
+        border: 0;
+        border-radius: 7px;
+        background: #fff0ef;
+        color: #a33b36;
+        font-size: 0.72rem;
+        font-weight: 750;
+      }
+      .category-tile .category-delete:hover {
+        background: #fbd8d5;
       }
       .category .icon {
         display: block;
@@ -1958,6 +1978,7 @@
           <input id="category-search" class="search" placeholder="Search categories" />
           <button id="add-category" class="btn hidden" type="button" aria-label="Add new category">+</button>
         </div>
+        <p id="category-delete-status" class="status hidden"></p>
         <div id="category-grid" class="category-grid"></div>
       </section>
       <section id="learn" class="view">
@@ -2997,6 +3018,7 @@
         .querySelectorAll("[data-v]")
         .forEach((b) => (b.onclick = () => go(b.dataset.v)));
       function renderCategories() {
+        $("category-delete-status").classList.add("hidden");
         let counts = cards.reduce(
           (a, c) => (
             (a[c.category || "Driving"] =
@@ -3011,8 +3033,18 @@
           );
         $("category-grid").innerHTML = visible
           .map(
-            ([name, icon]) =>
-              '<button class="category" data-category="' +
+            ([name, icon]) => {
+              let custom = customCategories.find((item) => item.name === name),
+                deleteButton =
+                  user?.admin && custom
+                    ? '<button class="category-delete" type="button" data-category-id="' +
+                      esc(custom.id) +
+                      '" data-category-name="' +
+                      esc(name) +
+                      '">Delete</button>'
+                    : "";
+              return (
+              '<div class="category-tile"><button class="category" data-category="' +
               esc(name) +
               '"><span class="icon">' +
               esc(icon) +
@@ -3020,7 +3052,11 @@
               esc(name) +
               "</b><small>" +
               (counts[name] || 0) +
-              " phrases</small></button>",
+              " phrases</small></button>" +
+              deleteButton +
+              "</div>"
+              );
+            },
           )
           .join("");
         if (!visible.length)
@@ -3035,6 +3071,43 @@
               showAppView("learn");
             }),
         );
+        document.querySelectorAll(".category-delete").forEach((button) => {
+          button.onclick = async (event) => {
+            event.stopPropagation();
+            let name = button.dataset.categoryName,
+              id = button.dataset.categoryId;
+            if ((counts[name] || 0) > 0) {
+              $("category-delete-status").textContent =
+                "Move or delete the phrases in " +
+                name +
+                " before deleting this category.";
+              $("category-delete-status").classList.remove("hidden");
+              return;
+            }
+            if (
+              !window.confirm(
+                'Delete the "' + name + '" category? This cannot be undone.',
+              )
+            )
+              return;
+            try {
+              await deleteDoc(doc(db, "categories", id));
+              customCategories = customCategories.filter(
+                (item) => item.id !== id,
+              );
+              categories = [
+                ...builtInCategories,
+                ...customCategories.map((item) => [item.name, item.icon]),
+              ];
+              fillCategories();
+              renderCategories();
+            } catch (error) {
+              $("category-delete-status").textContent =
+                "Could not delete category: " + error.message;
+              $("category-delete-status").classList.remove("hidden");
+            }
+          };
+        });
       }
       function openCategoryDialog() {
         if (!user?.admin) return;

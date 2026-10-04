@@ -1,4 +1,4 @@
-const CACHE = "mirang-holh-cawnnak-v39";
+const CACHE = "mirang-holh-cawnnak-v40";
 const APP_SHELL = [
   "./",
   "./index.html",

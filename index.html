@@ -314,6 +314,51 @@
       .top-learners .panel {
         padding: 18px;
       }
+      .track-choice {
+        max-width: 760px;
+        margin: auto;
+      }
+      .track-choice-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+        margin-top: 18px;
+      }
+      .track-choice-card {
+        min-height: 170px;
+        padding: 20px;
+        border: 1px solid var(--l);
+        border-radius: 18px;
+        text-align: left;
+        background: linear-gradient(145deg, #fff, #eef8f2);
+        box-shadow: 0 10px 24px #17342b12;
+      }
+      .track-choice-card strong {
+        display: block;
+        margin: 12px 0 6px;
+        color: var(--i);
+        font-size: 1.12rem;
+      }
+      .track-choice-card span {
+        font-size: 2rem;
+      }
+      .citizenship-setup {
+        max-width: 760px;
+        margin: auto;
+      }
+      .citizenship-setup .panel {
+        background: linear-gradient(145deg, #fffdf4, #eef8f2);
+      }
+      @media (max-width: 600px) {
+        .track-choice-grid {
+          grid-template-columns: 1fr;
+          gap: 10px;
+        }
+        .track-choice-card {
+          min-height: 0;
+          padding: 15px;
+        }
+      }
       .top-learner-row {
         display: grid;
         grid-template-columns: 38px 44px minmax(0, 1fr) auto;
@@ -2079,7 +2124,7 @@
             Choose a topic, study useful phrases, test yourself, and save
             progress when you sign in.
           </p>
-          <button class="btn start-learning" data-v="categories">
+          <button id="choose-track" class="btn start-learning">
             Cawnnak
           </button>
           <button id="home-quiz" class="btn take-quiz" data-v="quiz">
@@ -2136,6 +2181,42 @@
           <div id="home-leaderboard" class="status">Loading leaderboard…</div>
         </section>
         <p id="status" class="status"></p>
+      </section>
+      <section id="track-choice" class="view">
+        <div class="track-choice">
+          <div class="head">
+            <small class="eyebrow">CHOOSE YOUR LEARNING PATH</small>
+            <h1>What would you like to learn?</h1>
+            <p class="status">Choose a course to continue.</p>
+          </div>
+          <div class="track-choice-grid">
+            <button class="track-choice-card" id="choose-holh" type="button">
+              <span aria-hidden="true">💬</span>
+              <strong>Holh Cawnnak</strong>
+              <small>Learn Chin language phrases and everyday conversation.</small>
+            </button>
+            <button class="track-choice-card" id="choose-citizenship" type="button">
+              <span aria-hidden="true">🇺🇸</span>
+              <strong>US Citizenship Cawnnak</strong>
+              <small>Study the 100 civics questions and answers for your state.</small>
+            </button>
+          </div>
+        </div>
+      </section>
+      <section id="citizenship" class="view">
+        <div class="citizenship-setup">
+          <div class="head">
+            <small class="eyebrow">US CITIZENSHIP CAWNNAK</small>
+            <h1>Set up your civics study</h1>
+            <p class="status">Choose your state so state-specific answers can be included.</p>
+          </div>
+          <section class="panel">
+            <label class="field">Your state<select id="citizenship-state"></select></label>
+            <button id="generate-citizenship" class="btn" type="button">Generate 100 questions</button>
+            <p id="citizenship-status" class="status">The USCIS 2008 civics question set will be used. Chin translations can be added by an administrator.</p>
+            <div id="citizenship-question-preview" class="status"></div>
+          </section>
+        </div>
       </section>
       <section id="top-learners" class="view">
         <div class="top-learners">
@@ -4188,6 +4269,8 @@
         if (v === "usersview" && !user?.admin) return goWithUsers("home");
         [
           "home",
+          "track-choice",
+          "citizenship",
           "categories",
           "learn",
           "quiz",
@@ -4437,6 +4520,10 @@
           "profileview",
         ].forEach((id) => $(id).classList.toggle("active", id === view));
         if (view === "categories") renderCategories();
+        if (view === "citizenship") {
+          $("citizenship-status").textContent =
+            "Choose your state to prepare the USCIS 2008 civics question set.";
+        }
         if (view === "learn") render();
         if (view === "quiz") renderQuizLobby();
         if (view === "top-learners") renderTopLearners();
@@ -4969,8 +5056,53 @@
       $("users").onclick = () => showAppView("usersview");
       $("audit").onclick = () => showAppView("auditview");
       $("history-menu").onclick = () => showAppView("auditview");
+      $("choose-track").onclick = () => showAppView("track-choice");
+      $("choose-holh").onclick = () => showAppView("categories");
+      $("choose-citizenship").onclick = () => showAppView("citizenship");
       $("home-quiz").onclick = () => showAppView("quiz");
       $("home-practice").onclick = () => showAppView("practice");
+      const citizenshipStates = [
+        "Alabama", "Alaska", "Arizona", "Arkansas", "California",
+        "Colorado", "Connecticut", "Delaware", "Florida", "Georgia",
+        "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas",
+        "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts",
+        "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana",
+        "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico",
+        "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma",
+        "Oregon", "Pennsylvania", "Rhode Island", "South Carolina",
+        "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia",
+        "Washington", "West Virginia", "Wisconsin", "Wyoming",
+      ];
+      $("citizenship-state").innerHTML =
+        '<option value="">Select a state</option>' +
+        citizenshipStates
+          .map((state) => `<option value="${esc(state)}">${esc(state)}</option>`)
+          .join("");
+      $("generate-citizenship").onclick = async () => {
+        const state = $("citizenship-state").value;
+        const status = $("citizenship-status");
+        const preview = $("citizenship-question-preview");
+        if (!state) {
+          status.textContent = "Choose your state first.";
+          return;
+        }
+        status.textContent = `Preparing the 100-question study set for ${state}…`;
+        preview.textContent = "";
+        try {
+          const snapshot = await getDocs(
+            query(collection(db, "citizenship"), where("status", "==", "published")),
+          );
+          const questions = snapshot.docs.map((item) => item.data());
+          status.textContent = questions.length
+            ? `${questions.length} questions are ready for ${state}.`
+            : "The question set is being prepared. An administrator must publish the USCIS questions before practice is available.";
+          preview.textContent = questions.length
+            ? "Citizenship practice will be available from the Quiz section in the next stage."
+            : "Translations and state-specific answers can be added by an administrator.";
+        } catch (error) {
+          status.textContent = "Citizenship questions are temporarily unavailable.";
+        }
+      };
       function vibrateInteraction() {
         if (window.matchMedia("(pointer: coarse)").matches) buzz(8);
       }

@@ -27,6 +27,11 @@ service cloud.firestore {
       allow create, update, delete: if admin();
     }
 
+    match /citizenship/{id} {
+      allow read: if !('status' in resource.data) || resource.data.status == 'published' || admin();
+      allow create, update, delete: if admin();
+    }
+
     match /categories/{id} {
       allow read: if true;
       allow create, update, delete: if admin();

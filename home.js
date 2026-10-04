@@ -86,7 +86,7 @@
           name: fields.name?.stringValue || 'Learner',
           totalPoints: Number(fields.totalPoints?.integerValue || fields.totalPoints?.doubleValue || 0)
         };
-      }).sort((a, b) => b.totalPoints - a.totalPoints).slice(0, 3);
+      }).sort((a, b) => b.totalPoints - a.totalPoints).slice(0, 5);
       target.innerHTML = top.length
         ? top.map((entry, index) => `<div class="leaderboard-row"><b>${['🏆', '🥈', '🥉'][index] || '🏅'} ${index + 1}. ${escapeHtml(entry.name)}</b><span>${entry.totalPoints} point${entry.totalPoints === 1 ? '' : 's'}</span></div>`).join('')
         : 'Be the first learner on the leaderboard.';
@@ -101,7 +101,7 @@
     setDailyPhrase();
     setContinueLearning();
     loadLeaderboard();
-    byId('view-leaderboard').onclick = () => document.querySelector('[data-v="quiz"]')?.click();
+    byId('view-leaderboard').onclick = () => window.dispatchEvent(new CustomEvent('cawnnak-open-view', { detail: 'top-learners' }));
     setInterval(() => setDailyPhrase(), DAILY_REFRESH_MS);
     document.addEventListener('visibilitychange', () => {
       if (!document.hidden && Date.now() - lastDailyFetchAt >= DAILY_REFRESH_MS) setDailyPhrase();

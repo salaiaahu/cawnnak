@@ -290,6 +290,47 @@
         white-space: nowrap;
         color: var(--i);
       }
+      .top-learners {
+        max-width: 760px;
+        margin: auto;
+      }
+      .top-learners-list {
+        display: grid;
+        gap: 8px;
+        margin-top: 16px;
+      }
+      .top-learner-row {
+        display: grid;
+        grid-template-columns: 44px minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 10px;
+        padding: 11px 12px;
+        border: 1px solid var(--l);
+        border-radius: 12px;
+        background: linear-gradient(135deg, #fff, #f1f8f4);
+      }
+      .top-learner-rank {
+        font-size: 1.2rem;
+        font-weight: 800;
+        text-align: center;
+      }
+      .top-learner-row strong {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: var(--i);
+      }
+      .top-learner-points {
+        color: var(--g);
+        font-weight: 800;
+        white-space: nowrap;
+      }
+      .other-learners {
+        margin-top: 24px;
+      }
+      .other-learners h3 {
+        margin-bottom: 8px;
+      }
       @media (max-width: 600px) {
         .quiz-insights {
           grid-template-columns: 1fr;
@@ -298,6 +339,10 @@
         }
         .quiz-insight {
           padding: 12px;
+        }
+        .top-learner-row {
+          grid-template-columns: 36px minmax(0, 1fr) auto;
+          padding: 9px;
         }
       }
       .options {
@@ -1750,7 +1795,7 @@
         .menu-button {
           min-width: 30px;
           min-height: 30px;
-          font-size: 1.45rem;
+          font-size: 1.25rem;
         }
         .btn:active,
         .plain:active,
@@ -2048,11 +2093,32 @@
               <small class="eyebrow">COMMUNITY</small>
               <h2>Top learners</h2>
             </div>
-            <button id="view-leaderboard" class="plain">View quiz →</button>
+            <button id="view-leaderboard" class="plain">View more →</button>
           </div>
           <div id="home-leaderboard" class="status">Loading leaderboard…</div>
         </section>
         <p id="status" class="status"></p>
+      </section>
+      <section id="top-learners" class="view">
+        <div class="top-learners">
+          <div class="head">
+            <div>
+              <small class="eyebrow">COMMUNITY</small>
+              <h1>Top learners</h1>
+              <p class="status">Earn one point for every correct answer.</p>
+            </div>
+          </div>
+          <section class="panel">
+            <h2>Top 10 learners</h2>
+            <div id="top-learners-list" class="top-learners-list">
+              <p class="status">Loading learners…</p>
+            </div>
+            <div id="other-learners" class="other-learners hidden">
+              <h3>More learners</h3>
+              <div id="other-learners-list" class="top-learners-list"></div>
+            </div>
+          </section>
+        </div>
       </section>
       <section id="categories" class="view">
         <div class="category-toolbar">
@@ -2897,8 +2963,62 @@
               $("leaderboard").textContent = "Leaderboard unavailable.";
             });
       }
+      async function renderTopLearners() {
+        const topList = $("top-learners-list");
+        const otherSection = $("other-learners");
+        const otherList = $("other-learners-list");
+        if (!topList || !otherSection || !otherList) return;
+        topList.innerHTML = '<p class="status">Loading learners…</p>';
+        otherSection.classList.add("hidden");
+        try {
+          const response = await fetch(
+            "https://firestore.googleapis.com/v1/projects/cawnnak-ca/databases/(default)/documents/leaderboard",
+            { cache: "no-store" },
+          );
+          if (!response.ok) throw new Error("Leaderboard unavailable");
+          const data = await response.json();
+          const learners = (data.documents || [])
+            .map((document) => {
+              const fields = document.fields || {};
+              return {
+                name: fields.name?.stringValue || "Learner",
+                totalPoints: Number(
+                  fields.totalPoints?.integerValue ||
+                    fields.totalPoints?.doubleValue ||
+                    0,
+                ),
+              };
+            })
+            .sort((a, b) => b.totalPoints - a.totalPoints);
+          const trophy = (rank) =>
+            ["🏆", "🥈", "🥉"][rank] || "🏅";
+          const row = (learner, index) =>
+            '<div class="top-learner-row"><span class="top-learner-rank">' +
+            trophy(index) +
+            " " +
+            (index + 1) +
+            '</span><strong>' +
+            esc(learner.name) +
+            '</strong><span class="top-learner-points">' +
+            learner.totalPoints +
+            " pt" +
+            (learner.totalPoints === 1 ? "" : "s") +
+            "</span></div>";
+          topList.innerHTML = learners.length
+            ? learners.slice(0, 10).map(row).join("")
+            : '<p class="status">Be the first learner on the leaderboard.</p>';
+          if (learners.length > 10) {
+            otherList.innerHTML = learners.slice(10).map(row).join("");
+            otherSection.classList.remove("hidden");
+          }
+        } catch (error) {
+          topList.innerHTML =
+            '<p class="status">Leaderboard unavailable right now.</p>';
+        }
+      }
       window.addEventListener("cawnnak-leaderboard-updated", () => {
         if ($("quiz").classList.contains("active")) renderQuizLobby();
+        if ($("top-learners").classList.contains("active")) renderTopLearners();
       });
       window.addEventListener("cawnnak-leaderboard-updated", (event) => {
         let points = Number(event.detail?.totalPoints);
@@ -4041,6 +4161,7 @@
           "categories",
           "learn",
           "quiz",
+          "top-learners",
           "adminview",
           "usersview",
         ].forEach((x) => $(x).classList.toggle("active", x === v));
@@ -4288,6 +4409,7 @@
         if (view === "categories") renderCategories();
         if (view === "learn") render();
         if (view === "quiz") renderQuizLobby();
+        if (view === "top-learners") renderTopLearners();
         if (view === "adminview") manage();
         if (view === "usersview") loadManagedUsers();
         if (view === "profileview") profileViewV2();
@@ -4754,6 +4876,7 @@
         "categories",
         "learn",
         "quiz",
+        "top-learners",
         "adminview",
         "usersview",
         "profileview",
@@ -4780,6 +4903,7 @@
         if (view === "categories") renderCategories();
         if (view === "learn") render();
         if (view === "quiz") renderQuizLobby();
+        if (view === "top-learners") renderTopLearners();
         if (view === "adminview") manage();
         if (view === "usersview") loadManagedUsers();
         if (view === "profileview") profileViewV2();

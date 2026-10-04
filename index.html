@@ -354,9 +354,50 @@
           grid-template-columns: 1fr;
           gap: 10px;
         }
+        .track-choice,
+        .citizenship-setup {
+          width: 100%;
+          max-width: 360px;
+          margin: 0 auto;
+        }
+        .track-choice .head,
+        .citizenship-setup .head {
+          padding: 8px 2px 4px;
+          text-align: center;
+        }
+        .track-choice .head h1,
+        .citizenship-setup .head h1 {
+          font-size: 1.7rem;
+          line-height: 1.1;
+        }
+        .track-choice .head p,
+        .citizenship-setup .head p {
+          margin: 8px 0 0;
+          line-height: 1.35;
+        }
         .track-choice-card {
           min-height: 0;
-          padding: 15px;
+          width: 100%;
+          padding: 14px;
+          text-align: center;
+          box-sizing: border-box;
+        }
+        .track-choice-card strong {
+          margin: 7px 0 4px;
+        }
+        .track-choice-card small {
+          display: block;
+          line-height: 1.35;
+        }
+        .citizenship-setup .panel {
+          padding: 14px;
+          text-align: center;
+        }
+        .citizenship-setup .field {
+          text-align: left;
+        }
+        .citizenship-setup .btn {
+          width: 100%;
         }
       }
       .top-learner-row {

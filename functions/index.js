@@ -134,6 +134,28 @@ exports.getLearnerContent = onRequest({ cors: true }, async (request, response) 
   }
 });
 
+exports.getLeaderboard = onRequest({ cors: true }, async (request, response) => {
+  if (request.method !== 'GET') return response.status(405).json({ error: 'Method not allowed' });
+  try {
+    const snapshot = await db.collection('leaderboard').get();
+    const entries = await Promise.all(snapshot.docs.map(async leaderboard => {
+      const data = leaderboard.data();
+      const profile = await db.doc(`users/${leaderboard.id}`).get();
+      const profileData = profile.exists ? profile.data() : {};
+      return {
+        name: data.name || profileData.displayName || 'Learner',
+        totalPoints: Number(data.totalPoints || 0),
+        avatar: profileData.avatar || profileData.avatarURL || profileData.photoURL || ''
+      };
+    }));
+    response.set('Cache-Control', 'no-store, max-age=0');
+    return response.json({ entries });
+  } catch (error) {
+    console.error('Could not load leaderboard', error);
+    return response.status(500).json({ error: 'Leaderboard is unavailable.' });
+  }
+});
+
 exports.onAuthUserCreated = functionsV1.auth.user().onCreate(async user => {
   const profileRef = db.doc(`users/${user.uid}`);
   const existing = await profileRef.get();

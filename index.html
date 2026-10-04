@@ -2417,6 +2417,24 @@
             <h2>Published cards</h2>
             <div id="adminlist"></div>
           </div>
+          <section class="panel">
+            <h2>US Citizenship questions</h2>
+            <p class="status">Add the English and Chin question and answer. State-specific answers can be updated as official data is configured.</p>
+            <form id="citizenship-admin-form">
+              <input type="hidden" name="id" />
+              <label class="field">English question<input name="question" required /></label>
+              <label class="field">Chin question<input name="chinQuestion" /></label>
+              <label class="field">English answer<input name="answer" required /></label>
+              <label class="field">Chin answer<input name="chinAnswer" /></label>
+              <label class="field">State (optional)<input name="state" placeholder="All states" /></label>
+              <div class="actions">
+                <button class="btn" type="submit">Save question</button>
+                <button id="cancel-citizenship-edit" class="plain hidden" type="button">Cancel</button>
+              </div>
+              <p id="citizenship-admin-message" class="status"></p>
+            </form>
+            <div id="citizenship-admin-list"></div>
+          </section>
         </div>
       </section>
     </main>
@@ -4054,7 +4072,99 @@
               window.scrollTo({ top: 0, behavior: "smooth" });
             }),
         );
+        loadCitizenshipAdmin();
       }
+      async function loadCitizenshipAdmin() {
+        if (!user?.admin || !db) return;
+        const list = $("citizenship-admin-list");
+        try {
+            const snapshot = await getDocs(
+              query(collection(db, "citizenship"), orderBy("question")),
+            );
+            const records = snapshot.docs.map((item) => ({
+              id: item.id,
+              ...item.data(),
+            }));
+            list.innerHTML = records.length
+              ? records
+                  .map(
+                    (item) =>
+                      '<div class="card-inline-edit"><b>' +
+                      esc(item.question) +
+                      '</b><span class="status">' +
+                      esc(item.answer) +
+                      (item.state ? " · " + esc(item.state) : "") +
+                      '</span><div><button class="plain citizenship-edit" data-id="' +
+                      item.id +
+                      '">Edit</button><button class="plain citizenship-delete" data-id="' +
+                      item.id +
+                      '">Delete</button></div></div>',
+                  )
+                  .join("")
+              : '<p class="status">No citizenship questions added yet.</p>';
+            list.querySelectorAll(".citizenship-edit").forEach(
+              (button) =>
+                (button.onclick = () => {
+                  const item = records.find((record) => record.id === button.dataset.id);
+                  const form = $("citizenship-admin-form");
+                  form.id.value = item.id;
+                  form.question.value = item.question || "";
+                  form.chinQuestion.value = item.chinQuestion || "";
+                  form.answer.value = item.answer || "";
+                  form.chinAnswer.value = item.chinAnswer || "";
+                  form.state.value = item.state || "";
+                  $("cancel-citizenship-edit").classList.remove("hidden");
+                }),
+            );
+            list.querySelectorAll(".citizenship-delete").forEach(
+              (button) =>
+                (button.onclick = async () => {
+                  if (!confirm("Delete this citizenship question?")) return;
+                  await deleteDoc(doc(db, "citizenship", button.dataset.id));
+                  loadCitizenshipAdmin();
+                }),
+            );
+        } catch (error) {
+            list.innerHTML = '<p class="status">Could not load citizenship questions.</p>';
+        }
+      }
+      $("citizenship-admin-form").onsubmit = async (event) => {
+        event.preventDefault();
+        if (!user?.admin) return;
+        const form = event.currentTarget;
+        const data = {
+            question: form.question.value.trim(),
+            chinQuestion: form.chinQuestion.value.trim(),
+            answer: form.answer.value.trim(),
+            chinAnswer: form.chinAnswer.value.trim(),
+            state: form.state.value.trim(),
+            status: "published",
+            updatedBy: user.uid,
+            updatedByName: user.displayName || "",
+            updatedAt: serverTimestamp(),
+        };
+        try {
+            if (form.id.value) {
+              await setDoc(doc(db, "citizenship", form.id.value), data, { merge: true });
+            } else {
+              await addDoc(collection(db, "citizenship"), {
+                ...data,
+                createdBy: user.uid,
+                createdAt: serverTimestamp(),
+              });
+            }
+            form.reset();
+            $("citizenship-admin-message").textContent = "Citizenship question saved.";
+            $("cancel-citizenship-edit").classList.add("hidden");
+            loadCitizenshipAdmin();
+        } catch (error) {
+            $("citizenship-admin-message").textContent = error.message;
+        }
+      };
+      $("cancel-citizenship-edit").onclick = () => {
+        $("citizenship-admin-form").reset();
+        $("cancel-citizenship-edit").classList.add("hidden");
+      };
       $("admin").onclick = () => go("adminview");
       $("cancel-edit").onclick = resetEditor;
       $("form").onsubmit = async (e) => {

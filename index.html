@@ -24,6 +24,10 @@
       * {
         box-sizing: border-box;
       }
+      .track-choice-grid {
+        width: 100%;
+        box-sizing: border-box;
+      }
       body {
         margin: 0;
         background:
@@ -357,7 +361,8 @@
         .track-choice,
         .citizenship-setup {
           width: 100%;
-          max-width: 360px;
+          max-width: 100%;
+          box-sizing: border-box;
           margin: 0 auto;
         }
         .track-choice .head,
@@ -399,6 +404,22 @@
         .citizenship-setup .btn {
           width: 100%;
         }
+      }
+      .citizenship-question {
+        margin-top: 10px;
+        padding: 11px 12px;
+        border: 1px solid var(--l);
+        border-radius: 11px;
+        background: #ffffffb8;
+        text-align: left;
+      }
+      .citizenship-question b,
+      .citizenship-question span {
+        display: block;
+      }
+      .citizenship-question span {
+        margin-top: 4px;
+        color: var(--g);
       }
       .top-learner-row {
         display: grid;
@@ -1796,6 +1817,7 @@
         }
         body {
           min-height: 100dvh;
+          overflow-x: hidden;
           padding-bottom: env(safe-area-inset-bottom);
           overscroll-behavior-y: auto;
           -webkit-tap-highlight-color: transparent;
@@ -5245,12 +5267,31 @@
           const snapshot = await getDocs(
             query(collection(db, "citizenship"), where("status", "==", "published")),
           );
-          const questions = snapshot.docs.map((item) => item.data());
+          const questions = snapshot.docs
+            .map((item) => ({ id: item.id, ...item.data() }))
+            .filter((item) => !item.state || item.state === state);
           status.textContent = questions.length
             ? `${questions.length} questions are ready for ${state}.`
             : "The question set is being prepared. An administrator must publish the USCIS questions before practice is available.";
-          preview.textContent = questions.length
-            ? "Citizenship practice will be available from the Quiz section in the next stage."
+          preview.innerHTML = questions.length
+            ? questions
+                .map(
+                  (item, index) =>
+                    '<article class="citizenship-question"><b>' +
+                    (index + 1) +
+                    ". " +
+                    esc(item.question) +
+                    "</b><span>" +
+                    esc(item.answer) +
+                    (item.chinQuestion || item.chinAnswer
+                      ? "<br>" +
+                        esc(item.chinQuestion || "") +
+                        "<br>" +
+                        esc(item.chinAnswer || "")
+                      : "") +
+                    "</span></article>",
+                )
+                .join("")
             : "Translations and state-specific answers can be added by an administrator.";
         } catch (error) {
           status.textContent = "Citizenship questions are temporarily unavailable.";

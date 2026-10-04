@@ -1,0 +1,1002 @@
+window.CITIZENSHIP_SEED = [
+  {
+    "id": "uscis-2008-001",
+    "question": "What is the supreme law of the land?",
+    "chinQuestion": "",
+    "answer": "the Constitution",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-002",
+    "question": "What does the Constitution do?",
+    "chinQuestion": "",
+    "answer": "sets up the government / defines the government / protects basic rights of Americans",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-003",
+    "question": "The idea of self-government is in the first three words of the Constitution. What are these words?",
+    "chinQuestion": "",
+    "answer": "We the People",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-004",
+    "question": "What is an amendment?",
+    "chinQuestion": "",
+    "answer": "a change (to the Constitution) / an addition (to the Constitution)",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-005",
+    "question": "What do we call the first ten amendments to the Constitution?",
+    "chinQuestion": "",
+    "answer": "the Bill of Rights",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-006",
+    "question": "What is one right or freedom from the First Amendment?*",
+    "chinQuestion": "",
+    "answer": "speech / religion / assembly / press / petition the government",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-007",
+    "question": "How many amendments does the Constitution have?",
+    "chinQuestion": "",
+    "answer": "twenty-seven (27)\\n-2-",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-008",
+    "question": "What did the Declaration of Independence do?",
+    "chinQuestion": "",
+    "answer": "announced our independence (from Great Britain) / declared our independence (from Great Britain) / said that the United States is free (from Great Britain)",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-009",
+    "question": "What are two rights in the Declaration of Independence?",
+    "chinQuestion": "",
+    "answer": "life / liberty / pursuit of happiness",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-010",
+    "question": "What is freedom of religion?",
+    "chinQuestion": "",
+    "answer": "You can practice any religion, or not practice a religion.",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-011",
+    "question": "What is the economic system in the United States?*",
+    "chinQuestion": "",
+    "answer": "capitalist economy / market economy",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-012",
+    "question": "What is the “rule of law”?",
+    "chinQuestion": "",
+    "answer": "Everyone must follow the law. / Leaders must obey the law. / Government must obey the law. / No one is above the law.",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-013",
+    "question": "Name one branch or part of the government.*",
+    "chinQuestion": "",
+    "answer": "Congress / legislative / President / executive / the courts / judicial",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-014",
+    "question": "What stops one branch of government from becoming too powerful?",
+    "chinQuestion": "",
+    "answer": "checks and balances / separation of powers",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-015",
+    "question": "Who is in charge of the executive branch?",
+    "chinQuestion": "",
+    "answer": "the President",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-016",
+    "question": "Who makes federal laws?",
+    "chinQuestion": "",
+    "answer": "Congress / Senate and House (of Representatives) / (U.S. or national) legislature",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-017",
+    "question": "What are the two parts of the U.S. Congress?*",
+    "chinQuestion": "",
+    "answer": "the Senate and House (of Representatives)",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-018",
+    "question": "How many U.S. Senators are there?",
+    "chinQuestion": "",
+    "answer": "one hundred (100)\\n-3-",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-019",
+    "question": "We elect a U.S. Senator for how many years?",
+    "chinQuestion": "",
+    "answer": "six (6)",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-020",
+    "question": "Who is one of your state’s U.S. Senators now?*",
+    "chinQuestion": "",
+    "answer": "Answers will vary. [District of Columbia residents and residents of U.S. territories should answer that D.C.",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-021",
+    "question": "The House of Representatives has how many voting members?",
+    "chinQuestion": "",
+    "answer": "four hundred thirty-five (435)",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-022",
+    "question": "We elect a U.S. Representative for how many years?",
+    "chinQuestion": "",
+    "answer": "two (2)",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-023",
+    "question": "Name your U.S. Representative.",
+    "chinQuestion": "",
+    "answer": "Answers will vary. [Residents of territories with nonvoting Delegates or Resident Commissioners may",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-024",
+    "question": "Who does a U.S. Senator represent?",
+    "chinQuestion": "",
+    "answer": "all people of the state",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-025",
+    "question": "Why do some states have more Representatives than other states?",
+    "chinQuestion": "",
+    "answer": "(because of) the state’ s population / (because) they have more people / (because) some states have more people",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-026",
+    "question": "We elect a President for how many years?",
+    "chinQuestion": "",
+    "answer": "four (4)",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-027",
+    "question": "In what month do we vote for President?*",
+    "chinQuestion": "",
+    "answer": "November",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-028",
+    "question": "What is the name of the President of the United States now?*",
+    "chinQuestion": "",
+    "answer": "Visit uscis.gov/citizenship/testupdates for the name of the President of the United States.",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-029",
+    "question": "What is the name of the Vice President of the United States now?",
+    "chinQuestion": "",
+    "answer": "Visit uscis.gov/citizenship/testupdates for the name of the Vice President of the United States.",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-030",
+    "question": "If the President can no longer serve, who becomes President?",
+    "chinQuestion": "",
+    "answer": "the Vice President",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-031",
+    "question": "If both the President and the Vice President can no longer serve, who becomes President?",
+    "chinQuestion": "",
+    "answer": "the Speaker of the House",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-032",
+    "question": "Who is the Commander in Chief of the military?",
+    "chinQuestion": "",
+    "answer": "the President",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-033",
+    "question": "Who signs bills to become laws?",
+    "chinQuestion": "",
+    "answer": "the President",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-034",
+    "question": "Who vetoes bills?",
+    "chinQuestion": "",
+    "answer": "the President",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-035",
+    "question": "What does the President’s Cabinet do?",
+    "chinQuestion": "",
+    "answer": "advises the President\\n-4-",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-036",
+    "question": "What are two Cabinet-level positions?",
+    "chinQuestion": "",
+    "answer": "Secretary of Agriculture / Secretary of Commerce / Secretary of Defense / Secretary of Education / Secretary of Energy / Secretary of Health and Human Services / Secretary of Homeland Security / Secretary of Housing and Urban Development / Secretary of the Interior / Secretary of Labor / Secretary of State / Secretary of Transportation / Secretary of the Treasury / Secretary of Veterans Affairs / Attorney General / Vice President",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-037",
+    "question": "What does the judicial branch do?",
+    "chinQuestion": "",
+    "answer": "reviews laws / explains laws / resolves disputes (disagreements) / decides if a law goes against the Constitution",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-038",
+    "question": "What is the highest court in the United States?",
+    "chinQuestion": "",
+    "answer": "the Supreme Court",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-039",
+    "question": "How many justices are on the Supreme Court?",
+    "chinQuestion": "",
+    "answer": "Visit uscis.gov/citizenship/testupdates for the number of justices on the Supreme Court.",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-040",
+    "question": "Who is the Chief Justice of the United States now?",
+    "chinQuestion": "",
+    "answer": "Visit uscis.gov/citizenship/testupdates for the name of the Chief Justice of the United States.",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-041",
+    "question": "Under our Constitution, some powers belong to the federal government. What is one power of the federal",
+    "chinQuestion": "",
+    "answer": "to print money / to declare war / to create an army / to make treaties",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-042",
+    "question": "Under our Constitution, some powers belong to the states. What is one power of the states?",
+    "chinQuestion": "",
+    "answer": "provide schooling and education / provide protection (police) / provide safety (fire departments) / give a driver’ s license / approve zoning and land use\\n-5-",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-043",
+    "question": "Who is the Governor of your state now?",
+    "chinQuestion": "",
+    "answer": "Answers will vary. [District of Columbia residents should answer that D.C. does not have a Governor.]",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-044",
+    "question": "What is the capital of your state?*",
+    "chinQuestion": "",
+    "answer": "Answers will vary. [District of Columbia residents should answer that D.C. is not a state and does not have a",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-045",
+    "question": "What are the two major political parties in the United States?*",
+    "chinQuestion": "",
+    "answer": "Democratic and Republican",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-046",
+    "question": "What is the political party of the President now?",
+    "chinQuestion": "",
+    "answer": "Visit uscis.gov/citizenship/testupdates for the political party of the President.",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-047",
+    "question": "What is the name of the Speaker of the House of Representatives now?",
+    "chinQuestion": "",
+    "answer": "Visit uscis.gov/citizenship/testupdates for the name of the Speaker of the House of Representatives.",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-048",
+    "question": "There are four amendments to the Constitution about who can vote. Describe one of them.",
+    "chinQuestion": "",
+    "answer": "Citizens eighteen (18) and older (can vote). / You don’t have to pay (a poll tax) to vote. / Any citizen can vote. (Women and men can vote.) / A male citizen of any race (can vote).",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-049",
+    "question": "What is one responsibility that is only for United States citizens?*",
+    "chinQuestion": "",
+    "answer": "serve on a jury / vote in a federal election",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-050",
+    "question": "Name one right only for United States citizens.",
+    "chinQuestion": "",
+    "answer": "vote in a federal election / run for federal office",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-051",
+    "question": "What are two rights of everyone living in the United States?",
+    "chinQuestion": "",
+    "answer": "freedom of expression / freedom of speech / freedom of assembly / freedom to petition the government / freedom of religion / the right to bear arms",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-052",
+    "question": "What do we show loyalty to when we say the Pledge of Allegiance?",
+    "chinQuestion": "",
+    "answer": "the United States / the flag",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-053",
+    "question": "What is one promise you make when you become a United States citizen?",
+    "chinQuestion": "",
+    "answer": "give up loyalty to other countries / defend the Constitution and laws of the United States / obey the laws of the United States / serve in the U.S. military (if needed) / serve (do important work for) the nation (if needed) / be loyal to the United States\\n-6-",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-054",
+    "question": "How old do citizens have to be to vote for President?*",
+    "chinQuestion": "",
+    "answer": "eighteen (18) and older",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-055",
+    "question": "What are two ways that Americans can participate in their democracy?",
+    "chinQuestion": "",
+    "answer": "vote / join a political party / help with a campaign / join a civic group / join a community group / give an elected official your opinion on an issue / call Senators and Representatives / publicly support or oppose an issue or policy / run for office / write to a newspaper",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-056",
+    "question": "When is the last day you can send in federal income tax forms?*",
+    "chinQuestion": "",
+    "answer": "April 15",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-057",
+    "question": "When must all men register for the Selective Service?",
+    "chinQuestion": "",
+    "answer": "at age eighteen (18) / between eighteen (18) and twenty-six (26)",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-058",
+    "question": "What is one reason colonists came to America?",
+    "chinQuestion": "",
+    "answer": "freedom / political liberty / religious freedom / economic opportunity / practice their religion / escape persecution",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-059",
+    "question": "Who lived in America before the Europeans arrived?",
+    "chinQuestion": "",
+    "answer": "American Indians / Native Americans",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-060",
+    "question": "What group of people was taken to America and sold as slaves?",
+    "chinQuestion": "",
+    "answer": "Africans / people from Africa",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-061",
+    "question": "Why did the colonists fight the British?",
+    "chinQuestion": "",
+    "answer": "because of high taxes (taxation without representation) / because the British army stayed in their houses (boarding, quartering) / because they didn’t have self-government\\n-7-",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-062",
+    "question": "Who wrote the Declaration of Independence?",
+    "chinQuestion": "",
+    "answer": "(Thomas) Jefferson",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-063",
+    "question": "When was the Declaration of Independence adopted?",
+    "chinQuestion": "",
+    "answer": "July 4, 1776",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-064",
+    "question": "There were 13 original states. Name three.",
+    "chinQuestion": "",
+    "answer": "New Hampshire / Massachusetts / Rhode Island / Connecticut / New York / New Jersey / Pennsylvania / Delaware / Maryland / Virginia / North Carolina / South Carolina / Georgia",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-065",
+    "question": "What happened at the Constitutional Convention?",
+    "chinQuestion": "",
+    "answer": "The Constitution was written. / The Founding Fathers wrote the Constitution.",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-066",
+    "question": "When was the Constitution written?",
+    "chinQuestion": "",
+    "answer": "1787",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-067",
+    "question": "The Federalist Papers supported the passage of the U.S. Constitution. Name one of the writers.",
+    "chinQuestion": "",
+    "answer": "(James) Madison / (Alexander) Hamilton / (John) Jay / Publius",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-068",
+    "question": "What is one thing Benjamin Franklin is famous for?",
+    "chinQuestion": "",
+    "answer": "U.S. diplomat / oldest member of the Constitutional Convention / first Postmaster General of the United States / writer of “Poor Richard’ s Almanac” / started the first free libraries",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-069",
+    "question": "Who is the “Father of Our Country”?",
+    "chinQuestion": "",
+    "answer": "(George) Washington",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-070",
+    "question": "Who was the first President?*",
+    "chinQuestion": "",
+    "answer": "(George) Washington\\n-8-",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-071",
+    "question": "What territory did the United States buy from France in 1803?",
+    "chinQuestion": "",
+    "answer": "the Louisiana Territory / Louisiana",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-072",
+    "question": "Name one war fought by the United States in the 1800s.",
+    "chinQuestion": "",
+    "answer": "War of 1812 / Mexican-American War / Civil War / Spanish-American War",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-073",
+    "question": "Name the U.S. war between the North and the South.",
+    "chinQuestion": "",
+    "answer": "the Civil War / the War between the States",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-074",
+    "question": "Name one problem that led to the Civil War.",
+    "chinQuestion": "",
+    "answer": "slavery / economic reasons / states’ rights",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-075",
+    "question": "What was one important thing that Abraham Lincoln did?*",
+    "chinQuestion": "",
+    "answer": "freed the slaves (Emancipation Proclamation) / saved (or preserved) the Union / led the United States during the Civil War",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-076",
+    "question": "What did the Emancipation Proclamation do?",
+    "chinQuestion": "",
+    "answer": "freed the slaves / freed slaves in the Confederacy / freed slaves in the Confederate states / freed slaves in most Southern states",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-077",
+    "question": "What did Susan B. Anthony do?",
+    "chinQuestion": "",
+    "answer": "fought for women’s rights / fought for civil rights",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-078",
+    "question": "Name one war fought by the United States in the 1900s.*",
+    "chinQuestion": "",
+    "answer": "World War I / World War II / Korean War / Vietnam War / (Persian) Gulf War",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-079",
+    "question": "Who was President during World War I?",
+    "chinQuestion": "",
+    "answer": "(Woodrow) Wilson",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-080",
+    "question": "Who was President during the Great Depression and World War II?",
+    "chinQuestion": "",
+    "answer": "(Franklin) Roosevelt\\n-9-",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-081",
+    "question": "Who did the United States fight in World War II?",
+    "chinQuestion": "",
+    "answer": "Japan, Germany, and Italy",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-082",
+    "question": "Before he was President, Eisenhower was a general. What war was he in?",
+    "chinQuestion": "",
+    "answer": "World War II",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-083",
+    "question": "During the Cold War, what was the main concern of the United States?",
+    "chinQuestion": "",
+    "answer": "Communism",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-084",
+    "question": "What movement tried to end racial discrimination?",
+    "chinQuestion": "",
+    "answer": "civil rights (movement)",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-085",
+    "question": "What did Martin Luther King, Jr. do?*",
+    "chinQuestion": "",
+    "answer": "fought for civil rights / worked for equality for all Americans",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-086",
+    "question": "What major event happened on September 11, 2001, in the United States?",
+    "chinQuestion": "",
+    "answer": "Terrorists attacked the United States.",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-087",
+    "question": "Name one American Indian tribe in the United States.",
+    "chinQuestion": "",
+    "answer": "Cherokee / Navajo / Sioux / Chippewa / Choctaw / Pueblo / Apache / Iroquois / Creek / Blackfeet / Seminole / Cheyenne / Arawak / Shawnee / Mohegan / Huron / Oneida / Lakota / Crow / Teton / Hopi / Inuit\\n-10-",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-088",
+    "question": "Name one of the two longest rivers in the United States.",
+    "chinQuestion": "",
+    "answer": "Missouri (River) / Mississippi (River)",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-089",
+    "question": "What ocean is on the West Coast of the United States?",
+    "chinQuestion": "",
+    "answer": "Pacific (Ocean)",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-090",
+    "question": "What ocean is on the East Coast of the United States?",
+    "chinQuestion": "",
+    "answer": "Atlantic (Ocean)",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-091",
+    "question": "Name one U.S. territory.",
+    "chinQuestion": "",
+    "answer": "Puerto Rico / U.S. Virgin Islands / American Samoa / Northern Mariana Islands / Guam",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-092",
+    "question": "Name one state that borders Canada.",
+    "chinQuestion": "",
+    "answer": "Maine / New Hampshire / Vermont / New York / Pennsylvania / Ohio / Michigan / Minnesota / North Dakota / Montana / Idaho / Washington / Alaska",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-093",
+    "question": "Name one state that borders Mexico.",
+    "chinQuestion": "",
+    "answer": "California / Arizona / New Mexico / Texas",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-094",
+    "question": "What is the capital of the United States?*",
+    "chinQuestion": "",
+    "answer": "Washington, D.C.",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-095",
+    "question": "Where is the Statue of Liberty?*",
+    "chinQuestion": "",
+    "answer": "New York (Harbor) / Liberty Island",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-096",
+    "question": "Why does the flag have 13 stripes?",
+    "chinQuestion": "",
+    "answer": "because there were 13 original colonies / because the stripes represent the original colonies",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-097",
+    "question": "Why does the flag have 50 stars?*",
+    "chinQuestion": "",
+    "answer": "because there is one star for each state / because each star represents a state / because there are 50 states",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-098",
+    "question": "What is the name of the national anthem?",
+    "chinQuestion": "",
+    "answer": "The Star-Spangled Banner",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-099",
+    "question": "When do we celebrate Independence Day?*",
+    "chinQuestion": "",
+    "answer": "July 4",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  },
+  {
+    "id": "uscis-2008-100",
+    "question": "Name two national U.S. holidays.",
+    "chinQuestion": "",
+    "answer": "New Year’ s Day / Martin Luther King, Jr. Day / Presidents’ Day / Memorial Day / Independence Day / Labor Day / Columbus Day / Veterans Day / Thanksgiving / Christmas",
+    "chinAnswer": "",
+    "state": "",
+    "status": "published",
+    "source": "USCIS 2008 civics questions"
+  }
+];

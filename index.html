@@ -41,9 +41,16 @@
         pointer-events: none;
         opacity: 0.28;
         background-image:
-          linear-gradient(115deg, transparent 0 49%, #176b4d08 50% 51%, transparent 52%),
+          linear-gradient(
+            115deg,
+            transparent 0 49%,
+            #176b4d08 50% 51%,
+            transparent 52%
+          ),
           radial-gradient(#176b4d16 0.7px, transparent 0.8px);
-        background-size: 180px 180px, 13px 13px;
+        background-size:
+          180px 180px,
+          13px 13px;
         mask-image: linear-gradient(to bottom, #000, transparent 85%);
       }
       .bar {
@@ -75,7 +82,9 @@
         color: #fff;
         font-weight: 700;
         box-shadow: 0 7px 16px #126b5030;
-        transition: transform 160ms ease, box-shadow 160ms ease;
+        transition:
+          transform 160ms ease,
+          box-shadow 160ms ease;
       }
       .btn:hover {
         transform: translateY(-2px);
@@ -116,7 +125,11 @@
         padding: clamp(30px, 8vw, 80px);
         background:
           radial-gradient(circle at 88% 18%, #ffffff30 0 7%, transparent 7.5%),
-          radial-gradient(circle at 96% 78%, #e7b84b55 0 11%, transparent 11.5%),
+          radial-gradient(
+            circle at 96% 78%,
+            #e7b84b55 0 11%,
+            transparent 11.5%
+          ),
           linear-gradient(120deg, #125b43, #269b71);
         color: white;
         border-radius: 22px;
@@ -553,13 +566,20 @@
         text-align: left;
         padding: 18px;
         background:
-          radial-gradient(circle at 88% 15%, #e7b84b33 0 14%, transparent 14.5%),
+          radial-gradient(
+            circle at 88% 15%,
+            #e7b84b33 0 14%,
+            transparent 14.5%
+          ),
           linear-gradient(145deg, #ffffff, #edf9f2);
         border: 1px solid var(--l);
         border-radius: 15px;
         color: var(--i);
         box-shadow: 0 8px 18px #176b4d12;
-        transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+        transition:
+          transform 160ms ease,
+          box-shadow 160ms ease,
+          border-color 160ms ease;
       }
       .category:hover {
         transform: translateY(-4px) rotate(-1deg);
@@ -832,7 +852,8 @@
         border: 1px solid #c9ddd2;
         border-radius: 10px;
         background-color: #fff;
-        background-image: linear-gradient(45deg, transparent 50%, #176b4d 50%),
+        background-image:
+          linear-gradient(45deg, transparent 50%, #176b4d 50%),
           linear-gradient(135deg, #176b4d 50%, transparent 50%);
         background-position:
           calc(100% - 18px) 50%,
@@ -1018,8 +1039,13 @@
           #f4f8f6;
         color: var(--i);
         font-family:
-          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-          "Segoe UI", sans-serif;
+          Inter,
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
         letter-spacing: -0.01em;
       }
       .bar {
@@ -1092,7 +1118,11 @@
         border-radius: 24px;
         padding: clamp(30px, 6vw, 64px);
         background:
-          radial-gradient(circle at 85% 15%, rgba(255, 255, 255, 0.16), transparent 11rem),
+          radial-gradient(
+            circle at 85% 15%,
+            rgba(255, 255, 255, 0.16),
+            transparent 11rem
+          ),
           linear-gradient(135deg, #105e47, #23956d);
         box-shadow: var(--shadow-md);
       }
@@ -1431,7 +1461,8 @@
         transform: rotateY(180deg);
       }
       .practice-card.slide-in-next > .practice-card-inner {
-        animation: practice-slide-in-right 280ms cubic-bezier(0.22, 0.7, 0.25, 1);
+        animation: practice-slide-in-right 280ms
+          cubic-bezier(0.22, 0.7, 0.25, 1);
       }
       .practice-card.slide-in-previous > .practice-card-inner {
         animation: practice-slide-in-left 280ms cubic-bezier(0.22, 0.7, 0.25, 1);
@@ -1449,12 +1480,12 @@
         pointer-events: none;
       }
       .practice-slide-clone.slide-out-left {
-        animation: practice-slide-out-left 280ms cubic-bezier(0.55, 0, 0.8, 0.35)
-          forwards;
+        animation: practice-slide-out-left 280ms
+          cubic-bezier(0.55, 0, 0.8, 0.35) forwards;
       }
       .practice-slide-clone.slide-out-right {
-        animation: practice-slide-out-right 280ms cubic-bezier(0.55, 0, 0.8, 0.35)
-          forwards;
+        animation: practice-slide-out-right 280ms
+          cubic-bezier(0.55, 0, 0.8, 0.35) forwards;
       }
       @keyframes practice-slide-in-right {
         from {
@@ -1717,10 +1748,9 @@
           font-size: 0.92rem;
         }
         .menu-button {
-          min-width: 44px;
-          min-height: 44px;
-          padding: 9px 10px;
-          font-size: 1.65rem;
+          min-width: 30px;
+          min-height: 30px;
+          font-size: 1.45rem;
         }
         .btn:active,
         .plain:active,
@@ -1749,8 +1779,16 @@
         inset: 0;
         z-index: -1;
         background:
-          radial-gradient(circle at 8% 12%, rgba(184, 226, 204, 0.32), transparent 24rem),
-          radial-gradient(circle at 92% 76%, rgba(224, 193, 104, 0.12), transparent 22rem);
+          radial-gradient(
+            circle at 8% 12%,
+            rgba(184, 226, 204, 0.32),
+            transparent 24rem
+          ),
+          radial-gradient(
+            circle at 92% 76%,
+            rgba(224, 193, 104, 0.12),
+            transparent 22rem
+          );
         content: "";
         pointer-events: none;
       }
@@ -1861,7 +1899,9 @@
       @media (max-width: 600px) {
         body::before {
           opacity: 0.1;
-          background-size: 240px 240px, 19px 19px;
+          background-size:
+            240px 240px,
+            19px 19px;
         }
         .hero::before,
         .hero::after {
@@ -1962,7 +2002,11 @@
           <button id="home-quiz" class="btn take-quiz" data-v="quiz">
             Quiz
           </button>
-          <button id="home-practice" class="btn practice-action" data-v="practice">
+          <button
+            id="home-practice"
+            class="btn practice-action"
+            data-v="practice"
+          >
             Practice
           </button>
         </div>
@@ -2012,19 +2056,26 @@
       </section>
       <section id="categories" class="view">
         <div class="category-toolbar">
-          <input id="category-search" class="search" placeholder="Search categories" />
-          <button id="add-category" class="btn hidden" type="button" aria-label="Add new category">+</button>
+          <input
+            id="category-search"
+            class="search"
+            placeholder="Search categories"
+          />
+          <button
+            id="add-category"
+            class="btn hidden"
+            type="button"
+            aria-label="Add new category"
+          >
+            +
+          </button>
         </div>
         <p id="category-delete-status" class="status hidden"></p>
         <div id="category-grid" class="category-grid"></div>
       </section>
       <section id="learn" class="view">
         <div class="head learn-controls">
-          <input
-            id="search"
-            class="search"
-            placeholder="Search phrases"
-          />
+          <input id="search" class="search" placeholder="Search phrases" />
         </div>
         <p id="count"></p>
         <div id="cards" class="cards"></div>
@@ -2050,12 +2101,18 @@
             <button id="start-quiz" class="btn take-quiz">Start quiz</button>
             <div class="quiz-insights">
               <section class="quiz-insight">
-                <div class="quiz-insight-title"><span>🕘</span><b>Recent runs</b></div>
+                <div class="quiz-insight-title">
+                  <span>🕘</span><b>Recent runs</b>
+                </div>
                 <div id="quiz-history" class="quiz-history">No tests yet.</div>
               </section>
               <section class="quiz-insight">
-                <div class="quiz-insight-title"><span>🏆</span><b>Top performers</b></div>
-                <div id="leaderboard" class="quiz-leaderboard">Loading leaderboard…</div>
+                <div class="quiz-insight-title">
+                  <span>🏆</span><b>Top performers</b>
+                </div>
+                <div id="leaderboard" class="quiz-leaderboard">
+                  Loading leaderboard…
+                </div>
               </section>
             </div>
           </article>
@@ -2083,14 +2140,23 @@
             <div class="head">
               <div>
                 <h2>Flip cards</h2>
-                <p class="status">Practice at your own pace and reveal the translation when ready.</p>
+                <p class="status">
+                  Practice at your own pace and reveal the translation when
+                  ready.
+                </p>
               </div>
             </div>
             <label class="field"
               >Practice category<select id="practice-category"></select
             ></label>
             <p id="practice-count" class="status"></p>
-            <div id="practice-card" class="practice-card" tabindex="0" role="button" aria-label="Reveal translation">
+            <div
+              id="practice-card"
+              class="practice-card"
+              tabindex="0"
+              role="button"
+              aria-label="Reveal translation"
+            >
               <div class="practice-card-inner">
                 <div class="practice-face practice-front">
                   <small>English</small>
@@ -2105,9 +2171,15 @@
               </div>
             </div>
             <div class="practice-controls">
-              <button id="practice-prev" class="plain" type="button">← Previous</button>
-              <button id="practice-flip" class="btn" type="button">Flip card</button>
-              <button id="practice-next" class="plain" type="button">Next →</button>
+              <button id="practice-prev" class="plain" type="button">
+                ← Previous
+              </button>
+              <button id="practice-flip" class="btn" type="button">
+                Flip card
+              </button>
+              <button id="practice-next" class="plain" type="button">
+                Next →
+              </button>
             </div>
           </article>
         </div>
@@ -2117,7 +2189,10 @@
         <div class="review-page">
           <div class="review-hero">
             <h1>Review phrases</h1>
-            <p>Strengthen the phrases you missed and revisit the ones you want to remember.</p>
+            <p>
+              Strengthen the phrases you missed and revisit the ones you want to
+              remember.
+            </p>
           </div>
           <div id="review-content"></div>
         </div>
@@ -2125,7 +2200,9 @@
 
       <section id="adminview" class="view">
         <div class="admin">
-          <button id="admin-new-category" class="btn" type="button">+ New category</button>
+          <button id="admin-new-category" class="btn" type="button">
+            + New category
+          </button>
           <form id="form" class="panel">
             <h2 id="form-title">Add content</h2>
             <label class="field"
@@ -2160,12 +2237,27 @@
     <dialog id="category-dialog">
       <form id="category-form">
         <h2>New category</h2>
-        <label class="field">Category name<input name="name" maxlength="50" required /></label>
-        <label class="field">Category icon<input id="category-icon-value" name="icon" readonly required /></label>
-        <div id="category-icon-picker" class="category-icon-picker" role="radiogroup" aria-label="Choose category icon"></div>
+        <label class="field"
+          >Category name<input name="name" maxlength="50" required
+        /></label>
+        <label class="field"
+          >Category icon<input
+            id="category-icon-value"
+            name="icon"
+            readonly
+            required
+        /></label>
+        <div
+          id="category-icon-picker"
+          class="category-icon-picker"
+          role="radiogroup"
+          aria-label="Choose category icon"
+        ></div>
         <p id="category-message" class="status"></p>
         <div class="actions">
-          <button id="cancel-category" class="plain" type="button">Cancel</button>
+          <button id="cancel-category" class="plain" type="button">
+            Cancel
+          </button>
           <button class="btn" type="submit">Create category</button>
         </div>
       </form>
@@ -2741,10 +2833,10 @@
               icon: item.data().icon,
             }))
             .filter((item) => item.name && item.icon);
-          categories = [...builtInCategories, ...customCategories.map((item) => [
-            item.name,
-            item.icon,
-          ])];
+          categories = [
+            ...builtInCategories,
+            ...customCategories.map((item) => [item.name, item.icon]),
+          ];
           fillCategories();
           if ($("categories").classList.contains("active")) renderCategories();
         } catch (error) {
@@ -2761,8 +2853,9 @@
         $("lobby-best").textContent =
           p.bestScore == null ? "—" : p.bestScore + "%";
         $("lobby-tests").textContent = h.length;
-        $("lobby-rank").textContent =
-          p.totalPoints ? p.totalPoints : "Start now";
+        $("lobby-rank").textContent = p.totalPoints
+          ? p.totalPoints
+          : "Start now";
         $("quiz-history").innerHTML = h.length
           ? h
               .slice(0, 4)
@@ -2770,7 +2863,7 @@
                 (x) =>
                   '<div class="quiz-history-item"><b>' +
                   esc(x.score + "%") +
-                  '</b><span>' +
+                  "</b><span>" +
                   esc(x.category || "All categories") +
                   "</span></div>",
               )
@@ -2781,24 +2874,21 @@
             .then((s) => {
               let top = s.docs
                 .map((d) => d.data())
-                .sort(
-                  (a, b) =>
-                    (b.totalPoints || 0) - (a.totalPoints || 0),
-                )
+                .sort((a, b) => (b.totalPoints || 0) - (a.totalPoints || 0))
                 .slice(0, 5);
               $("leaderboard").innerHTML = top.length
                 ? top
                     .map(
                       (x, n) =>
                         '<div class="quiz-rank-item"><span>' +
-                          (["🏆", "🥈", "🥉"][n] || "🏅") +
-                          " " +
-                          (n + 1) +
-                          '</span><strong>' +
-                          esc(x.name || "Learner") +
-                          '</strong><b>' +
-                          esc((x.totalPoints || 0) + " pts") +
-                          "</b></div>",
+                        (["🏆", "🥈", "🥉"][n] || "🏅") +
+                        " " +
+                        (n + 1) +
+                        "</span><strong>" +
+                        esc(x.name || "Learner") +
+                        "</strong><b>" +
+                        esc((x.totalPoints || 0) + " pts") +
+                        "</b></div>",
                     )
                     .join("")
                 : '<span class="status">No scores yet.</span>';
@@ -2831,9 +2921,7 @@
         practiceCards = sh(
           cards.filter(
             (c) =>
-              (c.category || "Driving") === category &&
-              c.chin &&
-              c.chin.trim(),
+              (c.category || "Driving") === category && c.chin && c.chin.trim(),
           ),
         );
         practiceIndex = 0;
@@ -2867,16 +2955,18 @@
         let surface = $("practice-card"),
           inner = surface.querySelector(".practice-card-inner"),
           outgoing = inner.cloneNode(true),
-          incomingClass =
-            direction < 0 ? "slide-in-previous" : "slide-in-next",
-          outgoingClass =
-            direction < 0 ? "slide-out-right" : "slide-out-left";
-        outgoing.querySelectorAll("[id]").forEach((element) =>
-          element.removeAttribute("id"),
-        );
+          incomingClass = direction < 0 ? "slide-in-previous" : "slide-in-next",
+          outgoingClass = direction < 0 ? "slide-out-right" : "slide-out-left";
+        outgoing
+          .querySelectorAll("[id]")
+          .forEach((element) => element.removeAttribute("id"));
         outgoing.classList.add("practice-slide-clone", outgoingClass);
         outgoing.style.transform = practiceFlipped ? "rotateY(180deg)" : "";
-        surface.classList.remove("flipped", "slide-in-next", "slide-in-previous");
+        surface.classList.remove(
+          "flipped",
+          "slide-in-next",
+          "slide-in-previous",
+        );
         surface.append(outgoing);
         practiceIndex =
           (practiceIndex + direction + practiceCards.length) %
@@ -2915,9 +3005,9 @@
             ],
           preview = inner.cloneNode(true),
           width = surface.offsetWidth;
-        preview.querySelectorAll("[id]").forEach((element) =>
-          element.removeAttribute("id"),
-        );
+        preview
+          .querySelectorAll("[id]")
+          .forEach((element) => element.removeAttribute("id"));
         preview.querySelector(".practice-front h2").textContent = card.english;
         preview.querySelector(".practice-back h2").textContent = card.chin;
         preview.className = "practice-card-inner practice-swipe-preview";
@@ -3005,7 +3095,9 @@
           clampedDelta = Math.max(-width, Math.min(width, deltaX)),
           inner = $("practice-card").querySelector(".practice-card-inner");
         inner.style.transform = `translateX(${clampedDelta}px)`;
-        inner.style.opacity = String(1 - Math.min(0.45, Math.abs(clampedDelta) / width));
+        inner.style.opacity = String(
+          1 - Math.min(0.45, Math.abs(clampedDelta) / width),
+        );
         practiceSwipePreview.style.transform = `translateX(${
           -direction * width + clampedDelta
         }px)`;
@@ -3076,18 +3168,17 @@
             name.toLowerCase().includes(search),
           );
         $("category-grid").innerHTML = visible
-          .map(
-            ([name, icon]) => {
-              let custom = customCategories.find((item) => item.name === name),
-                deleteButton =
-                  user?.admin && custom
-                    ? '<button class="category-delete" type="button" data-category-id="' +
-                      esc(custom.id) +
-                      '" data-category-name="' +
-                      esc(name) +
-                      '">Delete</button>'
-                    : "";
-              return (
+          .map(([name, icon]) => {
+            let custom = customCategories.find((item) => item.name === name),
+              deleteButton =
+                user?.admin && custom
+                  ? '<button class="category-delete" type="button" data-category-id="' +
+                    esc(custom.id) +
+                    '" data-category-name="' +
+                    esc(name) +
+                    '">Delete</button>'
+                  : "";
+            return (
               '<div class="category-tile"><button class="category" data-category="' +
               esc(name) +
               '"><span class="icon">' +
@@ -3099,9 +3190,8 @@
               " phrases</small></button>" +
               deleteButton +
               "</div>"
-              );
-            },
-          )
+            );
+          })
           .join("");
         if (!visible.length)
           $("category-grid").innerHTML =
@@ -3156,35 +3246,35 @@
       function openCategoryDialog() {
         if (!user?.admin) return;
         let form = $("category-form"),
-            picker = $("category-icon-picker");
+          picker = $("category-icon-picker");
         form.reset();
         $("category-message").textContent = "";
         $("category-icon-value").value = categoryIcons[0];
         picker.innerHTML = categoryIcons
-            .map(
-              (icon) =>
-                '<button class="category-icon-option" type="button" data-icon="' +
-                esc(icon) +
-                '" aria-label="Use ' +
-                esc(icon) +
-                '">' +
-                esc(icon) +
-                "</button>",
-            )
-            .join("");
+          .map(
+            (icon) =>
+              '<button class="category-icon-option" type="button" data-icon="' +
+              esc(icon) +
+              '" aria-label="Use ' +
+              esc(icon) +
+              '">' +
+              esc(icon) +
+              "</button>",
+          )
+          .join("");
         picker.querySelectorAll(".category-icon-option").forEach((button) => {
-            button.classList.toggle(
-              "selected",
-              button.dataset.icon === $("category-icon-value").value,
-            );
-            button.onclick = () => {
-              $("category-icon-value").value = button.dataset.icon;
-              picker
-                .querySelectorAll(".category-icon-option")
-                .forEach((item) =>
-                  item.classList.toggle("selected", item === button),
-                );
-            };
+          button.classList.toggle(
+            "selected",
+            button.dataset.icon === $("category-icon-value").value,
+          );
+          button.onclick = () => {
+            $("category-icon-value").value = button.dataset.icon;
+            picker
+              .querySelectorAll(".category-icon-option")
+              .forEach((item) =>
+                item.classList.toggle("selected", item === button),
+              );
+          };
         });
         $("category-dialog").showModal();
       }
@@ -3195,41 +3285,43 @@
       $("category-form").onsubmit = async (event) => {
         event.preventDefault();
         let form = new FormData(event.target),
-            name = String(form.get("name") || "").trim(),
-            icon = String(form.get("icon") || "").trim();
+          name = String(form.get("name") || "").trim(),
+          icon = String(form.get("icon") || "").trim();
         if (!user?.admin || !db) return;
-        if (categories.some(([item]) => item.toLowerCase() === name.toLowerCase())) {
-            $("category-message").textContent = "That category already exists.";
-            return;
+        if (
+          categories.some(([item]) => item.toLowerCase() === name.toLowerCase())
+        ) {
+          $("category-message").textContent = "That category already exists.";
+          return;
         }
         if (!name || !icon) {
-            $("category-message").textContent = "Choose a name and icon.";
-            return;
+          $("category-message").textContent = "Choose a name and icon.";
+          return;
         }
         try {
-            let id =
-              name
-                .toLowerCase()
-                .replace(/[^a-z0-9]+/g, "-")
-                .replace(/^-|-$/g, "") || "category-" + Date.now();
-            await setDoc(doc(db, "categories", id), {
-              name,
-              icon,
-              createdBy: user.uid,
-              createdAt: serverTimestamp(),
-              updatedAt: serverTimestamp(),
-            });
-            customCategories.push({ id, name, icon });
-            categories = [
-              ...builtInCategories,
-              ...customCategories.map((item) => [item.name, item.icon]),
-            ];
-            fillCategories();
-            renderCategories();
-            $("category-dialog").close();
+          let id =
+            name
+              .toLowerCase()
+              .replace(/[^a-z0-9]+/g, "-")
+              .replace(/^-|-$/g, "") || "category-" + Date.now();
+          await setDoc(doc(db, "categories", id), {
+            name,
+            icon,
+            createdBy: user.uid,
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp(),
+          });
+          customCategories.push({ id, name, icon });
+          categories = [
+            ...builtInCategories,
+            ...customCategories.map((item) => [item.name, item.icon]),
+          ];
+          fillCategories();
+          renderCategories();
+          $("category-dialog").close();
         } catch (error) {
-            $("category-message").textContent =
-              "Could not create category: " + error.message;
+          $("category-message").textContent =
+            "Could not create category: " + error.message;
         }
       };
       function fillCategories() {
@@ -3600,7 +3692,8 @@
           $("next").disabled = true;
           return;
         }
-        let requested = Number($("quiz-length").value) || Math.min(10, a.length);
+        let requested =
+          Number($("quiz-length").value) || Math.min(10, a.length);
         quiz = sh(a).slice(0, Math.min(requested, a.length));
         i = good = 0;
         $("summary").classList.add("hidden");
@@ -4007,9 +4100,9 @@
       document
         .querySelector("#profileview .panel .profile-top")
         .insertAdjacentHTML(
-        "afterend",
-        '<p id="profile-joined" class="profile-joined"></p><div id="profile-metrics" class="profile-metrics"></div><div class="profile-columns"><section class="profile-subpanel"><div class="profile-section-heading"><h3>Achievements</h3><span>Milestones</span></div><div id="profile-achievements" class="profile-achievements"></div></section><section class="profile-subpanel"><div class="profile-section-heading"><h3>Recent learning</h3><span>Activity</span></div><div id="profile-activity" class="profile-activity"></div></section></div>',
-      );
+          "afterend",
+          '<p id="profile-joined" class="profile-joined"></p><div id="profile-metrics" class="profile-metrics"></div><div class="profile-columns"><section class="profile-subpanel"><div class="profile-section-heading"><h3>Achievements</h3><span>Milestones</span></div><div id="profile-achievements" class="profile-achievements"></div></section><section class="profile-subpanel"><div class="profile-section-heading"><h3>Recent learning</h3><span>Activity</span></div><div id="profile-activity" class="profile-activity"></div></section></div>',
+        );
       document.head.insertAdjacentHTML(
         "beforeend",
         "<style>.profile-top{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:14px;padding:4px 0 18px;border-bottom:1px solid var(--l)}.profile-avatar-button{position:relative;width:100px;height:100px;padding:0;border:0;border-radius:50%;background:#e5f4eb;cursor:pointer}.profile-avatar-button span{position:absolute;right:-2px;bottom:2px;display:grid;width:31px;height:31px;place-items:center;border:2px solid #fff;border-radius:50%;background:var(--g);font-size:1rem;line-height:1}.profile-avatar-button:hover .profile-avatar{filter:brightness(.86)}.profile-top>div{min-width:0}.profile-identity{min-width:0}.profile-name-row{display:flex;align-items:center;gap:5px;min-width:0}.profile-name{overflow-wrap:anywhere;margin:0}.profile-name-editing{min-width:0;padding:4px 7px;border:1px solid var(--l);border-radius:9px;background:#fff;outline:2px solid #b9dfc9}.profile-edit-name{padding:4px 6px;font-size:1.05rem}.profile-name-editor{display:flex;align-items:center;gap:6px}.profile-name-editor input{min-width:0;width:100%;padding:7px 9px}.profile-name-editor .btn{padding:7px 9px;white-space:nowrap}.profile-top>#profile-message{grid-column:2;margin:0}.profile-top>#share-badge{grid-column:2;justify-self:start}.profile-joined{margin:0 0 16px;color:var(--m);font-size:.86rem}.profile-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:0 0 18px}.profile-metric{padding:13px 10px;border:1px solid var(--l);border-radius:13px;background:linear-gradient(145deg,#fff,#f4fbf7)}.profile-metric b,.profile-metric span{display:block}.profile-metric b{font-size:1.3rem;color:var(--g)}.profile-metric span{margin-top:3px;color:var(--m);font-size:.72rem}.profile-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:18px}.profile-subpanel{padding:14px;border:1px solid var(--l);border-radius:14px;background:#fbfffc}.profile-section-heading{display:flex;align-items:baseline;justify-content:space-between;gap:8px}.profile-section-heading h3{margin:0;font-size:1rem}.profile-section-heading span{color:var(--m);font-size:.72rem}.profile-activity,.profile-achievements{display:grid;gap:8px;margin-top:12px}.profile-activity-item,.profile-achievement{padding:9px 10px;border-radius:10px;background:#eef8f1}.profile-activity-item b,.profile-activity-item small,.profile-achievement b,.profile-achievement small{display:block}.profile-activity-item small,.profile-achievement small{margin-top:2px;color:var(--m);font-size:.74rem}.profile-achievement.locked{background:#f2f4f3;opacity:.72}.profile-edit{margin-top:4px;padding-top:18px;border-top:1px solid var(--l)}.profile-edit-title{margin:0 0 10px;font-size:1rem}@media(max-width:600px){.profile-top{grid-template-columns:72px minmax(0,1fr);gap:10px}.profile-avatar-button{width:72px;height:72px}.profile-avatar{width:72px;height:72px}.profile-avatar-button span{width:27px;height:27px;font-size:.9rem}.profile-metrics{grid-template-columns:repeat(2,1fr)}.profile-columns{grid-template-columns:1fr}.profile-subpanel{padding:12px}.profile-metric{padding:11px 9px}.profile-metric b{font-size:1.15rem}}</style>",
@@ -4053,7 +4146,9 @@
             ...Object.values(learning.days || {}).flat(),
           ]).size,
           favorites = Object.keys(learning.favorites || {}).length,
-          totalPoints = Number(p.totalPoints || profileV2.progress?.totalPoints || 0),
+          totalPoints = Number(
+            p.totalPoints || profileV2.progress?.totalPoints || 0,
+          ),
           history = p.history || [],
           streak = 0,
           cursor = new Date();
@@ -4082,7 +4177,7 @@
           (p.bestScore == null ? "—" : p.bestScore + "%") +
           '</b><span>Best quiz</span></div><div class="profile-metric"><b>' +
           streak +
-          '</b><span>Day streak</span></div>';
+          "</b><span>Day streak</span></div>";
         $("profile-activity").innerHTML = history.length
           ? history
               .slice(0, 4)
@@ -4452,10 +4547,10 @@
                               : ""
                           }`
                         : item.after?.english ||
-                          item.before?.english ||
-                          `${item.entityType || "content"} ${
-                            item.entityId || item.contentId || ""
-                          }`,
+                            item.before?.english ||
+                            `${item.entityType || "content"} ${
+                              item.entityId || item.contentId || ""
+                            }`,
                     ) +
                     "</b><small>" +
                     "Updated by " +
@@ -4669,7 +4764,8 @@
       history.replaceState({ view: "home" }, "", location.href);
       function showAppView(view, recordHistory = true) {
         const currentView =
-          appViewIds.find((id) => $(id)?.classList.contains("active")) || "home";
+          appViewIds.find((id) => $(id)?.classList.contains("active")) ||
+          "home";
         if (
           (view === "adminview" ||
             view === "usersview" ||
@@ -4722,10 +4818,7 @@
       $("home-quiz").onclick = () => showAppView("quiz");
       $("home-practice").onclick = () => showAppView("practice");
       function vibrateInteraction() {
-        if (
-          window.matchMedia("(pointer: coarse)").matches
-        )
-          buzz(8);
+        if (window.matchMedia("(pointer: coarse)").matches) buzz(8);
       }
       function isInteractiveTarget(target) {
         return (

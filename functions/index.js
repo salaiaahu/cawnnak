@@ -113,6 +113,27 @@ exports.getDailyPhrase = onRequest({ cors: true }, async (request, response) => 
   }
 });
 
+// Public learner content excludes drafts while retaining legacy records that
+// predate the status field.
+exports.getLearnerContent = onRequest({ cors: true }, async (request, response) => {
+  if (request.method !== 'GET') return response.status(405).json({ error: 'Method not allowed' });
+  try {
+    const snapshot = await db.collection('content').get();
+    const content = snapshot.docs
+      .map(card => ({ id: card.id, ...card.data() }))
+      .filter(card =>
+        (!Object.prototype.hasOwnProperty.call(card, 'status') || card.status === 'published')
+        && typeof card.english === 'string'
+        && card.english.trim()
+      );
+    response.set('Cache-Control', 'no-store, max-age=0');
+    return response.json({ content });
+  } catch (error) {
+    console.error('Could not load learner content', error);
+    return response.status(500).json({ error: 'Learner content is unavailable.' });
+  }
+});
+
 exports.onAuthUserCreated = functionsV1.auth.user().onCreate(async user => {
   const profileRef = db.doc(`users/${user.uid}`);
   const existing = await profileRef.get();

@@ -3761,21 +3761,21 @@
       };
       async function load() {
         try {
-          const content = collection(db, "content");
-          const snapshots = user?.admin
-            ? [await getDocs(query(content, orderBy("english")))]
-            : [
-                await getDocs(
-                  query(
-                    content,
-                    where("status", "==", "published"),
-                    orderBy("english"),
-                  ),
-                ),
-              ];
-          const remote = snapshots.flatMap((snapshot) =>
-            snapshot.docs.map((d) => ({ id: d.id, ...d.data() })),
-          );
+          let remote;
+          if (user?.admin) {
+            const snapshot = await getDocs(
+              query(collection(db, "content"), orderBy("english")),
+            );
+            remote = snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
+          } else {
+            const response = await fetch(
+              "https://us-central1-cawnnak-ca.cloudfunctions.net/getLearnerContent",
+              { cache: "no-store", headers: { "Cache-Control": "no-cache" } },
+            );
+            if (!response.ok) throw new Error("Learner content is unavailable");
+            const data = await response.json();
+            remote = Array.isArray(data.content) ? data.content : [];
+          }
           cards = [
             ...new Map([...seed, ...remote].map((c) => [c.id, c])).values(),
           ];

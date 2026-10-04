@@ -3976,7 +3976,7 @@
         .querySelector("main")
         .insertAdjacentHTML(
           "afterbegin",
-          '<section id="profileview" class="view"><div class="panel"><div class="profile-top"><button id="profile-avatar-button" class="profile-avatar-button" type="button" aria-label="Change profile picture"><img id="profile-avatar" class="profile-avatar" alt="Your profile picture"><span aria-hidden="true">📷</span></button><div class="profile-identity"><div class="profile-name-row"><h2 id="profile-name">Learner</h2><button id="edit-profile-name" class="plain profile-edit-name" type="button" aria-label="Edit display name">✎</button></div><span id="profile-badge" class="achievement"></span><input id="avatar-file" type="file" accept="image/*" hidden><div id="profile-name-editor" class="profile-name-editor hidden"><input id="profile-name-input" maxlength="50" aria-label="Display name"><button id="save-profile-name" class="btn" type="button">Save</button><button id="cancel-profile-name" class="plain" type="button">Cancel</button></div></div><p id="profile-message" class="status"></p><button id="share-badge" type="button" class="plain">Share achievement</button></div></div></section>',
+          '<section id="profileview" class="view"><div class="panel"><div class="profile-top"><button id="profile-avatar-button" class="profile-avatar-button" type="button" aria-label="Change profile picture"><img id="profile-avatar" class="profile-avatar" alt="Your profile picture"><span aria-hidden="true">📷</span></button><div class="profile-identity"><div id="profile-name-row" class="profile-name-row"><h2 id="profile-name">Learner</h2><button id="edit-profile-name" class="plain profile-edit-name" type="button" aria-label="Edit display name">✎</button></div><span id="profile-badge" class="achievement"></span><input id="avatar-file" type="file" accept="image/*" hidden><div id="profile-name-editor" class="profile-name-editor hidden"><input id="profile-name-input" maxlength="50" aria-label="Display name"><button id="save-profile-name" class="btn" type="button">Save</button><button id="cancel-profile-name" class="plain" type="button">Cancel</button></div></div><p id="profile-message" class="status"></p><button id="share-badge" type="button" class="plain">Share achievement</button></div></div></section>',
         );
       document
         .querySelector("#profileview .panel .profile-top")
@@ -3986,7 +3986,7 @@
       );
       document.head.insertAdjacentHTML(
         "beforeend",
-        "<style>.profile-top{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:14px;padding:4px 0 18px;border-bottom:1px solid var(--l)}.profile-avatar-button{position:relative;width:100px;height:100px;padding:0;border:0;border-radius:50%;background:#e5f4eb;cursor:pointer}.profile-avatar-button span{position:absolute;right:-2px;bottom:2px;display:grid;width:28px;height:28px;place-items:center;border:2px solid #fff;border-radius:50%;background:var(--g);font-size:.85rem}.profile-avatar-button:hover .profile-avatar{filter:brightness(.86)}.profile-top>div{min-width:0}.profile-identity{min-width:0}.profile-name-row{display:flex;align-items:center;gap:5px;min-width:0}.profile-name{overflow-wrap:anywhere}.profile-edit-name{padding:4px 6px;font-size:1.05rem}.profile-name-editor{display:flex;align-items:center;gap:6px;margin-top:7px}.profile-name-editor input{min-width:0;width:100%;padding:7px 9px}.profile-name-editor .btn{padding:7px 9px;white-space:nowrap}.profile-top>#profile-message{grid-column:2;margin:0}.profile-top>#share-badge{grid-column:2;justify-self:start}.profile-joined{margin:0 0 16px;color:var(--m);font-size:.86rem}.profile-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:0 0 18px}.profile-metric{padding:13px 10px;border:1px solid var(--l);border-radius:13px;background:linear-gradient(145deg,#fff,#f4fbf7)}.profile-metric b,.profile-metric span{display:block}.profile-metric b{font-size:1.3rem;color:var(--g)}.profile-metric span{margin-top:3px;color:var(--m);font-size:.72rem}.profile-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:18px}.profile-subpanel{padding:14px;border:1px solid var(--l);border-radius:14px;background:#fbfffc}.profile-section-heading{display:flex;align-items:baseline;justify-content:space-between;gap:8px}.profile-section-heading h3{margin:0;font-size:1rem}.profile-section-heading span{color:var(--m);font-size:.72rem}.profile-activity,.profile-achievements{display:grid;gap:8px;margin-top:12px}.profile-activity-item,.profile-achievement{padding:9px 10px;border-radius:10px;background:#eef8f1}.profile-activity-item b,.profile-activity-item small,.profile-achievement b,.profile-achievement small{display:block}.profile-activity-item small,.profile-achievement small{margin-top:2px;color:var(--m);font-size:.74rem}.profile-achievement.locked{background:#f2f4f3;opacity:.72}.profile-edit{margin-top:4px;padding-top:18px;border-top:1px solid var(--l)}.profile-edit-title{margin:0 0 10px;font-size:1rem}@media(max-width:600px){.profile-top{grid-template-columns:72px minmax(0,1fr);gap:10px}.profile-avatar-button{width:72px;height:72px}.profile-avatar{width:72px;height:72px}.profile-avatar-button span{width:23px;height:23px;font-size:.7rem}.profile-metrics{grid-template-columns:repeat(2,1fr)}.profile-columns{grid-template-columns:1fr}.profile-subpanel{padding:12px}.profile-metric{padding:11px 9px}.profile-metric b{font-size:1.15rem}}</style>",
+        "<style>.profile-top{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:14px;padding:4px 0 18px;border-bottom:1px solid var(--l)}.profile-avatar-button{position:relative;width:100px;height:100px;padding:0;border:0;border-radius:50%;background:#e5f4eb;cursor:pointer}.profile-avatar-button span{position:absolute;right:-2px;bottom:2px;display:grid;width:31px;height:31px;place-items:center;border:2px solid #fff;border-radius:50%;background:var(--g);font-size:1rem;line-height:1}.profile-avatar-button:hover .profile-avatar{filter:brightness(.86)}.profile-top>div{min-width:0}.profile-identity{min-width:0}.profile-name-row{display:flex;align-items:center;gap:5px;min-width:0}.profile-name{overflow-wrap:anywhere}.profile-edit-name{padding:4px 6px;font-size:1.05rem}.profile-name-editor{display:flex;align-items:center;gap:6px}.profile-name-editor input{min-width:0;width:100%;padding:7px 9px}.profile-name-editor .btn{padding:7px 9px;white-space:nowrap}.profile-top>#profile-message{grid-column:2;margin:0}.profile-top>#share-badge{grid-column:2;justify-self:start}.profile-joined{margin:0 0 16px;color:var(--m);font-size:.86rem}.profile-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:0 0 18px}.profile-metric{padding:13px 10px;border:1px solid var(--l);border-radius:13px;background:linear-gradient(145deg,#fff,#f4fbf7)}.profile-metric b,.profile-metric span{display:block}.profile-metric b{font-size:1.3rem;color:var(--g)}.profile-metric span{margin-top:3px;color:var(--m);font-size:.72rem}.profile-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:18px}.profile-subpanel{padding:14px;border:1px solid var(--l);border-radius:14px;background:#fbfffc}.profile-section-heading{display:flex;align-items:baseline;justify-content:space-between;gap:8px}.profile-section-heading h3{margin:0;font-size:1rem}.profile-section-heading span{color:var(--m);font-size:.72rem}.profile-activity,.profile-achievements{display:grid;gap:8px;margin-top:12px}.profile-activity-item,.profile-achievement{padding:9px 10px;border-radius:10px;background:#eef8f1}.profile-activity-item b,.profile-activity-item small,.profile-achievement b,.profile-achievement small{display:block}.profile-activity-item small,.profile-achievement small{margin-top:2px;color:var(--m);font-size:.74rem}.profile-achievement.locked{background:#f2f4f3;opacity:.72}.profile-edit{margin-top:4px;padding-top:18px;border-top:1px solid var(--l)}.profile-edit-title{margin:0 0 10px;font-size:1rem}@media(max-width:600px){.profile-top{grid-template-columns:72px minmax(0,1fr);gap:10px}.profile-avatar-button{width:72px;height:72px}.profile-avatar{width:72px;height:72px}.profile-avatar-button span{width:27px;height:27px;font-size:.9rem}.profile-metrics{grid-template-columns:repeat(2,1fr)}.profile-columns{grid-template-columns:1fr}.profile-subpanel{padding:12px}.profile-metric{padding:11px 9px}.profile-metric b{font-size:1.15rem}}</style>",
       );
       document.body.insertAdjacentHTML(
         "beforeend",
@@ -4037,6 +4037,8 @@
         }
         $("profile-avatar").src = profileV2.avatar || "./icons/icon.svg";
         $("profile-name").textContent = name;
+        $("profile-name-row").classList.remove("hidden");
+        $("profile-name-editor").classList.add("hidden");
         $("profile-badge").textContent = badgeV2();
         $("profile-joined").textContent =
           "Joined " + dateV2(profileV2.createdAt);
@@ -4225,12 +4227,14 @@
         }
       };
       $("edit-profile-name").onclick = () => {
-        $("profile-name-editor").classList.toggle("hidden");
-        if (!$("profile-name-editor").classList.contains("hidden"))
-          $("profile-name-input").focus();
+        $("profile-name-row").classList.add("hidden");
+        $("profile-name-editor").classList.remove("hidden");
+        $("profile-name-input").focus();
       };
-      $("cancel-profile-name").onclick = () =>
+      $("cancel-profile-name").onclick = () => {
         $("profile-name-editor").classList.add("hidden");
+        $("profile-name-row").classList.remove("hidden");
+      };
       $("save-profile-name").onclick = async () => {
         let name = $("profile-name-input").value.trim();
         if (!name) {
@@ -4247,7 +4251,6 @@
           await setDoc(doc(db, "users", user.uid), data, { merge: true });
           profileV2 = { ...profileV2, ...data };
           profileViewV2();
-          $("profile-name-editor").classList.add("hidden");
           $("profile-message").textContent = "Name updated.";
         } catch (error) {
           $("profile-message").textContent =

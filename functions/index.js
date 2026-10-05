@@ -523,6 +523,24 @@ exports.resetAiUserUsage = onCall(async request => {
   return { uid, reset: true };
 });
 
+exports.sendAiUserOfferNotification = onCall(async request => {
+  const actor = await requireAdmin(request);
+  const uid = validUid(request.data?.uid);
+  const message = String(request.data?.message || '').trim();
+  if (!message || message.length > 1000) {
+    throw new HttpsError('invalid-argument', 'Enter a message up to 1000 characters.');
+  }
+  const profile = await db.doc(`users/${uid}`).get();
+  if (!profile.exists) throw new HttpsError('not-found', 'User profile was not found.');
+  await sendAiUserNotification(
+    uid,
+    'A message from the LaiTech AI team',
+    message,
+    actor.uid
+  );
+  return { uid, sent: true };
+});
+
 exports.reviewTranslationFeedback = onCall(async request => {
   const actor = await requireEditor(request);
   const feedbackId = validUid(request.data?.feedbackId);
@@ -593,6 +611,12 @@ exports.saveTranslationFeedback = onCall(async request => {
     throw new HttpsError('invalid-argument', 'A correction is required when the translation is marked incorrect.');
   if (correction.length > 1000) throw new HttpsError('invalid-argument', 'The correction is too long.');
   const profile = await db.doc(`users/${request.auth.uid}`).get();
+  if (response === 'no' && correction) {
+    await db.doc(`users/${request.auth.uid}`).set({
+      aiContributor: true,
+      aiContributionCount: FieldValue.increment(1)
+    }, { merge: true });
+  }
   const feedback = feedbackId ? db.doc(`aiFeedback/${feedbackId}`) : null;
   const existing = feedback ? await feedback.get() : null;
   if (feedbackId && !existing?.exists)

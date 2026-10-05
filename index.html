@@ -1207,7 +1207,7 @@
           margin-bottom: 12px;
         }
         .stats #mode {
-          font-size: 0.92rem;
+          font-size: 1rem;
           letter-spacing: -0.03em;
         }
         .brand {
@@ -1599,6 +1599,104 @@
         background: var(--g);
         border-color: var(--g);
       }
+      .ai-users-tab {
+        border: 1px solid transparent;
+        border-radius: 9px;
+        font-weight: 800;
+      }
+      .ai-users-tab.active {
+        color: #fff;
+        background: var(--g);
+        border-color: var(--g);
+      }
+      .ai-user-card {
+        margin-top: 9px;
+        overflow: hidden;
+        border: 1px solid var(--l);
+        border-radius: 14px;
+        background: #fff;
+      }
+      .ai-user-summary {
+        display: grid;
+        width: 100%;
+        grid-template-columns: 42px minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 10px;
+        padding: 12px;
+        border: 0;
+        background: linear-gradient(145deg, #fff, #f1f8f4);
+        text-align: left;
+        cursor: pointer;
+      }
+      .ai-user-summary img {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        object-fit: cover;
+        background: #e5f4eb;
+      }
+      .ai-user-summary strong,
+      .ai-user-summary small {
+        display: block;
+        overflow-wrap: anywhere;
+      }
+      .ai-user-summary small {
+        margin-top: 3px;
+        color: var(--m);
+      }
+      .ai-user-tier {
+        padding: 4px 8px;
+        border-radius: 999px;
+        color: #fff;
+        background: var(--g);
+        font-size: 0.72rem;
+        font-weight: 800;
+      }
+      .ai-user-tier.pro {
+        background: #7b55b8;
+      }
+      .ai-user-details {
+        padding: 12px;
+        border-top: 1px solid var(--l);
+      }
+      .ai-user-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 10px;
+      }
+      .ai-summary-card {
+        border: 1px solid var(--l);
+        border-radius: 12px;
+        background: #fff;
+        cursor: pointer;
+        text-align: left;
+      }
+      .profile-badge-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 6px;
+      }
+      .profile-badge-list .achievement {
+        display: inline-flex;
+        align-items: center;
+        padding: 5px 9px;
+        border: 1px solid #b9dfc9;
+        border-radius: 999px;
+        color: var(--g);
+        background: #eef8f2;
+        font-size: .78rem;
+        font-weight: 800;
+      }
+      .share-achievement {
+        padding: 8px 13px;
+        border: 1px solid var(--g);
+        border-radius: 10px;
+        color: var(--g);
+        background: #f1fbf5;
+        font-weight: 800;
+      }
       .ai-limit-controls {
         display: flex;
         flex-wrap: wrap;
@@ -1626,6 +1724,12 @@
         border-radius: 12px;
         background: #fffdf9;
       }
+      .summary-grid > button {
+        min-width: 0;
+        padding: 12px;
+        color: inherit;
+        font: inherit;
+      }
       .summary-grid p {
         margin-bottom: 0;
         overflow-wrap: anywhere;
@@ -1634,6 +1738,37 @@
         display: flex;
         gap: 8px;
         align-items: stretch;
+      }
+      .citizenship-summary {
+        display: grid !important;
+        grid-template-columns: minmax(0, 2fr) minmax(100px, 1fr) auto;
+        gap: 10px;
+        align-items: center;
+      }
+      .citizenship-summary > b,
+      .citizenship-summary > .status {
+        min-width: 0;
+        overflow-wrap: anywhere;
+      }
+      .citizenship-summary > div {
+        justify-content: flex-end;
+        flex-wrap: wrap;
+      }
+      @media (max-width: 600px) {
+        .citizenship-summary {
+          grid-template-columns: minmax(0, 1fr) minmax(75px, .8fr) auto;
+          gap: 6px;
+        }
+        .citizenship-summary > div {
+          gap: 4px;
+        }
+        .citizenship-summary .plain {
+          padding: 5px 2px;
+          font-size: .8rem;
+        }
+        .summary-grid {
+          grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+        }
       }
       .translator-form input {
         min-width: 0;
@@ -2698,14 +2833,14 @@
               aria-live="polite"
             ></div>
             <form id="translator-form" class="translator-form">
-              <input
+              <textarea
                 id="translator-input"
+                rows="3"
                 maxlength="10000"
-                autocomplete="off"
                 placeholder="Type Hakha Chin here…"
                 aria-label="Hakha Chin phrase"
                 required
-              />
+              ></textarea>
               <button class="btn" type="submit">Send</button>
             </form>
             <p id="translator-status" class="status"></p>
@@ -3132,6 +3267,7 @@
             <div class="tabs" role="tablist">
               <button
                 class="plain ai-users-tab active"
+                role="tab"
                 data-ai-users-tab="users"
                 type="button"
               >
@@ -3139,6 +3275,7 @@
               </button>
               <button
                 class="plain ai-users-tab"
+                role="tab"
                 data-ai-users-tab="summary"
                 type="button"
               >
@@ -5143,6 +5280,16 @@
             id: item.id,
             ...item.data(),
           }));
+          const profileSnapshot = await getDocs(collection(db, "users"));
+          const profileAvatars = new Map(
+            profileSnapshot.docs.map((item) => [
+              item.id,
+              item.data().avatar || item.data().avatarURL || item.data().photoURL || "",
+            ]),
+          );
+          users.forEach((item) => {
+            item.avatar = profileAvatars.get(item.id) || item.avatar || "";
+          });
           const totalRequests = users.reduce(
             (sum, item) => sum + Number(item.requestCount || 0),
             0,
@@ -5152,8 +5299,14 @@
               Number(item.dailyRequestCount || 0) >=
               Number(item.requestLimit || 20),
           ).length;
+          const dailyUsers = users.filter(
+            (item) =>
+              item.lastUsedAt?.toMillis?.() > Date.now() - 24 * 60 * 60 * 1000,
+          ).length;
           $("ai-users-summary").innerHTML =
-            "<div><b>Top users</b><p>" +
+            '<button class="ai-summary-card" data-ai-segment="all"><b>Total users</b><p>' +
+            users.length +
+            '</p></button><button class="ai-summary-card" data-ai-segment="top"><b>Top users</b><p>' +
             esc(
               [...users]
                 .sort(
@@ -5164,36 +5317,52 @@
                 .map((item) => item.name || item.email || "Learner")
                 .join(", ") || "None yet",
             ) +
-            "</p></div><div><b>Frequent limit users</b><p>" +
+            '</p></button><button class="ai-summary-card" data-ai-segment="limit"><b>Frequent limit users</b><p>' +
             frequentLimitUsers +
-            "</p></div><div><b>Daily users</b><p>" +
-            users.filter(
-              (item) =>
-                item.lastUsedAt?.toMillis?.() >
-                Date.now() - 24 * 60 * 60 * 1000,
-            ).length +
-            "</p></div><div><b>Total requests</b><p>" +
+            '</p></button><button class="ai-summary-card" data-ai-segment="daily"><b>Daily users</b><p>' +
+            dailyUsers +
+            "</p></button><div><b>Total requests</b><p>" +
             totalRequests +
             "</p></div>";
+          let activeUserFilter = "all";
           const renderUsers = () => {
             const search = $("ai-user-search").value.trim().toLowerCase();
-            const visibleUsers = users.filter((item) =>
-              String(item.name || item.email || "")
+            const visibleUsers = users.filter((item) => {
+              const matchesSearch = String(item.name || item.email || "")
                 .toLowerCase()
-                .includes(search),
-            );
+                .includes(search);
+              const matchesSegment =
+                activeUserFilter === "all" ||
+                (activeUserFilter === "limit" &&
+                  Number(item.dailyRequestCount || 0) >=
+                    Number(item.requestLimit || 20)) ||
+                (activeUserFilter === "daily" &&
+                  item.lastUsedAt?.toMillis?.() >
+                    Date.now() - 24 * 60 * 60 * 1000) ||
+                (activeUserFilter === "top" &&
+                  Number(item.requestCount || 0) > 0);
+              return matchesSearch && matchesSegment;
+            });
             list.innerHTML = visibleUsers.length
               ? visibleUsers
                   .map((item) => {
                     const data = item;
+                    const isPro =
+                      data.unlimitedRequests || data.unlimitedCharacters;
                     return (
-                      '<div class="card-inline-edit ai-user-limit-row" data-id="' +
+                      '<div class="ai-user-card ai-user-limit-row" data-id="' +
                       esc(data.id) +
-                      '"><b>' +
+                      '"><button class="ai-user-summary" type="button"><img src="' +
+                      esc(data.avatar || "./icons/icon.svg") +
+                      '" alt="" onerror="this.src=\'./icons/icon.svg\'"><span><strong>' +
                       esc(data.name || "Unnamed learner") +
-                      '</b><span class="status">' +
-                      esc(data.email || "") +
-                      " · " +
+                      "</strong><small>" +
+                      esc(data.email || "No email address") +
+                      '</small></span><span class="ai-user-tier ' +
+                      (isPro ? "pro" : "") +
+                      '">' +
+                      (isPro ? "Pro" : "Free") +
+                      '</span></button><div class="ai-user-details hidden"><span class="status">' +
                       Number(data.requestCount || 0) +
                       " total requests · " +
                       Number(data.totalCharacters || 0) +
@@ -5214,12 +5383,58 @@
                       (data.unlimitedRequests ? "checked" : "") +
                       '> Unlimited requests</label><label><input class="ai-unlimited-characters" type="checkbox" ' +
                       (data.unlimitedCharacters ? "checked" : "") +
-                      '> Unlimited characters</label><button class="btn save-ai-limits" type="button">Save limits</button><button class="plain reset-ai-usage" type="button">Reset usage</button></div></div>'
+                      '> Unlimited characters</label><button class="btn save-ai-limits" type="button">Save limits</button><button class="plain reset-ai-usage" type="button">Reset usage</button></div><div class="ai-user-actions"><a class="plain" href="mailto:' +
+                      esc(data.email || "") +
+                      '">Email user</a><button class="plain notify-ai-user" type="button">Send direct message</button></div></div></div>'
                     );
                   })
                   .join("")
               : '<p class="status">No matching LaiTech AI users.</p>';
             bindAiUserActions();
+          };
+          $("ai-users-summary")
+            .querySelectorAll(".ai-summary-card")
+            .forEach((button) => {
+              button.onclick = () => {
+                activeUserFilter = button.dataset.aiSegment;
+                $("ai-user-search").value = "";
+                document.querySelector('[data-ai-users-tab="users"]').click();
+                renderUsers();
+              };
+            });
+          list.onclick = (event) => {
+            const summary = event.target.closest(".ai-user-summary");
+            if (summary) {
+              summary
+                .closest(".ai-user-card")
+                .querySelector(".ai-user-details")
+                .classList.toggle("hidden");
+              return;
+            }
+            const message = event.target.closest(".notify-ai-user");
+            if (message) {
+              const row = message.closest(".ai-user-limit-row");
+              const recipient = users.find(
+                (item) => item.id === row.dataset.id,
+              );
+              const text = window.prompt(
+                "Message to " + (recipient?.name || "this learner") + ":",
+              );
+              if (!text?.trim()) return;
+              httpsCallable(
+                functions,
+                "sendAiUserOfferNotification",
+              )({
+                uid: row.dataset.id,
+                message: text.trim(),
+              })
+                .then(() => {
+                  message.textContent = "Sent";
+                })
+                .catch(() => {
+                  message.textContent = "Could not send";
+                });
+            }
           };
           const bindAiUserActions = () => {
             list.querySelectorAll(".save-ai-limits").forEach((button) => {
@@ -5909,7 +6124,7 @@
         .querySelector("main")
         .insertAdjacentHTML(
           "afterbegin",
-          '<section id="profileview" class="view"><div class="panel"><div class="profile-top"><button id="profile-avatar-button" class="profile-avatar-button" type="button" aria-label="Change profile picture"><img id="profile-avatar" class="profile-avatar" alt="Your profile picture"><span aria-hidden="true">📷</span></button><div class="profile-identity"><div id="profile-name-row" class="profile-name-row"><h2 id="profile-name" class="profile-name">Learner</h2><button id="edit-profile-name" class="plain profile-edit-name" type="button" aria-label="Edit display name">✎</button><button id="save-profile-name" class="btn hidden" type="button">Save</button><button id="cancel-profile-name" class="plain hidden" type="button">Cancel</button></div><span id="profile-badge" class="achievement"></span><input id="avatar-file" type="file" accept="image/*" hidden></div><p id="profile-message" class="status"></p><button id="share-badge" type="button" class="plain">Share achievement</button></div></div></section>',
+          '<section id="profileview" class="view"><div class="panel"><div class="profile-top"><button id="profile-avatar-button" class="profile-avatar-button" type="button" aria-label="Change profile picture"><img id="profile-avatar" class="profile-avatar" alt="Your profile picture"><span aria-hidden="true">📷</span></button><div class="profile-identity"><div id="profile-name-row" class="profile-name-row"><h2 id="profile-name" class="profile-name">Learner</h2><button id="edit-profile-name" class="plain profile-edit-name" type="button" aria-label="Edit display name">✎</button><button id="save-profile-name" class="btn hidden" type="button">Save</button><button id="cancel-profile-name" class="plain hidden" type="button">Cancel</button></div><div id="profile-badge" class="profile-badge-list"></div><input id="avatar-file" type="file" accept="image/*" hidden></div><p id="profile-message" class="status"></p><button id="share-badge" type="button" class="plain share-achievement">Share achievement</button></div></div></section>',
         );
       document
         .querySelector("#profileview .panel .profile-top")
@@ -5929,10 +6144,67 @@
         "beforebegin",
         '<button id="profile" class="btn hidden">My profile</button>',
       );
+      $("share-badge").onclick = async (event) => {
+        event.preventDefault();
+        try {
+          const achievements = await import("./achievements.js?v=20261005-preview");
+          achievements.showAchievements();
+        } catch (error) {
+          $("profile-message").textContent =
+            "Could not prepare achievement image: " + error.message;
+        }
+      };
       let profileV2 = {},
         notificationsV2 = [],
         personalNotificationsV2 = [],
         knownUserIdsV2 = new Set();
+      const notificationHistoryKeyV2 = "cawnnak-notification-history";
+      function saveNotificationHistoryV2(item) {
+        try {
+          const history = JSON.parse(
+            localStorage.getItem(notificationHistoryKeyV2) || "[]",
+          );
+          history.unshift({
+            title: item.title || "Notification",
+            body: item.body || item.email || "",
+            viewedAt: new Date().toISOString(),
+          });
+          localStorage.setItem(
+            notificationHistoryKeyV2,
+            JSON.stringify(history.slice(0, 100)),
+          );
+        } catch (error) {
+          console.warn("Could not save notification history", error);
+        }
+      }
+      function showNotificationHistoryV2() {
+        let history = [];
+        try {
+          history = JSON.parse(
+            localStorage.getItem(notificationHistoryKeyV2) || "[]",
+          );
+        } catch (error) {
+          console.warn("Could not read notification history", error);
+        }
+        const panel = $("notification-panel");
+        panel.innerHTML =
+          '<div class="head"><b>Notification history</b><button id="close-notification-history" class="plain">Back</button></div>' +
+          (history.length
+            ? history
+                .map(
+                  (item) =>
+                    '<div class="notification-item"><b>' +
+                    esc(item.title) +
+                    "</b><br><small>" +
+                    esc(item.body) +
+                    " · " +
+                    esc(new Date(item.viewedAt).toLocaleString()) +
+                    "</small></div>",
+                )
+                .join("")
+            : '<p class="status">No notification history yet.</p>');
+        $("close-notification-history").onclick = () => notifyViewV2();
+      }
       function badgeV2() {
         return profileV2.aiUser
           ? "LaiTech AI learner"
@@ -5980,7 +6252,13 @@
         $("edit-profile-name").classList.remove("hidden");
         $("save-profile-name").classList.add("hidden");
         $("cancel-profile-name").classList.add("hidden");
-        $("profile-badge").textContent = badgeV2();
+        const profileBadges = [badgeV2()];
+        if (profileV2.aiUser) profileBadges.push("🤖 LaiTech AI learner");
+        if (profileV2.aiContributor) profileBadges.push("💡 AI contributor");
+        $("profile-badge").innerHTML = profileBadges
+          .filter((badge, index) => profileBadges.indexOf(badge) === index)
+          .map((badge) => '<span class="achievement">' + esc(badge) + "</span>")
+          .join("");
         $("profile-joined").textContent =
           "Joined " + dateV2(profileV2.createdAt);
         $("profile-metrics").innerHTML =
@@ -6012,6 +6290,11 @@
             "🤖 LaiTech AI learner",
             "Explore phrases with LaiTech AI",
           ],
+          [
+            profileV2.aiContributor,
+            "💡 AI contributor",
+            "Help improve LaiTech AI translations",
+          ],
           [learned >= 1, "🌱 First steps", "Study your first phrase"],
           [learned >= 20, "📚 Dedicated learner", "Study 20 phrases"],
           [streak >= 3, "🔥 On a streak", "Learn for three days in a row"],
@@ -6038,7 +6321,7 @@
           (item) => !item.readBy?.[user.uid],
         );
         panel.innerHTML =
-          '<div class="head"><b>Notifications</b><button id="close-notifications" class="plain">Close</button></div>' +
+          '<div class="head"><b>Notifications</b><span><button id="notification-history" class="plain">History</button><button id="close-notifications" class="plain">Close</button></span></div>' +
           (notificationsV2.length + personal.length
             ? notificationsV2
                 .map(
@@ -6068,12 +6351,17 @@
                 .join("")
             : '<p class="status">No new user registrations.</p>');
         $("close-notifications").onclick = () => panel.classList.add("hidden");
+        $("notification-history").onclick = showNotificationHistoryV2;
         document.querySelectorAll(".notification-registration").forEach(
           (button) =>
             (button.onclick = () => {
               notificationsV2 = notificationsV2.filter(
                 (item) => item.id !== button.dataset.id,
               );
+              saveNotificationHistoryV2({
+                title: "New user registration",
+                body: button.innerText,
+              });
               $("notification-badge").classList.toggle(
                 "hidden",
                 !notificationsV2.length,
@@ -6094,6 +6382,7 @@
               personalNotificationsV2 = personalNotificationsV2.filter(
                 (value) => value.id !== item.id,
               );
+              saveNotificationHistoryV2(item);
               await setDoc(
                 doc(db, "notifications", item.id),
                 { readBy: { [user.uid]: true } },
@@ -6274,15 +6563,6 @@
           $("profile-message").textContent =
             "Could not save name: " + error.message;
         }
-      };
-      $("share-badge").onclick = async () => {
-        let text = "I am a " + badgeV2() + " in Mirang Holh Cawnnak!";
-        try {
-          if (navigator.share)
-            await navigator.share({ title: "My learning achievement", text });
-          else await navigator.clipboard.writeText(text);
-          $("profile-message").textContent = "Achievement ready to share.";
-        } catch (error) {}
       };
       if (ready)
         onAuthStateChanged(auth, async (account) => {
@@ -7289,6 +7569,7 @@
     <script type="module" src="./content-tools.js"></script>
     <script type="module" src="./secure-quiz.js"></script>
     <script src="./learning-progress.js"></script>
+    <script type="module" src="./achievements.js?v=20261005-preview"></script>
     <script type="module" src="./learning-sync.js"></script>
     <script type="module" src="./account-controls.js"></script>
     <script src="./firebase-security-config.js"></script>

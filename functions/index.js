@@ -43,6 +43,15 @@ async function requireAdmin(request) {
   return request.auth;
 }
 
+async function requireEditor(request) {
+  if (!request.auth) throw new HttpsError('unauthenticated', 'Sign in is required.');
+  const profile = await db.doc(`users/${request.auth.uid}`).get();
+  if (!profile.exists || profile.get('disabled') === true || !['admin', 'editor'].includes(profile.get('role'))) {
+    throw new HttpsError('permission-denied', 'Editor or administrator access is required.');
+  }
+  return request.auth;
+}
+
 function validUid(uid) {
   if (typeof uid !== 'string' || !uid.trim()) throw new HttpsError('invalid-argument', 'A valid user id is required.');
   return uid.trim();
@@ -58,6 +67,18 @@ async function writeAudit({ action, entityType, entityId, before = null, after =
     actorUid,
     actorEmail,
     actorName,
+    createdAt: FieldValue.serverTimestamp()
+  });
+}
+
+async function sendAiUserNotification(uid, title, body, actorUid) {
+  await db.collection('notifications').add({
+    type: 'ai-quota',
+    targetUid: uid,
+    title,
+    body,
+    actorUid,
+    readBy: {},
     createdAt: FieldValue.serverTimestamp()
   });
 }
@@ -81,6 +102,39 @@ async function ensureRateLimit(uid, operation, limit = 10, windowMs = 60_000) {
       startedAt: count ? state.startedAt : Timestamp.now(),
       expiresAt: Timestamp.fromMillis(now + windowMs)
     }, { merge: true });
+  });
+}
+
+async function reserveAiUsage(uid, sourceLength) {
+  const ref = db.doc(`aiUsers/${uid}`);
+  return db.runTransaction(async transaction => {
+    const snapshot = await transaction.get(ref);
+    const data = snapshot.exists ? snapshot.data() : {};
+    const now = Date.now();
+    const startedAt = data.usageStartedAt?.toMillis?.() || 0;
+    const active = startedAt && now - startedAt < 24 * 60 * 60 * 1000;
+    const requestCount = active ? Number(data.dailyRequestCount || 0) : 0;
+    const characterCount = active ? Number(data.dailyCharacterCount || 0) : 0;
+    const requestLimit = Number.isFinite(Number(data.requestLimit)) ? Number(data.requestLimit) : 20;
+    const characterLimit = Number.isFinite(Number(data.characterLimit)) ? Number(data.characterLimit) : 500;
+    const unlimitedRequests = data.unlimitedRequests === true || requestLimit < 0;
+    const unlimitedCharacters = data.unlimitedCharacters === true || characterLimit < 0;
+    if (!unlimitedRequests && requestCount >= requestLimit) {
+      throw new HttpsError('resource-exhausted', 'Your daily LaiTech AI request limit has been reached.');
+    }
+    if (!unlimitedCharacters && sourceLength > characterLimit) {
+      throw new HttpsError('resource-exhausted', `Your LaiTech AI character limit is ${characterLimit} characters per request.`);
+    }
+    const nextData = {
+      dailyRequestCount: requestCount + 1,
+      dailyCharacterCount: characterCount + sourceLength,
+      totalCharacters: FieldValue.increment(sourceLength),
+      requestCount: FieldValue.increment(1),
+      usageStartedAt: active ? data.usageStartedAt : Timestamp.now(),
+      lastUsedAt: FieldValue.serverTimestamp()
+    };
+    transaction.set(ref, nextData, { merge: true });
+    return { requestLimit, characterLimit, unlimitedRequests, unlimitedCharacters };
   });
 }
 
@@ -156,6 +210,45 @@ exports.getLeaderboard = onRequest({ cors: true }, async (request, response) => 
   }
 });
 
+exports.getAiContributors = onRequest({ cors: true }, async (request, response) => {
+  try {
+    const snapshot = await db.collection('aiFeedback').limit(5000).get();
+    const contributors = new Map();
+    snapshot.docs.forEach(item => {
+      const data = item.data();
+      if (!data.correction) return;
+      const name = String(data.userName || 'Learner');
+      const current = contributors.get(name) || {
+        name,
+        userId: String(data.userId || ''),
+        contributions: 0,
+        verified: 0
+      };
+      current.contributions += 1;
+      if (data.verified === true || data.reviewStatus === 'verified') current.verified += 1;
+      contributors.set(name, current);
+    });
+    const contributorsWithAvatars = await Promise.all([...contributors.values()].map(async contributor => {
+      if (!contributor.userId) return { ...contributor, avatar: '' };
+      const profile = await db.doc(`users/${contributor.userId}`).get();
+      const data = profile.exists ? profile.data() : {};
+      return {
+        ...contributor,
+        avatar: String(data.avatar || data.avatarURL || data.photoURL || '')
+      };
+    }));
+    response.set('Cache-Control', 'no-store, max-age=0');
+    response.json({
+      contributors: contributorsWithAvatars
+        .sort((a, b) => b.contributions - a.contributions)
+        .slice(0, 50)
+    });
+  } catch (error) {
+    console.error('Could not load AI contributors', error);
+    response.status(500).json({ error: 'AI contributors are unavailable.' });
+  }
+});
+
 exports.getCitizenshipOfficials = onRequest({ cors: true }, async (request, response) => {
   const state = String(request.query.state || '').trim();
   const apiKey = process.env.OPENSTATES_API_KEY;
@@ -212,9 +305,12 @@ exports.translateHakhaChin = onRequest({ cors: true }, async (request, response)
     `guest_${String(request.headers['x-forwarded-for'] || request.ip || 'unknown')
       .split(',')[0].replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 80)}`;
   if (!sourceText) return response.status(400).json({ error: 'Enter a Hakha Chin word or phrase.' });
-  if (sourceText.length > 500) return response.status(400).json({ error: 'Please keep each phrase under 500 characters.' });
+  if (sourceText.length > 10000) return response.status(400).json({ error: 'Please keep each phrase under 10,000 characters.' });
   try {
-    await ensureRateLimit(rateKey, 'translateHakhaChin', 20, 24 * 60 * 60 * 1000);
+    if (rateKey !== translationUser.uid) {
+      await ensureRateLimit(rateKey, 'translateHakhaChin', 20, 24 * 60 * 60 * 1000);
+    }
+    await reserveAiUsage(translationUser.uid, sourceText.length);
     const normalizedSourceText = sourceText.toLocaleLowerCase().replace(/\s+/g, ' ').trim();
     const cached = await db.collection('translationMemory')
       .where('normalizedSourceText', '==', normalizedSourceText)
@@ -225,12 +321,17 @@ exports.translateHakhaChin = onRequest({ cors: true }, async (request, response)
     );
     if (cachedDocument) {
       const translatedText = String(cachedDocument.get('translatedText') || '').trim();
+      const englishText = translatedText;
+      const hakhaChinText = sourceText;
       await db.collection('translationSearches').add({
         sourceText,
         normalizedSourceText,
-        sourceLanguage: 'cnh',
+        sourceLanguage: inputLanguage,
         targetLanguage: 'en',
         translatedText,
+        inputLanguage: 'cnh',
+        englishText,
+        hakhaChinText,
         provider: 'translation-memory',
         verified: true,
         qualityStatus: 'verified',
@@ -243,37 +344,60 @@ exports.translateHakhaChin = onRequest({ cors: true }, async (request, response)
         userId: translationUser.uid,
         name: translationUser.name,
         email: translationUser.email,
-        lastUsedAt: FieldValue.serverTimestamp(),
-        requestCount: FieldValue.increment(1)
+        lastUsedAt: FieldValue.serverTimestamp()
+      }, { merge: true });
+      await db.doc(`users/${translationUser.uid}`).set({
+        aiUser: true,
+        aiFirstUsedAt: FieldValue.serverTimestamp()
       }, { merge: true });
       const feedback = await db.collection('aiFeedback').add({
         sourceText,
         translatedText,
+        inputLanguage: 'cnh',
+        englishText,
+        hakhaChinText,
         response: null,
         correction: '',
+        reviewStatus: 'unreviewed',
+        verified: false,
         userId: translationUser.uid,
         userName: translationUser.name,
         createdAt: FieldValue.serverTimestamp(),
         schemaVersion: 1
       });
-      return response.json({ translatedText, sourceLanguage: 'cnh', targetLanguage: 'en', cached: true, feedbackId: feedback.id });
+      return response.json({ translatedText, sourceLanguage: 'cnh', targetLanguage: 'en', inputLanguage: 'cnh', englishText, hakhaChinText, cached: true, feedbackId: feedback.id });
     }
     if (!apiKey) return response.status(503).json({ error: 'Translation is not configured yet.' });
+    let inputLanguage = 'cnh';
+    try {
+      const detection = await fetch(`https://translation.googleapis.com/language/translate/v2/detect?key=${encodeURIComponent(apiKey)}&q=${encodeURIComponent(sourceText)}`);
+      const detectionPayload = await detection.json();
+      const detected = String(detectionPayload.data?.detections?.[0]?.[0]?.language || '').toLowerCase();
+      if (detected === 'en') inputLanguage = 'en';
+    } catch (error) {
+      console.warn('Could not detect LaiTech AI input language', error.message);
+    }
+    const targetLanguage = inputLanguage === 'en' ? 'cnh' : 'en';
     const result = await fetch(`https://translation.googleapis.com/language/translate/v2?key=${encodeURIComponent(apiKey)}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ q: sourceText, source: 'cnh', target: 'en', format: 'text' })
+      body: JSON.stringify({ q: sourceText, ...(inputLanguage === 'cnh' ? { source: 'cnh' } : {}), target: targetLanguage, format: 'text' })
     });
     if (!result.ok) throw new Error(`Google Translation returned ${result.status}`);
     const payload = await result.json();
     const translatedText = String(payload.data?.translations?.[0]?.translatedText || '').trim();
     if (!translatedText) throw new Error('Google Translation returned no translation.');
+    const englishText = inputLanguage === 'en' ? sourceText : translatedText;
+    const hakhaChinText = inputLanguage === 'en' ? translatedText : sourceText;
     await db.collection('translationSearches').add({
       sourceText,
       normalizedSourceText,
-      sourceLanguage: 'cnh',
-      targetLanguage: 'en',
+      sourceLanguage: inputLanguage,
+      targetLanguage,
       translatedText,
+      inputLanguage,
+      englishText,
+      hakhaChinText,
       provider: 'google-cloud-translation',
       model: 'nmt',
       verified: false,
@@ -287,20 +411,28 @@ exports.translateHakhaChin = onRequest({ cors: true }, async (request, response)
       userId: translationUser.uid,
       name: translationUser.name,
       email: translationUser.email,
-      lastUsedAt: FieldValue.serverTimestamp(),
-      requestCount: FieldValue.increment(1)
+      lastUsedAt: FieldValue.serverTimestamp()
+    }, { merge: true });
+    await db.doc(`users/${translationUser.uid}`).set({
+      aiUser: true,
+      aiFirstUsedAt: FieldValue.serverTimestamp()
     }, { merge: true });
     const feedback = await db.collection('aiFeedback').add({
       sourceText,
       translatedText,
+      inputLanguage,
+      englishText,
+      hakhaChinText,
       response: null,
       correction: '',
+      reviewStatus: 'unreviewed',
+      verified: false,
       userId: translationUser.uid,
       userName: translationUser.name,
       createdAt: FieldValue.serverTimestamp(),
       schemaVersion: 1
     });
-    response.json({ translatedText, sourceLanguage: 'cnh', targetLanguage: 'en', feedbackId: feedback.id });
+    response.json({ translatedText, sourceLanguage: inputLanguage, targetLanguage, inputLanguage, englishText, hakhaChinText, feedbackId: feedback.id });
   } catch (error) {
     if (error.code === 'resource-exhausted') return response.status(429).json({ error: error.message });
     console.error('Could not translate Hakha Chin', error);
@@ -309,7 +441,7 @@ exports.translateHakhaChin = onRequest({ cors: true }, async (request, response)
 });
 
 exports.saveVerifiedTranslation = onCall(async request => {
-  await requireAdmin(request);
+  await requireEditor(request);
   const data = request.data || {};
   const sourceText = String(data.sourceText || '').trim();
   const translatedText = String(data.translatedText || '').trim();
@@ -333,6 +465,121 @@ exports.saveVerifiedTranslation = onCall(async request => {
   return { id };
 });
 
+exports.setAiUserLimits = onCall(async request => {
+  await requireAdmin(request);
+  const uid = validUid(request.data?.uid);
+  const unlimitedRequests = request.data?.unlimitedRequests === true;
+  const unlimitedCharacters = request.data?.unlimitedCharacters === true;
+  const requestLimit = unlimitedRequests ? -1 : Number(request.data?.requestLimit);
+  const characterLimit = unlimitedCharacters ? -1 : Number(request.data?.characterLimit);
+  if ((!unlimitedRequests && (!Number.isInteger(requestLimit) || requestLimit < 0 || requestLimit > 100000))
+    || (!unlimitedCharacters && (!Number.isInteger(characterLimit) || characterLimit < 1 || characterLimit > 1000000))) {
+    throw new HttpsError('invalid-argument', 'Enter valid request and character limits, or select unlimited.');
+  }
+  const ref = db.doc(`aiUsers/${uid}`);
+  const profile = await db.doc(`users/${uid}`).get();
+  if (!profile.exists) throw new HttpsError('not-found', 'User profile was not found.');
+  await ref.set({
+    userId: uid,
+    name: String(profile.get('displayName') || profile.get('email') || ''),
+    email: String(profile.get('email') || ''),
+    requestLimit,
+    characterLimit,
+    unlimitedRequests,
+    unlimitedCharacters,
+    limitsUpdatedBy: request.auth.uid,
+    limitsUpdatedAt: FieldValue.serverTimestamp()
+  }, { merge: true });
+  await sendAiUserNotification(
+    uid,
+    'A LaiTech AI quota update for you',
+    unlimitedRequests || unlimitedCharacters
+      ? 'Congratulations! Your LaiTech AI access was upgraded with complimentary unlimited usage for the selected quota.'
+      : `Congratulations! Your LaiTech AI quota was updated to ${requestLimit} requests and ${characterLimit} characters per request. Thank you for learning with us.`,
+    request.auth.uid
+  );
+  return { uid, requestLimit, characterLimit, unlimitedRequests, unlimitedCharacters };
+});
+
+exports.resetAiUserUsage = onCall(async request => {
+  await requireAdmin(request);
+  const uid = validUid(request.data?.uid);
+  const ref = db.doc(`aiUsers/${uid}`);
+  const profile = await db.doc(`users/${uid}`).get();
+  if (!profile.exists) throw new HttpsError('not-found', 'User profile was not found.');
+  await ref.set({
+    dailyRequestCount: 0,
+    dailyCharacterCount: 0,
+    usageStartedAt: Timestamp.now(),
+    usageResetAt: FieldValue.serverTimestamp(),
+    usageResetBy: request.auth.uid
+  }, { merge: true });
+  await sendAiUserNotification(
+    uid,
+    'Your LaiTech AI usage was reset',
+    'Congratulations! Your daily LaiTech AI usage was reset as a complimentary service. Thank you for being part of our learning community.',
+    request.auth.uid
+  );
+  return { uid, reset: true };
+});
+
+exports.reviewTranslationFeedback = onCall(async request => {
+  const actor = await requireEditor(request);
+  const feedbackId = validUid(request.data?.feedbackId);
+  const ref = db.doc(`aiFeedback/${feedbackId}`);
+  const snapshot = await ref.get();
+  if (!snapshot.exists) throw new HttpsError('not-found', 'Feedback record was not found.');
+  const before = snapshot.data();
+  const sourceText = String(before.sourceText || '').trim();
+  const translatedText = String(request.data?.translatedText || before.correction || before.translatedText || '').trim();
+  if (!sourceText || !translatedText || sourceText.length > 500 || translatedText.length > 1000) {
+    throw new HttpsError('invalid-argument', 'A valid translation is required.');
+  }
+  const inputLanguage = before.inputLanguage || 'cnh';
+  const englishText = inputLanguage === 'en' ? sourceText : translatedText;
+  const hakhaChinText = inputLanguage === 'en' ? translatedText : sourceText;
+  const now = {
+    translatedText,
+    englishText,
+    hakhaChinText,
+    reviewStatus: 'verified',
+    verified: true,
+    verifiedBy: actor.uid,
+    verifiedAt: FieldValue.serverTimestamp(),
+    reviewedAt: FieldValue.serverTimestamp()
+  };
+  await ref.set(now, { merge: true });
+  const memoryId = `${hakhaChinText.toLocaleLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 80)}-cnh-en`;
+  await db.collection('translationMemory').doc(memoryId).set({
+    sourceText: hakhaChinText,
+    normalizedSourceText: hakhaChinText.toLocaleLowerCase().replace(/\s+/g, ' ').trim(),
+    sourceLanguage: 'cnh',
+    targetLanguage: 'en',
+    translatedText: englishText,
+    inputLanguage,
+    englishText,
+    hakhaChinText,
+    provider: 'human-review',
+    verified: true,
+    qualityStatus: 'verified',
+    schemaVersion: 1,
+    verifiedBy: actor.uid,
+    verifiedAt: FieldValue.serverTimestamp(),
+    updatedAt: FieldValue.serverTimestamp()
+  }, { merge: true });
+  await writeAudit({
+    action: 'aiFeedback.verify',
+    entityType: 'aiFeedback',
+    entityId: feedbackId,
+    before,
+    after: { ...before, ...now, translatedText },
+    actorUid: actor.uid,
+    actorEmail: actor.token.email || null,
+    actorName: actor.token.name || null
+  });
+  return { verified: true, feedbackId };
+});
+
 exports.saveTranslationFeedback = onCall(async request => {
   if (!request.auth) throw new HttpsError('unauthenticated', 'Sign in is required.');
   const sourceText = String(request.data?.sourceText || '').trim();
@@ -353,6 +600,8 @@ exports.saveTranslationFeedback = onCall(async request => {
   if (existing?.exists && existing.get('userId') !== request.auth.uid)
     throw new HttpsError('permission-denied', 'You cannot update another user’s feedback.');
   if (existing?.exists) {
+    if (existing.get('verified') === true)
+      throw new HttpsError('failed-precondition', 'This translation has already been verified.');
     await feedback.set({
       response,
       correction: response === 'no' ? correction : '',
@@ -366,8 +615,11 @@ exports.saveTranslationFeedback = onCall(async request => {
       translatedText,
       response,
       correction: response === 'no' ? correction : '',
+      reviewStatus: 'unreviewed',
+      verified: false,
       userId: request.auth.uid,
       userName: String(profile.data()?.displayName || request.auth.token.name || ''),
+      userEmail: String(profile.data()?.email || request.auth.token.email || ''),
       createdAt: FieldValue.serverTimestamp(),
       schemaVersion: 1
     });

@@ -71,7 +71,14 @@
     byId('continue-copy').textContent = total
       ? `You have studied ${total} phrase${total === 1 ? '' : 's'}. Choose a topic to keep building your confidence.`
       : 'Start with a category that feels useful for today.';
-    byId('continue-learning').onclick = () => document.querySelector('[data-v="categories"]')?.click();
+    byId('continue-learning').onclick = () => {
+      const lastCategory = localStorage.getItem('cawnnak-last-category');
+      if (lastCategory) {
+        window.dispatchEvent(new CustomEvent('cawnnak-continue-category', { detail: lastCategory }));
+      } else {
+        window.dispatchEvent(new CustomEvent('cawnnak-open-view', { detail: 'track-choice' }));
+      }
+    };
   }
 
   async function loadLeaderboard() {
@@ -101,7 +108,7 @@
     setDailyPhrase();
     setContinueLearning();
     loadLeaderboard();
-    byId('view-leaderboard').onclick = () => window.dispatchEvent(new CustomEvent('cawnnak-open-view', { detail: 'top-learners' }));
+    byId('view-leaderboard').onclick = () => window.dispatchEvent(new CustomEvent('cawnnak-open-view', { detail: 'community' }));
     setInterval(() => setDailyPhrase(), DAILY_REFRESH_MS);
     document.addEventListener('visibilitychange', () => {
       if (!document.hidden && Date.now() - lastDailyFetchAt >= DAILY_REFRESH_MS) setDailyPhrase();

@@ -322,6 +322,122 @@
       .top-learners .panel {
         padding: 18px;
       }
+      .community-shell {
+        max-width: 760px;
+        margin: auto;
+      }
+      .community-tabs {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-bottom: 12px;
+        padding: 5px;
+        border: 1px solid var(--l);
+        border-radius: 15px;
+        background: #eef8f2;
+      }
+      .community-tab {
+        min-width: 0;
+        padding: 11px 10px;
+        border-radius: 11px;
+        color: var(--g);
+        font-weight: 800;
+        line-height: 1.2;
+      }
+      .community-tab.active {
+        color: #fff;
+        background: linear-gradient(135deg, var(--g), #2f8a63);
+        box-shadow: 0 5px 12px #17342b2b;
+      }
+      .community-panel {
+        display: grid;
+        gap: 12px;
+      }
+      .community-hero {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 18px 20px;
+        border: 1px solid #b9dfc9;
+        border-radius: 18px;
+        background: linear-gradient(135deg, #dff7e8, #fff8d9);
+        box-shadow: 0 12px 28px #17342b12;
+      }
+      .community-hero.contributors {
+        background: linear-gradient(135deg, #e8e1ff, #fff3d2);
+        border-color: #d6c9f2;
+      }
+      .community-trophy {
+        display: grid;
+        flex: 0 0 54px;
+        width: 54px;
+        height: 54px;
+        place-items: center;
+        border: 2px solid #e1b943;
+        border-radius: 50%;
+        background: #fff8d9;
+        font-size: 1.8rem;
+        box-shadow: 0 5px 12px #9b762633;
+      }
+      .community-hero h1 {
+        margin: 0 0 4px;
+        font-size: 1.45rem;
+      }
+      .community-hero p {
+        margin: 0;
+        line-height: 1.4;
+      }
+      .community-panel .panel {
+        padding: 16px;
+      }
+      .community-contributor-row {
+        grid-template-columns: 38px 44px minmax(0, 1fr);
+      }
+      .community-contributor-meta {
+        display: block;
+        margin-top: 3px;
+        color: var(--m);
+        font-size: 0.78rem;
+        font-weight: 600;
+      }
+      @media (max-width: 600px) {
+        .community-shell {
+          width: 100%;
+        }
+        .community-tabs {
+          position: sticky;
+          top: 4px;
+          z-index: 4;
+          margin-bottom: 10px;
+        }
+        .community-tab {
+          min-height: 45px;
+          padding: 9px 7px;
+          font-size: 0.82rem;
+        }
+        .community-hero {
+          align-items: flex-start;
+          padding: 15px;
+        }
+        .community-trophy {
+          flex-basis: 46px;
+          width: 46px;
+          height: 46px;
+          font-size: 1.5rem;
+        }
+        .community-hero h1 {
+          font-size: 1.2rem;
+        }
+        .community-hero p {
+          font-size: 0.84rem;
+        }
+        .community-panel .panel {
+          padding: 11px;
+        }
+        .community-contributor-row {
+          grid-template-columns: 31px 36px minmax(0, 1fr);
+        }
+      }
       .track-choice {
         max-width: 760px;
         margin: auto;
@@ -501,12 +617,15 @@
         white-space: nowrap;
       }
       .top-learner-avatar {
+        display: grid;
+        place-items: center;
         width: 38px;
         height: 38px;
         border: 2px solid #c4e5d1;
         border-radius: 50%;
         object-fit: cover;
         background: #e5f4eb;
+        font-size: 1.2rem;
       }
       .top-learner-row strong {
         overflow: hidden;
@@ -1470,9 +1589,46 @@
       }
       .tabs {
         display: flex;
+        flex-wrap: wrap;
         gap: 6px;
         margin: 12px 0;
         border-bottom: 1px solid var(--l);
+      }
+      .tabs [role="tab"].active {
+        color: #fff;
+        background: var(--g);
+        border-color: var(--g);
+      }
+      .ai-limit-controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: end;
+        margin-top: 10px;
+      }
+      .ai-limit-controls label {
+        display: grid;
+        gap: 3px;
+        font-size: 0.78rem;
+        color: var(--m);
+      }
+      .ai-limit-controls input[type="number"] {
+        width: 120px;
+      }
+      .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 10px;
+      }
+      .summary-grid > div {
+        padding: 12px;
+        border: 1px solid var(--l);
+        border-radius: 12px;
+        background: #fffdf9;
+      }
+      .summary-grid p {
+        margin-bottom: 0;
+        overflow-wrap: anywhere;
       }
       .translator-form {
         display: flex;
@@ -1498,7 +1654,11 @@
         border-radius: 22px;
         color: #fff;
         background:
-          radial-gradient(circle at 88% 10%, #f9d88955 0 54px, transparent 55px),
+          radial-gradient(
+            circle at 88% 10%,
+            #f9d88955 0 54px,
+            transparent 55px
+          ),
           linear-gradient(135deg, #1d3d3a, #6f4a69 58%, #bb8352);
         box-shadow: 0 18px 42px #3c294522;
       }
@@ -1623,7 +1783,7 @@
       }
       @media (max-width: 600px) {
         .view {
-          padding: 22px 14px 30px;
+          padding: 1px 14px 30px;
         }
         .hero {
           border-radius: 19px;
@@ -2378,8 +2538,8 @@
       ><button id="ai-users-menu" class="btn hidden">AI users</button
       ><button id="ai-history-menu" class="btn hidden">AI chat history</button
       ><button id="translation-verification-menu" class="btn hidden">
-        Translation verification
-      </button
+        Translation verification</button
+      ><button id="community-menu" class="btn">Community</button
       ><button id="login" class="btn">Log in</button>
     </aside>
     <main>
@@ -2405,7 +2565,8 @@
           <h2>Learn a phrase. Find your voice.</h2>
           <p>
             Choose a topic, study useful phrases, test yourself, and save
-            progress when you sign in.
+            progress when you sign in. You can also learn beyond the phrase
+            library with LaiTech AI.
           </p>
           <button id="choose-track" class="btn start-learning">Cawnnak</button>
           <button id="home-quiz" class="btn take-quiz" data-v="quiz">
@@ -2494,10 +2655,17 @@
                 state.</small
               >
             </button>
-            <button class="track-choice-card" id="choose-lai-tech" type="button">
+            <button
+              class="track-choice-card"
+              id="choose-lai-tech"
+              type="button"
+            >
               <span aria-hidden="true">🤖</span>
               <strong>Learn from LaiTech AI</strong>
-              <small>Explore Hakha Chin phrases with your friendly AI learning companion.</small>
+              <small
+                >Explore Hakha Chin phrases with your friendly AI learning
+                companion.</small
+              >
             </button>
           </div>
         </div>
@@ -2516,18 +2684,28 @@
               errors, so please help us improve by reporting or reviewing them.
             </p>
             <p class="status">
-              You can use up to 20 translation requests each day, with a
-              maximum of 500 characters per request.
+              You can use up to 20 translation requests each day, with a maximum
+              of 500 characters per request.
             </p>
             <button id="lai-tech-continue" class="btn" type="button">
               I understand — continue
             </button>
           </section>
           <section id="lai-tech-chat" class="panel hidden">
-            <div id="translator-messages" class="translator-messages" aria-live="polite"></div>
+            <div
+              id="translator-messages"
+              class="translator-messages"
+              aria-live="polite"
+            ></div>
             <form id="translator-form" class="translator-form">
-              <input id="translator-input" maxlength="500" autocomplete="off"
-                placeholder="Type Hakha Chin here…" aria-label="Hakha Chin phrase" required />
+              <input
+                id="translator-input"
+                maxlength="10000"
+                autocomplete="off"
+                placeholder="Type Hakha Chin here…"
+                aria-label="Hakha Chin phrase"
+                required
+              />
               <button class="btn" type="submit">Send</button>
             </form>
             <p id="translator-status" class="status"></p>
@@ -2599,25 +2777,60 @@
           </section>
         </div>
       </section>
-      <section id="top-learners" class="view">
-        <div class="top-learners">
-          <div class="head">
-            <div>
-              <small class="eyebrow">COMMUNITY</small>
-              <h1>Top learners</h1>
-              <p class="status">Earn one point for every correct answer.</p>
-            </div>
-            <span aria-hidden="true">🎉 🏆</span>
+      <section id="community" class="view">
+        <div class="community-shell">
+          <div class="tabs community-tabs" role="tablist">
+            <button
+              class="plain community-tab active"
+              role="tab"
+              data-community-tab="learners"
+              type="button"
+            >
+              Top learners
+            </button>
+            <button
+              class="plain community-tab"
+              role="tab"
+              data-community-tab="contributors"
+              type="button"
+            >
+              Top AI contributors
+            </button>
           </div>
-          <section class="panel">
-            <h2>Top 10 learners</h2>
-            <div id="top-learners-list" class="top-learners-list">
-              <p class="status">Loading learners…</p>
+          <section id="community-learners-panel" class="community-panel">
+            <div class="community-hero">
+              <span class="community-trophy" aria-hidden="true">🏆</span>
+              <div>
+                <small class="eyebrow">CURRENT LEADERS</small>
+                <h1>Top learners</h1>
+                <p class="status">
+                  Celebrate every lesson, quiz, and step forward.
+                </p>
+              </div>
             </div>
-            <div id="other-learners" class="other-learners hidden">
-              <h3>More learners</h3>
-              <div id="other-learners-list" class="top-learners-list"></div>
+            <section class="panel">
+              <h2>Learning champions</h2>
+              <div id="community-learners-list"></div>
+            </section>
+          </section>
+          <section
+            id="community-contributors-panel"
+            class="community-panel hidden"
+          >
+            <div class="community-hero contributors">
+              <span class="community-trophy" aria-hidden="true">🏆</span>
+              <div>
+                <small class="eyebrow">AI COMMUNITY</small>
+                <h1>Top AI contributors</h1>
+                <p class="status">
+                  Thank you for helping make LaiTech AI better for everyone.
+                </p>
+              </div>
             </div>
+            <section class="panel">
+              <h2>Helpful contributors</h2>
+              <div id="community-contributors-list"></div>
+            </section>
           </section>
         </div>
       </section>
@@ -2805,15 +3018,27 @@
                   translations.</small
                 >
               </button>
-              <button id="manage-ai-users" class="track-choice-card" type="button">
+              <button
+                id="manage-ai-users"
+                class="track-choice-card"
+                type="button"
+              >
                 <span aria-hidden="true">🤖</span>
                 <strong>LaiTech AI users</strong>
-                <small>Review registered learners using the AI translator.</small>
+                <small
+                  >Review registered learners using the AI translator.</small
+                >
               </button>
-              <button id="manage-ai-history" class="track-choice-card" type="button">
+              <button
+                id="manage-ai-history"
+                class="track-choice-card"
+                type="button"
+              >
                 <span aria-hidden="true">🗂️</span>
                 <strong>LaiTech AI chat history</strong>
-                <small>Review Yes, No, and unanswered translation feedback.</small>
+                <small
+                  >Review Yes, No, and unanswered translation feedback.</small
+                >
               </button>
             </div>
           </div>
@@ -2897,20 +3122,102 @@
             <div id="citizenship-admin-list"></div>
           </section>
           <section id="ai-users-admin" class="panel hidden">
-            <button id="ai-users-track-back" class="plain" type="button">← Choose another course</button>
+            <button id="ai-users-track-back" class="plain" type="button">
+              ← Choose another course
+            </button>
             <h2>LaiTech AI user list</h2>
-            <p class="status">Registered learners who have opened the LaiTech AI beta.</p>
-            <div id="ai-users-list"><p class="status">Loading AI users…</p></div>
+            <p class="status">
+              Registered learners who have opened the LaiTech AI beta.
+            </p>
+            <div class="tabs" role="tablist">
+              <button
+                class="plain ai-users-tab active"
+                data-ai-users-tab="users"
+                type="button"
+              >
+                Users
+              </button>
+              <button
+                class="plain ai-users-tab"
+                data-ai-users-tab="summary"
+                type="button"
+              >
+                Summary
+              </button>
+            </div>
+            <div id="ai-users-users-panel">
+              <label class="field"
+                >Search users<input
+                  id="ai-user-search"
+                  type="search"
+                  placeholder="Search by name"
+              /></label>
+              <div id="ai-users-list">
+                <p class="status">Loading AI users…</p>
+              </div>
+            </div>
+            <div id="ai-users-summary-panel" class="hidden">
+              <div id="ai-users-summary" class="summary-grid"></div>
+            </div>
           </section>
           <section id="ai-history-admin" class="panel hidden">
-            <button id="ai-history-track-back" class="plain" type="button">← Choose another course</button>
+            <button id="ai-history-track-back" class="plain" type="button">
+              ← Choose another course
+            </button>
             <h2 id="ai-history-title">LaiTech AI chat history</h2>
             <div class="tabs" role="tablist">
-              <button class="plain ai-history-tab" data-feedback-tab="yes" type="button">Yes</button>
-              <button class="plain ai-history-tab" data-feedback-tab="no" type="button">No</button>
-              <button class="plain ai-history-tab" data-feedback-tab="na" type="button">N/A</button>
+              <button
+                class="plain ai-history-tab active"
+                role="tab"
+                data-feedback-tab="yes"
+                type="button"
+              >
+                Yes
+              </button>
+              <button
+                class="plain ai-history-tab"
+                role="tab"
+                data-feedback-tab="no"
+                type="button"
+              >
+                No
+              </button>
+              <button
+                class="plain ai-history-tab"
+                role="tab"
+                data-feedback-tab="na"
+                type="button"
+              >
+                N/A
+              </button>
+              <button
+                class="plain ai-history-tab"
+                role="tab"
+                data-feedback-tab="summary"
+                type="button"
+              >
+                Summary
+              </button>
+              <button
+                class="plain ai-history-tab verification-only hidden"
+                role="tab"
+                data-feedback-tab="pending"
+                type="button"
+              >
+                Pending
+              </button>
+              <button
+                class="plain ai-history-tab verification-only hidden"
+                role="tab"
+                data-feedback-tab="verified"
+                type="button"
+              >
+                Verified
+              </button>
             </div>
-            <div id="ai-history-list"><p class="status">Choose a feedback tab.</p></div>
+            <div id="ai-history-list">
+              <p class="status">Choose a feedback tab.</p>
+            </div>
           </section>
         </div>
       </section>
@@ -3628,9 +3935,95 @@
             '<p class="status">Leaderboard unavailable right now.</p>';
         }
       }
+      async function renderCommunity() {
+        const learnersList = $("community-learners-list");
+        const contributorsList = $("community-contributors-list");
+        if (!learnersList || !contributorsList) return;
+        document.querySelectorAll(".community-tab").forEach((button) => {
+          button.onclick = () => {
+            const contributors = button.dataset.communityTab === "contributors";
+            document
+              .querySelectorAll(".community-tab")
+              .forEach((item) =>
+                item.classList.toggle("active", item === button),
+              );
+            $("community-learners-panel").classList.toggle(
+              "hidden",
+              contributors,
+            );
+            $("community-contributors-panel").classList.toggle(
+              "hidden",
+              !contributors,
+            );
+          };
+        });
+        learnersList.innerHTML = '<p class="status">Loading top learners…</p>';
+        contributorsList.innerHTML =
+          '<p class="status">Loading AI contributors…</p>';
+        try {
+          const [learnersResponse, contributorsResponse] = await Promise.all([
+            fetch(
+              "https://us-central1-cawnnak-ca.cloudfunctions.net/getLeaderboard",
+              { cache: "no-store" },
+            ),
+            fetch(
+              "https://us-central1-cawnnak-ca.cloudfunctions.net/getAiContributors",
+              { cache: "no-store" },
+            ),
+          ]);
+          const learners = learnersResponse.ok
+            ? (await learnersResponse.json()).entries || []
+            : [];
+          const contributors = contributorsResponse.ok
+            ? (await contributorsResponse.json()).contributors || []
+            : [];
+          learnersList.innerHTML = learners.length
+            ? learners
+                .slice(0, 10)
+                .map(
+                  (item, index) =>
+                    '<div class="top-learner-row"><span class="top-learner-rank">' +
+                    (["🏆", "🥈", "🥉"][index] || "🏅") +
+                    " " +
+                    (index + 1) +
+                    '</span><img class="top-learner-avatar" src="' +
+                    esc(item.avatar || "./icons/icon.svg") +
+                    '" alt="" onerror="this.src=\'./icons/icon.svg\'"><strong>' +
+                    esc(item.name) +
+                    '</strong><span class="top-learner-points">' +
+                    Number(item.totalPoints || 0) +
+                    " pts</span></div>",
+                )
+                .join("")
+            : '<p class="status">No learner scores yet.</p>';
+          contributorsList.innerHTML = contributors.length
+            ? contributors
+                .map(
+                  (item, index) =>
+                    '<div class="top-learner-row community-contributor-row"><span class="top-learner-rank">🏆 ' +
+                    (index + 1) +
+                    '</span><img class="top-learner-avatar" src="' +
+                    esc(item.avatar || "./icons/icon.svg") +
+                    '" alt="" onerror="this.src=\'./icons/icon.svg\'"><strong>' +
+                    esc(item.name) +
+                    '<small class="community-contributor-meta">' +
+                    Number(item.contributions || 0) +
+                    " contributions · " +
+                    Number(item.verified || 0) +
+                    " verified</small></strong></div>",
+                )
+                .join("")
+            : '<p class="status">No AI contributions yet. Be the first to help.</p>';
+        } catch (error) {
+          learnersList.innerHTML =
+            '<p class="status">Community data is unavailable right now.</p>';
+          contributorsList.innerHTML =
+            '<p class="status">Community data is unavailable right now.</p>';
+        }
+      }
       window.addEventListener("cawnnak-leaderboard-updated", () => {
         if ($("quiz").classList.contains("active")) renderQuizLobby();
-        if ($("top-learners").classList.contains("active")) renderTopLearners();
+        if ($("community").classList.contains("active")) renderCommunity();
       });
       window.addEventListener("cawnnak-leaderboard-updated", (event) => {
         let points = Number(event.detail?.totalPoints);
@@ -3961,6 +4354,7 @@
           (b) =>
             (b.onclick = () => {
               activeCategory = b.dataset.category;
+              localStorage.setItem("cawnnak-last-category", activeCategory);
               $("search").value = "";
               showAppView("learn");
             }),
@@ -4663,10 +5057,7 @@
           "hidden",
           adminSelection !== "citizenship",
         );
-        $("ai-users-admin").classList.toggle(
-          "hidden",
-          adminSelection !== "ai",
-        );
+        $("ai-users-admin").classList.toggle("hidden", adminSelection !== "ai");
         $("ai-history-admin").classList.toggle(
           "hidden",
           !["history", "verification"].includes(adminSelection),
@@ -4711,10 +5102,7 @@
           );
         }
         if (adminSelection === "citizenship") loadCitizenshipAdmin();
-        $("import-citizenship-seed").classList.toggle(
-          "hidden",
-          !user?.admin,
-        );
+        $("import-citizenship-seed").classList.toggle("hidden", !user?.admin);
         if (adminSelection === "ai") loadAiUsersAdmin();
         if (adminSelection === "history") loadAiHistoryAdmin("yes");
         if (adminSelection === "verification") loadAiHistoryAdmin("no");
@@ -4735,66 +5123,331 @@
       async function loadAiUsersAdmin() {
         if (!user?.admin || !db) return;
         const list = $("ai-users-list");
+        document.querySelectorAll(".ai-users-tab").forEach((button) => {
+          button.onclick = () => {
+            const summary = button.dataset.aiUsersTab === "summary";
+            document
+              .querySelectorAll(".ai-users-tab")
+              .forEach((item) =>
+                item.classList.toggle("active", item === button),
+              );
+            $("ai-users-users-panel").classList.toggle("hidden", summary);
+            $("ai-users-summary-panel").classList.toggle("hidden", !summary);
+          };
+        });
         try {
           const snapshot = await getDocs(
             query(collection(db, "aiUsers"), orderBy("lastUsedAt", "desc")),
           );
-          list.innerHTML = snapshot.empty
-            ? '<p class="status">No LaiTech AI users yet.</p>'
-            : snapshot.docs
-                .map((item) => {
-                  const data = item.data();
-                  return (
-                    '<div class="card-inline-edit"><b>' +
-                    esc(data.name || "Unnamed learner") +
-                    '</b><span class="status">' +
-                    esc(data.email || "") +
-                    " · " +
-                    Number(data.requestCount || 0) +
-                    " requests</span></div>"
-                  );
-                })
-                .join("");
+          const users = snapshot.docs.map((item) => ({
+            id: item.id,
+            ...item.data(),
+          }));
+          const totalRequests = users.reduce(
+            (sum, item) => sum + Number(item.requestCount || 0),
+            0,
+          );
+          const frequentLimitUsers = users.filter(
+            (item) =>
+              Number(item.dailyRequestCount || 0) >=
+              Number(item.requestLimit || 20),
+          ).length;
+          $("ai-users-summary").innerHTML =
+            "<div><b>Top users</b><p>" +
+            esc(
+              [...users]
+                .sort(
+                  (a, b) =>
+                    Number(b.requestCount || 0) - Number(a.requestCount || 0),
+                )
+                .slice(0, 3)
+                .map((item) => item.name || item.email || "Learner")
+                .join(", ") || "None yet",
+            ) +
+            "</p></div><div><b>Frequent limit users</b><p>" +
+            frequentLimitUsers +
+            "</p></div><div><b>Daily users</b><p>" +
+            users.filter(
+              (item) =>
+                item.lastUsedAt?.toMillis?.() >
+                Date.now() - 24 * 60 * 60 * 1000,
+            ).length +
+            "</p></div><div><b>Total requests</b><p>" +
+            totalRequests +
+            "</p></div>";
+          const renderUsers = () => {
+            const search = $("ai-user-search").value.trim().toLowerCase();
+            const visibleUsers = users.filter((item) =>
+              String(item.name || item.email || "")
+                .toLowerCase()
+                .includes(search),
+            );
+            list.innerHTML = visibleUsers.length
+              ? visibleUsers
+                  .map((item) => {
+                    const data = item;
+                    return (
+                      '<div class="card-inline-edit ai-user-limit-row" data-id="' +
+                      esc(data.id) +
+                      '"><b>' +
+                      esc(data.name || "Unnamed learner") +
+                      '</b><span class="status">' +
+                      esc(data.email || "") +
+                      " · " +
+                      Number(data.requestCount || 0) +
+                      " total requests · " +
+                      Number(data.totalCharacters || 0) +
+                      " total characters · " +
+                      Number(data.dailyRequestCount || 0) +
+                      " requests today · " +
+                      Number(data.dailyCharacterCount || 0) +
+                      ' characters today</span><div class="ai-limit-controls">' +
+                      '<label>Requests/day <input class="ai-request-limit" type="number" min="0" max="100000" value="' +
+                      (data.unlimitedRequests
+                        ? ""
+                        : Number(data.requestLimit ?? 20)) +
+                      '"></label><label>Characters/request <input class="ai-character-limit" type="number" min="1" max="1000000" value="' +
+                      (data.unlimitedCharacters
+                        ? ""
+                        : Number(data.characterLimit ?? 500)) +
+                      '"></label><label><input class="ai-unlimited-requests" type="checkbox" ' +
+                      (data.unlimitedRequests ? "checked" : "") +
+                      '> Unlimited requests</label><label><input class="ai-unlimited-characters" type="checkbox" ' +
+                      (data.unlimitedCharacters ? "checked" : "") +
+                      '> Unlimited characters</label><button class="btn save-ai-limits" type="button">Save limits</button><button class="plain reset-ai-usage" type="button">Reset usage</button></div></div>'
+                    );
+                  })
+                  .join("")
+              : '<p class="status">No matching LaiTech AI users.</p>';
+            bindAiUserActions();
+          };
+          const bindAiUserActions = () => {
+            list.querySelectorAll(".save-ai-limits").forEach((button) => {
+              button.onclick = async () => {
+                const row = button.closest(".ai-user-limit-row");
+                button.disabled = true;
+                try {
+                  await httpsCallable(
+                    functions,
+                    "setAiUserLimits",
+                  )({
+                    uid: row.dataset.id,
+                    requestLimit: Number(
+                      row.querySelector(".ai-request-limit").value,
+                    ),
+                    characterLimit: Number(
+                      row.querySelector(".ai-character-limit").value,
+                    ),
+                    unlimitedRequests: row.querySelector(
+                      ".ai-unlimited-requests",
+                    ).checked,
+                    unlimitedCharacters: row.querySelector(
+                      ".ai-unlimited-characters",
+                    ).checked,
+                  });
+                  button.textContent = "Saved";
+                } catch (error) {
+                  button.textContent = "Could not save";
+                } finally {
+                  setTimeout(() => {
+                    button.disabled = false;
+                    button.textContent = "Save limits";
+                  }, 1200);
+                }
+              };
+            });
+            list.querySelectorAll(".reset-ai-usage").forEach((button) => {
+              button.onclick = async () => {
+                button.disabled = true;
+                try {
+                  await httpsCallable(
+                    functions,
+                    "resetAiUserUsage",
+                  )({
+                    uid: button.closest(".ai-user-limit-row").dataset.id,
+                  });
+                  button.textContent = "Reset";
+                } catch (error) {
+                  button.textContent = "Could not reset";
+                } finally {
+                  setTimeout(() => {
+                    button.disabled = false;
+                    button.textContent = "Reset usage";
+                  }, 1200);
+                }
+              };
+            });
+          };
+          $("ai-user-search").oninput = renderUsers;
+          renderUsers();
         } catch (error) {
           list.innerHTML = '<p class="status">Could not load AI users.</p>';
         }
       }
       async function loadAiHistoryAdmin(tab) {
-          if (!user?.admin || !db) return;
-          $("ai-history-title").textContent =
-            adminSelection === "verification"
-              ? "Translation verification"
-              : "LaiTech AI chat history";
-          const list = $("ai-history-list");
-          try {
-            const snapshot = await getDocs(
-              query(collection(db, "aiFeedback"), orderBy("createdAt", "desc")),
+        const reviewerView = adminSelection === "verification";
+        if (
+          (!reviewerView && !user?.admin) ||
+          (reviewerView && !user?.editor) ||
+          !db
+        )
+          return;
+        $("ai-history-title").textContent = reviewerView
+          ? "Translation verification"
+          : "LaiTech AI chat history";
+        document.querySelectorAll(".ai-history-tab").forEach((button) => {
+          const verificationTab =
+            button.classList.contains("verification-only");
+          button.classList.toggle("hidden", reviewerView !== verificationTab);
+          button.classList.toggle("active", button.dataset.feedbackTab === tab);
+        });
+        const list = $("ai-history-list");
+        try {
+          const snapshot = await getDocs(
+            query(collection(db, "aiFeedback"), orderBy("createdAt", "desc")),
+          );
+          const records = snapshot.docs
+            .map((item) => ({ id: item.id, ...item.data() }))
+            .filter((item) => {
+              if (tab === "summary") return true;
+              if (tab === "verified")
+                return (
+                  item.reviewStatus === "verified" || item.verified === true
+                );
+              if (tab === "pending")
+                return (
+                  item.reviewStatus !== "verified" && item.verified !== true
+                );
+              return tab === "na" ? !item.response : item.response === tab;
+            });
+          if (tab === "summary") {
+            const userSnapshot = await getDocs(collection(db, "aiUsers"));
+            const requesters = Object.fromEntries(
+              userSnapshot.docs.map((item) => [
+                item.data().name || item.data().email || "Learner",
+                Number(item.data().requestCount || 0),
+              ]),
             );
-            const records = snapshot.docs
-              .map((item) => ({ id: item.id, ...item.data() }))
-              .filter((item) => (tab === "na" ? !item.response : item.response === tab));
-            list.innerHTML = records.length
-              ? records
-                  .map(
-                    (item) =>
-                      '<div class="card-inline-edit"><b>User: ' +
-                      esc(item.userName || "Learner") +
-                      '</b><span class="status">Hakha Chin: ' +
-                      esc(item.sourceText) +
-                      "<br>Google: " +
-                      esc(item.translatedText) +
-                      (item.correction ? "<br>Correction: " + esc(item.correction) : "") +
-                      "</span></div>",
-                  )
-                  .join("")
-              : '<p class="status">No feedback in this group.</p>';
-          } catch (error) {
-            list.innerHTML = '<p class="status">Could not load AI chat history.</p>';
+            const counts = records.reduce(
+              (result, item) => {
+                const phrase = String(item.sourceText || "")
+                  .toLowerCase()
+                  .replace(/\s+/g, " ")
+                  .trim();
+                if (phrase)
+                  result.phrases[phrase] = (result.phrases[phrase] || 0) + 1;
+                if (item.response === "yes") result.yes++;
+                if (item.response === "no") result.no++;
+                if (!item.response) result.na++;
+                if (item.correction)
+                  result.contributors[item.userName || "Learner"] =
+                    (result.contributors[item.userName || "Learner"] || 0) + 1;
+                return result;
+              },
+              { yes: 0, no: 0, na: 0, phrases: {}, contributors: {} },
+            );
+            const top = (values) =>
+              Object.entries(values)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 10);
+            list.innerHTML =
+              '<div class="summary-grid"><div><b>Top requesters</b><p>' +
+              (top(requesters)
+                .map(([name, count]) => esc(name) + " (" + count + ")")
+                .join("<br>") || "None yet") +
+              "</p></div><div><b>Feedback totals</b><p>Yes: " +
+              counts.yes +
+              " · No: " +
+              counts.no +
+              " · N/A: " +
+              counts.na +
+              "</p></div><div><b>Top contributors</b><p>" +
+              (top(counts.contributors)
+                .map(([name, count]) => esc(name) + " (" + count + ")")
+                .join("<br>") || "None yet") +
+              "</p></div><div><b>Common phrases</b><p>" +
+              (top(counts.phrases)
+                .map(([phrase, count]) => esc(phrase) + " (" + count + ")")
+                .join("<br>") || "None yet") +
+              "</p></div></div>";
+            return;
           }
+          list.innerHTML = records.length
+            ? records
+                .map(
+                  (item) =>
+                    '<div class="card-inline-edit review-row" data-id="' +
+                    esc(item.id) +
+                    '"><b>User: ' +
+                    esc(item.userName || "Learner") +
+                    '</b><span class="status"><b>Hakha Chin:</b> ' +
+                    esc(
+                      item.hakhaChinText ||
+                        (item.inputLanguage === "en"
+                          ? item.translatedText
+                          : item.sourceText),
+                    ) +
+                    "<br><b>LaiTech AI:</b> " +
+                    esc(
+                      item.englishText ||
+                        (item.inputLanguage === "en"
+                          ? item.sourceText
+                          : item.translatedText),
+                    ) +
+                    (item.correction
+                      ? "<br><b>Correction:</b> " + esc(item.correction)
+                      : "") +
+                    "</span>" +
+                    (reviewerView && tab === "pending"
+                      ? '<label class="field">Edit English translation<input class="review-translation" value="' +
+                        esc(item.correction || item.translatedText || "") +
+                        '"></label><label><input class="review-verified" type="checkbox"> Mark as verified</label><button class="btn review-verify" type="button">Save edit and verify</button>'
+                      : "") +
+                    "</div>",
+                )
+                .join("")
+            : '<p class="status">No feedback in this group.</p>';
+          list.querySelectorAll(".review-verify").forEach((button) => {
+            button.onclick = async () => {
+              const row = button.closest(".review-row");
+              button.disabled = true;
+              try {
+                await httpsCallable(
+                  functions,
+                  "reviewTranslationFeedback",
+                )({
+                  feedbackId: row.dataset.id,
+                  translatedText: row
+                    .querySelector(".review-translation")
+                    .value.trim(),
+                });
+                row.remove();
+              } catch (error) {
+                button.disabled = false;
+                button.textContent = "Could not verify";
+              }
+            };
+          });
+          list.querySelectorAll(".review-verified").forEach((checkbox) => {
+            checkbox.onchange = () => {
+              if (checkbox.checked)
+                checkbox
+                  .closest(".review-row")
+                  .querySelector(".review-verify")
+                  .click();
+            };
+          });
+        } catch (error) {
+          list.innerHTML =
+            '<p class="status">Could not load AI chat history.</p>';
         }
-        document.querySelectorAll(".ai-history-tab").forEach(
+      }
+      document
+        .querySelectorAll(".ai-history-tab")
+        .forEach(
           (button) =>
-            (button.onclick = () => loadAiHistoryAdmin(button.dataset.feedbackTab)),
+            (button.onclick = () =>
+              loadAiHistoryAdmin(button.dataset.feedbackTab)),
         );
       async function loadCitizenshipAdmin() {
         if (!user?.editor || !db) return;
@@ -4818,33 +5471,78 @@
             ? records
                 .map(
                   (item) =>
-                    '<div class="card-inline-edit"><b>' +
+                    '<div class="card-inline-edit citizenship-row" data-id="' +
+                    esc(item.id) +
+                    '"><div class="citizenship-summary"><b>' +
                     esc(item.question) +
                     '</b><span class="status">' +
                     esc(item.answer) +
                     (item.state ? " · " + esc(item.state) : "") +
-                    '</span><div><button class="plain citizenship-edit" data-id="' +
+                    '</span><div><button class="plain citizenship-edit" type="button">Edit</button><button class="plain citizenship-delete" data-id="' +
                     item.id +
-                    '">Edit</button><button class="plain citizenship-delete" data-id="' +
-                    item.id +
-                    '">Delete</button></div></div>',
+                    '">Delete</button></div></div><form class="citizenship-inline-form hidden"><label class="field">English question<input name="question" required value="' +
+                    esc(item.question || "") +
+                    '"></label><label class="field">Chin question<input name="chinQuestion" value="' +
+                    esc(item.chinQuestion || "") +
+                    '"></label><label class="field">English answer<input name="answer" required value="' +
+                    esc(item.answer || "") +
+                    '"></label><label class="field">Chin answer<input name="chinAnswer" value="' +
+                    esc(item.chinAnswer || "") +
+                    '"></label><label class="field">State<input name="state" value="' +
+                    esc(item.state || "") +
+                    '"></label><button class="btn" type="submit">Save</button><button class="plain citizenship-inline-cancel" type="button">Cancel</button><p class="status"></p></form></div>',
                 )
                 .join("")
             : '<p class="status">No citizenship questions added yet.</p>';
           list.querySelectorAll(".citizenship-edit").forEach(
             (button) =>
               (button.onclick = () => {
-                const item = records.find(
-                  (record) => record.id === button.dataset.id,
-                );
-                const form = $("citizenship-admin-form");
-                form.id.value = item.id;
-                form.question.value = item.question || "";
-                form.chinQuestion.value = item.chinQuestion || "";
-                form.answer.value = item.answer || "";
-                form.chinAnswer.value = item.chinAnswer || "";
-                form.state.value = item.state || "";
-                $("cancel-citizenship-edit").classList.remove("hidden");
+                const row = button.closest(".citizenship-row");
+                row
+                  .querySelector(".citizenship-summary")
+                  .classList.add("hidden");
+                row
+                  .querySelector(".citizenship-inline-form")
+                  .classList.remove("hidden");
+              }),
+          );
+          list.querySelectorAll(".citizenship-inline-cancel").forEach(
+            (button) =>
+              (button.onclick = () => {
+                const row = button.closest(".citizenship-row");
+                row
+                  .querySelector(".citizenship-inline-form")
+                  .classList.add("hidden");
+                row
+                  .querySelector(".citizenship-summary")
+                  .classList.remove("hidden");
+              }),
+          );
+          list.querySelectorAll(".citizenship-inline-form").forEach(
+            (form) =>
+              (form.onsubmit = async (event) => {
+                event.preventDefault();
+                const row = form.closest(".citizenship-row");
+                const data = {
+                  question: form.question.value.trim(),
+                  chinQuestion: form.chinQuestion.value.trim(),
+                  answer: form.answer.value.trim(),
+                  chinAnswer: form.chinAnswer.value.trim(),
+                  state: form.state.value.trim(),
+                  updatedBy: user.uid,
+                  updatedByName: user.displayName || "",
+                  updatedByEmail: user.email || "",
+                  updatedAt: serverTimestamp(),
+                };
+                try {
+                  await setDoc(doc(db, "citizenship", row.dataset.id), data, {
+                    merge: true,
+                  });
+                  loadCitizenshipAdmin();
+                } catch (error) {
+                  form.querySelector("p").textContent =
+                    "Could not save: " + error.message;
+                }
               }),
           );
           list.querySelectorAll(".citizenship-delete").forEach(
@@ -5154,7 +5852,7 @@
           "categories",
           "learn",
           "quiz",
-          "top-learners",
+          "community",
           "adminview",
           "usersview",
         ].forEach((x) => $(x).classList.toggle("active", x === v));
@@ -5199,8 +5897,9 @@
           user.editor = user.admin || profile.data()?.role === "editor";
           $("admin").classList.toggle("hidden", !user.editor);
           $("users").classList.toggle("hidden", !user.admin);
-          $("notifications").classList.toggle("hidden", !user.admin);
+          $("notifications").classList.toggle("hidden", false);
           dash();
+          loadPersonalNotificationsV2();
         });
       document.head.insertAdjacentHTML(
         "beforeend",
@@ -5232,15 +5931,18 @@
       );
       let profileV2 = {},
         notificationsV2 = [],
+        personalNotificationsV2 = [],
         knownUserIdsV2 = new Set();
       function badgeV2() {
-        return p.bestScore >= 100
-          ? "Perfect score champion"
-          : p.bestScore >= 80
-            ? "Quiz achiever"
-            : p.studied?.length >= 20
-              ? "Dedicated learner"
-              : "New learner";
+        return profileV2.aiUser
+          ? "LaiTech AI learner"
+          : p.bestScore >= 100
+            ? "Perfect score champion"
+            : p.bestScore >= 80
+              ? "Quiz achiever"
+              : p.studied?.length >= 20
+                ? "Dedicated learner"
+                : "New learner";
       }
       function dateV2(value) {
         let date = value?.toDate
@@ -5305,6 +6007,11 @@
               .join("")
           : '<p class="status">Complete a quiz to build your activity history.</p>';
         let achievements = [
+          [
+            profileV2.aiUser,
+            "🤖 LaiTech AI learner",
+            "Explore phrases with LaiTech AI",
+          ],
           [learned >= 1, "🌱 First steps", "Study your first phrase"],
           [learned >= 20, "📚 Dedicated learner", "Study 20 phrases"],
           [streak >= 3, "🔥 On a streak", "Learn for three days in a row"],
@@ -5327,9 +6034,12 @@
       }
       function notifyViewV2() {
         let panel = $("notification-panel");
+        const personal = personalNotificationsV2.filter(
+          (item) => !item.readBy?.[user.uid],
+        );
         panel.innerHTML =
           '<div class="head"><b>Notifications</b><button id="close-notifications" class="plain">Close</button></div>' +
-          (notificationsV2.length
+          (notificationsV2.length + personal.length
             ? notificationsV2
                 .map(
                   (item) =>
@@ -5341,6 +6051,18 @@
                     ) +
                     " · " +
                     esc(dateV2(item.createdAt)) +
+                    "</small></button>",
+                )
+                .join("") +
+              personal
+                .map(
+                  (item) =>
+                    '<button class="notification-item notification-personal" data-id="' +
+                    esc(item.id) +
+                    '"><b>' +
+                    esc(item.title || "LaiTech AI update") +
+                    "</b><br><small>" +
+                    esc(item.body || "") +
                     "</small></button>",
                 )
                 .join("")
@@ -5361,6 +6083,52 @@
               navigateV2("usersview");
             }),
         );
+        document
+          .querySelectorAll(".notification-personal")
+          .forEach((button) => {
+            button.onclick = async () => {
+              const item = personalNotificationsV2.find(
+                (value) => value.id === button.dataset.id,
+              );
+              if (!item) return;
+              personalNotificationsV2 = personalNotificationsV2.filter(
+                (value) => value.id !== item.id,
+              );
+              await setDoc(
+                doc(db, "notifications", item.id),
+                { readBy: { [user.uid]: true } },
+                { merge: true },
+              );
+              panel.classList.add("hidden");
+              $("notification-badge").textContent =
+                notificationsV2.length + personalNotificationsV2.length;
+            };
+          });
+      }
+      async function loadPersonalNotificationsV2() {
+        if (!user?.uid) return;
+        try {
+          const snapshot = await getDocs(
+            query(
+              collection(db, "notifications"),
+              where("targetUid", "==", user.uid),
+            ),
+          );
+          personalNotificationsV2 = snapshot.docs.map((item) => ({
+            id: item.id,
+            ...item.data(),
+          }));
+          const unread = personalNotificationsV2.filter(
+            (item) => !item.readBy?.[user.uid],
+          ).length;
+          $("notification-badge").textContent = notificationsV2.length + unread;
+          $("notification-badge").classList.toggle(
+            "hidden",
+            !(notificationsV2.length + unread),
+          );
+        } catch (error) {
+          console.warn("Could not load personal notifications", error);
+        }
       }
       async function pollUsersV2() {
         if (!user?.admin) return;
@@ -5407,7 +6175,7 @@
         }
         if (view === "learn") render();
         if (view === "quiz") renderQuizLobby();
-        if (view === "top-learners") renderTopLearners();
+        if (view === "community") renderCommunity();
         if (view === "lai-tech") prepareLaiTech();
         if (view === "adminview") {
           adminSelection = "";
@@ -5448,7 +6216,8 @@
         );
       $("profile").onclick = () => navigateV2("profileview");
       $("notifications").onclick = async () => {
-        await pollUsersV2();
+        if (user?.admin) await pollUsersV2();
+        await loadPersonalNotificationsV2();
         notifyViewV2();
         $("notification-panel").classList.toggle("hidden");
       };
@@ -5587,16 +6356,28 @@
                   '</small><span class="role-pill ' +
                   (admin ? "admin" : "") +
                   '">' +
-                  (role === "admin" ? "Admin" : role === "editor" ? "Editor" : "User") +
+                  (role === "admin"
+                    ? "Admin"
+                    : role === "editor"
+                      ? "Editor"
+                      : "User") +
                   "</span></div>" +
                   (self
                     ? '<span class="status">Your account</span>'
                     : '<button class="btn role-toggle" data-id="' +
                       esc(profile.id) +
                       '" data-role="' +
-                      (role === "user" ? "editor" : role === "editor" ? "admin" : "user") +
+                      (role === "user"
+                        ? "editor"
+                        : role === "editor"
+                          ? "admin"
+                          : "user") +
                       '">Make ' +
-                      (role === "user" ? "editor" : role === "editor" ? "admin" : "user") +
+                      (role === "user"
+                        ? "editor"
+                        : role === "editor"
+                          ? "admin"
+                          : "user") +
                       "</button>") +
                   "</div>"
                 );
@@ -5874,10 +6655,14 @@
           try {
             let profile = await getDoc(doc(db, "users", account.uid));
             const isAdmin = profile.data()?.role === "admin";
+            const isReviewer = isAdmin || profile.data()?.role === "editor";
             $("history-menu").classList.toggle("hidden", !isAdmin);
             $("ai-users-menu").classList.toggle("hidden", !isAdmin);
             $("ai-history-menu").classList.toggle("hidden", !isAdmin);
-            $("translation-verification-menu").classList.toggle("hidden", !isAdmin);
+            $("translation-verification-menu").classList.toggle(
+              "hidden",
+              !isReviewer,
+            );
           } catch (error) {
             $("history-menu").classList.add("hidden");
             $("ai-users-menu").classList.add("hidden");
@@ -5893,7 +6678,7 @@
         "categories",
         "learn",
         "quiz",
-        "top-learners",
+        "community",
         "adminview",
         "usersview",
         "profileview",
@@ -5907,10 +6692,7 @@
           appViewIds.find((id) => $(id)?.classList.contains("active")) ||
           "home";
         if (view === "adminview" && !user?.editor) view = "home";
-        if (
-          (view === "usersview" || view === "auditview") &&
-          !user?.admin
-        )
+        if ((view === "usersview" || view === "auditview") && !user?.admin)
           view = "home";
         if (view === "profileview" && !user) view = "home";
         appViewIds.forEach((id) =>
@@ -5919,7 +6701,7 @@
         if (view === "categories") renderCategories();
         if (view === "learn") render();
         if (view === "quiz") renderQuizLobby();
-        if (view === "top-learners") renderTopLearners();
+        if (view === "community") renderCommunity();
         if (view === "lai-tech") prepareLaiTech();
         if (view === "adminview") {
           adminSelection = "";
@@ -5951,6 +6733,16 @@
       window.addEventListener("cawnnak-open-view", (event) => {
         if (event.detail) showAppView(event.detail);
       });
+      window.addEventListener("cawnnak-continue-category", (event) => {
+        const category = String(event.detail || "");
+        showAppView("categories");
+        renderCategories();
+        const button = [...document.querySelectorAll(".category")].find(
+          (item) => item.dataset.category === category,
+        );
+        if (button) button.click();
+        else showAppView("track-choice");
+      });
       document.querySelectorAll("[data-v]").forEach((button) => {
         button.onclick = () => showAppView(button.dataset.v);
       });
@@ -5964,6 +6756,27 @@
       $("ai-history-menu").onclick = () => openAdminSection("history");
       $("translation-verification-menu").onclick = () =>
         openAdminSection("verification");
+      $("community-menu").onclick = () => showAppView("community");
+      $("community")
+        ?.querySelector(".community-tabs")
+        ?.addEventListener("click", (event) => {
+          const button = event.target.closest(".community-tab");
+          if (!button) return;
+          const contributors = button.dataset.communityTab === "contributors";
+          document
+            .querySelectorAll(".community-tab")
+            .forEach((item) =>
+              item.classList.toggle("active", item === button),
+            );
+          $("community-learners-panel").classList.toggle(
+            "hidden",
+            contributors,
+          );
+          $("community-contributors-panel").classList.toggle(
+            "hidden",
+            !contributors,
+          );
+        });
       $("users").onclick = () => showAppView("usersview");
       $("audit").onclick = () => showAppView("auditview");
       $("history-menu").onclick = () => showAppView("auditview");
@@ -5990,8 +6803,17 @@
         $("translator-messages").append(bubble);
         return { bubble, content };
       }
-      async function saveAiFeedback(sourceText, translatedText, response, correction = "", feedbackId = "") {
-        await httpsCallable(functions, "saveTranslationFeedback")({
+      async function saveAiFeedback(
+        sourceText,
+        translatedText,
+        response,
+        correction = "",
+        feedbackId = "",
+      ) {
+        await httpsCallable(
+          functions,
+          "saveTranslationFeedback",
+        )({
           sourceText,
           translatedText,
           response,
@@ -5999,7 +6821,12 @@
           feedbackId,
         });
       }
-      function addTranslationFeedback(parent, sourceText, translatedText, feedbackId) {
+      function addTranslationFeedback(
+        parent,
+        sourceText,
+        translatedText,
+        feedbackId,
+      ) {
         const box = document.createElement("div");
         box.className = "translation-feedback";
         const prompt = document.createElement("span");
@@ -6024,7 +6851,13 @@
         yes.onclick = async () => {
           yes.disabled = no.disabled = true;
           try {
-            await saveAiFeedback(sourceText, translatedText, "yes", "", feedbackId);
+            await saveAiFeedback(
+              sourceText,
+              translatedText,
+              "yes",
+              "",
+              feedbackId,
+            );
             finish("Thank you — your response was saved.");
           } catch (error) {
             yes.disabled = no.disabled = false;
@@ -6045,10 +6878,16 @@
             if (!correction.value.trim()) return;
             submit.disabled = true;
             try {
-              await saveAiFeedback(sourceText, translatedText, "no", correction.value.trim(), feedbackId);
-                correction.remove();
-                submit.remove();
-                finish("Thank you — your correction was saved for review.");
+              await saveAiFeedback(
+                sourceText,
+                translatedText,
+                "no",
+                correction.value.trim(),
+                feedbackId,
+              );
+              correction.remove();
+              submit.remove();
+              finish("Thank you — your correction was saved for review.");
             } catch (error) {
               submit.disabled = false;
               prompt.textContent = error.message;
@@ -6072,7 +6911,9 @@
           return;
         }
         const profile = await getDoc(doc(db, "users", user.uid));
-        const name = String(profile.data()?.displayName || user.displayName || "").trim();
+        const name = String(
+          profile.data()?.displayName || user.displayName || "",
+        ).trim();
         if (name.length < 2) {
           $("lai-tech-title").textContent = "Complete your profile first";
           $("lai-tech-intro").textContent =
@@ -6128,8 +6969,10 @@
           thinkingBubble.content.textContent =
             "LaiTech AI is thinking" + ".".repeat(thinkingDots);
         }, 300);
-        $("translator-status").textContent = "Preparing your learning response…";
-        const button = event.submitter || event.currentTarget.querySelector("button");
+        $("translator-status").textContent =
+          "Preparing your learning response…";
+        const button =
+          event.submitter || event.currentTarget.querySelector("button");
         button.disabled = true;
         try {
           const token = await user.getIdToken();
@@ -6145,18 +6988,25 @@
             },
           );
           const payload = await response.json();
-          if (!response.ok) throw new Error(payload.error || "Translation failed.");
+          if (!response.ok)
+            throw new Error(payload.error || "Translation failed.");
           clearInterval(thinkingTimer);
           thinkingBubble.bubble.remove();
           const answer = addTranslatorBubble("assistant", "", "🤖");
           const label = document.createElement("span");
           label.className = "translation-label";
-          label.textContent = "English meaning";
+          label.textContent =
+            payload.inputLanguage === "en" ? "Hakha Chin" : "English meaning";
           const meaning = document.createElement("p");
           meaning.textContent = payload.translatedText;
           answer.content.append(label, meaning);
-          addTranslationFeedback(answer.content, text, payload.translatedText, payload.feedbackId);
-          if (user?.admin && functions) {
+          addTranslationFeedback(
+            answer.content,
+            text,
+            payload.translatedText,
+            payload.feedbackId,
+          );
+          if (user?.editor && functions) {
             const verify = document.createElement("button");
             verify.className = "plain";
             verify.type = "button";
@@ -6164,10 +7014,23 @@
             verify.onclick = async () => {
               verify.disabled = true;
               try {
-                await httpsCallable(functions, "saveVerifiedTranslation")({
-                  sourceText: text,
-                  translatedText: payload.translatedText,
-                });
+                if (payload.feedbackId) {
+                  await httpsCallable(
+                    functions,
+                    "reviewTranslationFeedback",
+                  )({
+                    feedbackId: payload.feedbackId,
+                    translatedText: payload.translatedText,
+                  });
+                } else {
+                  await httpsCallable(
+                    functions,
+                    "saveVerifiedTranslation",
+                  )({
+                    sourceText: text,
+                    translatedText: payload.translatedText,
+                  });
+                }
                 verify.textContent = "Verified translation saved";
               } catch (error) {
                 verify.disabled = false;
@@ -6277,7 +7140,10 @@
           if (!response.ok) return;
           const officials = await response.json();
           questions.forEach((item) => {
-            if (/state.?s U\.S\. Senator/i.test(item.question) && officials.senators?.length)
+            if (
+              /state.?s U\.S\. Senator/i.test(item.question) &&
+              officials.senators?.length
+            )
               item.answer = officials.senators.join(" / ");
             if (/governor/i.test(item.question) && officials.governor)
               item.answer = officials.governor;
@@ -6412,7 +7278,7 @@
           vibrateInteraction();
       });
     </script>
-    <script src="./home.js"></script>
+    <script src="./home.js?v=20261005-community"></script>
     <script src="./manager-enhancements.js"></script>
     <script type="module" src="./quick-add.js"></script>
     <script type="module" src="./admin-functions.js"></script>

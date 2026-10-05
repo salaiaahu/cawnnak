@@ -2411,7 +2411,9 @@
           </div>
           <article id="qcard" class="panel hidden">
             <h2 id="question"></h2>
+            <p id="quiz-question-translation" class="status"></p>
             <button id="speak" class="plain">🔊 Listen in English</button>
+            <button id="speak-answer" class="plain">🔊 Listen to answer</button>
             <div id="options" class="options"></div>
             <p id="feedback"></p>
             <button id="next" class="btn" disabled>Next question</button>
@@ -2450,11 +2452,13 @@
                 <div class="practice-face practice-front">
                   <small>English</small>
                   <h2 id="practice-english"></h2>
+                  <p id="practice-question-translation"></p>
                   <p>Tap to reveal the translation</p>
                 </div>
                 <div class="practice-face practice-back">
-                  <small>Hakha Chin</small>
+                  <small id="practice-answer-label">Answer</small>
                   <h2 id="practice-chin"></h2>
+                  <p id="practice-answer-translation"></p>
                   <p>Tap to see the English phrase</p>
                 </div>
               </div>
@@ -3311,6 +3315,12 @@
           "Card " + (practiceIndex + 1) + " of " + practiceCards.length;
         $("practice-english").textContent = card.english;
         $("practice-chin").textContent = card.chin;
+        $("practice-question-translation").textContent =
+          card.category === "citizenship" ? card.chinQuestion || "" : "";
+        $("practice-answer-label").textContent =
+          card.category === "citizenship" ? "English answer" : "Hakha Chin";
+        $("practice-answer-translation").textContent =
+          card.category === "citizenship" ? card.chinAnswer || "" : "";
         surface.classList.toggle("flipped", practiceFlipped);
       }
       function flipPracticeCard() {
@@ -4094,6 +4104,8 @@
         $("score").textContent = "Question " + (i + 1) + " of " + quiz.length;
         $("line").style.width = (i / quiz.length) * 100 + "%";
         $("question").textContent = q.english;
+        $("quiz-question-translation").textContent =
+          q.category === "citizenship" ? q.chinQuestion || "" : "";
         $("options").innerHTML = a
           .map(
             (x) =>
@@ -4140,6 +4152,7 @@
       }
       $("next").onclick = () => (++i < quiz.length ? question() : finish());
       $("speak").onclick = () => speak(quiz[i].english);
+      $("speak-answer").onclick = () => speak(quiz[i].chin);
       $("restart").onclick = start;
       $("start-quiz").onclick = start;
       function finish() {

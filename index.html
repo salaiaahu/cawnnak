@@ -2286,7 +2286,7 @@
           <section class="panel">
             <label class="field">Your state<select id="citizenship-state"></select></label>
             <button id="generate-citizenship" class="btn" type="button">Generate 100 questions</button>
-            <p id="citizenship-status" class="status">The USCIS 2008 civics question set will be used. Chin translations can be added by an administrator.</p>
+            <p id="citizenship-status" class="status">The USCIS 2008 questions will be generated immediately. Chin translations are shown when an administrator has added them.</p>
             <div id="citizenship-question-preview" class="status"></div>
           </section>
         </div>
@@ -4156,10 +4156,15 @@
             const snapshot = await getDocs(
               query(collection(db, "citizenship"), orderBy("question")),
             );
-            const records = snapshot.docs.map((item) => ({
+            const remote = snapshot.docs.map((item) => ({
               id: item.id,
               ...item.data(),
             }));
+            const overrides = new Map(remote.map((item) => [item.id, item]));
+            const seedIds = new Set((window.CITIZENSHIP_SEED || []).map((item) => item.id));
+            const records = (window.CITIZENSHIP_SEED || [])
+              .map((item) => ({ ...item, ...overrides.get(item.id) }))
+              .concat(remote.filter((item) => !seedIds.has(item.id)));
             list.innerHTML = records.length
               ? records
                   .map(
@@ -5300,18 +5305,23 @@
           status.textContent = "Choose your state first.";
           return;
         }
-        status.textContent = `Preparing the 100-question study set for ${state}…`;
+        status.textContent = `Generating the 100-question study set for ${state}…`;
         preview.textContent = "";
         try {
-          const snapshot = await getDocs(
-            query(collection(db, "citizenship"), where("status", "==", "published")),
-          );
-          const questions = snapshot.docs
-            .map((item) => ({ id: item.id, ...item.data() }))
+          let translated = [];
+          try {
+            const snapshot = await getDocs(
+              query(collection(db, "citizenship"), where("status", "==", "published")),
+            );
+            translated = snapshot.docs.map((item) => ({ id: item.id, ...item.data() }));
+          } catch (_) {
+            translated = [];
+          }
+          const overrides = new Map(translated.map((item) => [item.id, item]));
+          const questions = (window.CITIZENSHIP_SEED || [])
+            .map((item) => ({ ...item, ...overrides.get(item.id) }))
             .filter((item) => !item.state || item.state === state);
-          status.textContent = questions.length
-            ? `${questions.length} questions are ready for ${state}.`
-            : "The question set is being prepared. An administrator must publish the USCIS questions before practice is available.";
+          status.textContent = `${questions.length} questions generated for ${state}. English questions and answers are ready; Chin translations appear when available.`;
           preview.innerHTML = questions.length
             ? questions
                 .map(

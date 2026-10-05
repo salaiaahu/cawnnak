@@ -70,5 +70,6 @@ service cloud.firestore {
     match /operations/{id} { allow read: if admin(); allow write: if false; }
     match /translationSearches/{id} { allow read, write: if false; }
     match /translationMemory/{id} { allow read: if true; allow write: if false; }
+    match /aiUsers/{uid} { allow read: if admin(); allow write: if false; }
   }
 }

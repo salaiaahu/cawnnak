@@ -188,10 +188,27 @@ exports.getCitizenshipOfficials = onRequest({ cors: true }, async (request, resp
   }
 });
 
+async function getTranslationUser(request) {
+  const header = String(request.headers.authorization || '');
+  if (!header.startsWith('Bearer ')) return null;
+  try {
+    const token = await auth.verifyIdToken(header.slice(7));
+    const profile = await db.doc(`users/${token.uid}`).get();
+    const name = String(profile.data()?.displayName || token.name || '').trim();
+    return { uid: token.uid, name, email: token.email || '' };
+  } catch (error) {
+    console.warn('Invalid LaiTech AI auth token', error.message);
+    return null;
+  }
+}
+
 exports.translateHakhaChin = onRequest({ cors: true }, async (request, response) => {
   const sourceText = String(request.body?.text || '').trim();
   const apiKey = process.env.GOOGLE_TRANSLATE_API_KEY;
-  const rateKey = request.auth?.uid ||
+  const translationUser = await getTranslationUser(request);
+  if (!translationUser) return response.status(401).json({ error: 'Sign in to use LaiTech AI.' });
+  if (translationUser.name.length < 2) return response.status(403).json({ error: 'Complete your profile name before using LaiTech AI.' });
+  const rateKey = translationUser.uid ||
     `guest_${String(request.headers['x-forwarded-for'] || request.ip || 'unknown')
       .split(',')[0].replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 80)}`;
   if (!sourceText) return response.status(400).json({ error: 'Enter a Hakha Chin word or phrase.' });
@@ -218,9 +235,17 @@ exports.translateHakhaChin = onRequest({ cors: true }, async (request, response)
         verified: true,
         qualityStatus: 'verified',
         schemaVersion: 1,
-        userId: request.auth?.uid || null,
+        userId: translationUser.uid,
+        userName: translationUser.name,
         createdAt: FieldValue.serverTimestamp()
       });
+      await db.collection('aiUsers').doc(translationUser.uid).set({
+        userId: translationUser.uid,
+        name: translationUser.name,
+        email: translationUser.email,
+        lastUsedAt: FieldValue.serverTimestamp(),
+        requestCount: FieldValue.increment(1)
+      }, { merge: true });
       return response.json({ translatedText, sourceLanguage: 'cnh', targetLanguage: 'en', cached: true });
     }
     if (!apiKey) return response.status(503).json({ error: 'Translation is not configured yet.' });
@@ -244,9 +269,17 @@ exports.translateHakhaChin = onRequest({ cors: true }, async (request, response)
       verified: false,
       qualityStatus: 'unreviewed',
       schemaVersion: 1,
-      userId: request.auth?.uid || null,
+      userId: translationUser.uid,
+      userName: translationUser.name,
       createdAt: FieldValue.serverTimestamp()
     });
+    await db.collection('aiUsers').doc(translationUser.uid).set({
+      userId: translationUser.uid,
+      name: translationUser.name,
+      email: translationUser.email,
+      lastUsedAt: FieldValue.serverTimestamp(),
+      requestCount: FieldValue.increment(1)
+    }, { merge: true });
     response.json({ translatedText, sourceLanguage: 'cnh', targetLanguage: 'en' });
   } catch (error) {
     if (error.code === 'resource-exhausted') return response.status(429).json({ error: error.message });

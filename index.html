@@ -1428,10 +1428,60 @@
       .translator-form button {
         flex: 0 0 auto;
       }
+      .lai-tech-page {
+        max-width: 780px;
+        margin: auto;
+      }
+      .lai-tech-hero {
+        position: relative;
+        overflow: hidden;
+        padding: 26px 24px;
+        border: 1px solid #d7b978;
+        border-radius: 22px;
+        color: #fff;
+        background:
+          radial-gradient(circle at 88% 10%, #f9d88955 0 54px, transparent 55px),
+          linear-gradient(135deg, #1d3d3a, #6f4a69 58%, #bb8352);
+        box-shadow: 0 18px 42px #3c294522;
+      }
+      .lai-tech-hero .eyebrow {
+        color: #ffe6a8;
+      }
+      .lai-tech-hero h1 {
+        margin: 8px 0 6px;
+        font-size: clamp(1.8rem, 5vw, 2.8rem);
+      }
+      .lai-tech-hero .status {
+        color: #fff8e5;
+      }
+      #lai-tech-consent,
+      #lai-tech-chat {
+        margin-top: 14px;
+        border-color: #e2d2bb;
+        background: linear-gradient(145deg, #fffdf8, #f8efe6);
+      }
+      #lai-tech-consent h2 {
+        margin-top: 0;
+      }
+      #lai-tech-chat {
+        min-height: 430px;
+      }
+      #lai-tech-chat .translator-messages {
+        min-height: 340px;
+        max-height: 52vh;
+        padding: 4px;
+      }
+      .lai-tech-thinking {
+        color: #82647f;
+        font-style: italic;
+      }
       @media (max-width: 600px) {
         .translator-form {
           display: grid;
           grid-template-columns: 1fr auto;
+        }
+        .lai-tech-hero {
+          padding: 22px 18px;
         }
       }
       .hero h2 {
@@ -2310,35 +2360,6 @@
           To install on iPhone or iPad: tap Share, then choose
           <b>Add to Home Screen</b>.
         </p>
-        <section class="home-section translator-chat">
-          <div class="section-heading">
-            <div>
-              <small class="eyebrow">ASK CAWNNAK</small>
-              <h2>Learn from your own phrase</h2>
-            </div>
-            <span aria-hidden="true">💬</span>
-          </div>
-          <p class="status">
-            Type a Hakha Chin word or phrase and get an English translation.
-          </p>
-          <div id="translator-messages" class="translator-messages" aria-live="polite">
-            <div class="translator-message assistant">
-              Try a word or phrase in Hakha Chin.
-            </div>
-          </div>
-          <form id="translator-form" class="translator-form">
-            <input
-              id="translator-input"
-              maxlength="500"
-              autocomplete="off"
-              placeholder="Type Hakha Chin here…"
-              aria-label="Hakha Chin phrase"
-              required
-            />
-            <button class="btn" type="submit">Translate</button>
-          </form>
-          <p id="translator-status" class="status"></p>
-        </section>
         <div class="stats">
           <div class="stat"><b id="studied">0</b>Studied</div>
           <div class="stat"><b id="best">—</b>Best score</div>
@@ -2410,7 +2431,44 @@
                 state.</small
               >
             </button>
+            <button class="track-choice-card" id="choose-lai-tech" type="button">
+              <span aria-hidden="true">🤖</span>
+              <strong>Learn from LaiTech AI</strong>
+              <small>Explore Hakha Chin phrases with your friendly AI learning companion.</small>
+            </button>
           </div>
+        </div>
+      </section>
+      <section id="lai-tech" class="view">
+        <div class="lai-tech-page">
+          <div class="lai-tech-hero">
+            <small class="eyebrow">LAITECH AI · BETA</small>
+            <h1 id="lai-tech-title">Welcome to LaiTech AI</h1>
+            <p id="lai-tech-intro" class="status"></p>
+          </div>
+          <section id="lai-tech-consent" class="panel">
+            <h2>Before you begin</h2>
+            <p>
+              LaiTech AI is currently in beta testing. Translations may contain
+              errors, so please help us improve by reporting or reviewing them.
+            </p>
+            <p class="status">
+              You can use up to 20 translation requests each day, with a
+              maximum of 500 characters per request.
+            </p>
+            <button id="lai-tech-continue" class="btn" type="button">
+              I understand — continue
+            </button>
+          </section>
+          <section id="lai-tech-chat" class="panel hidden">
+            <div id="translator-messages" class="translator-messages" aria-live="polite"></div>
+            <form id="translator-form" class="translator-form">
+              <input id="translator-input" maxlength="500" autocomplete="off"
+                placeholder="Type Hakha Chin here…" aria-label="Hakha Chin phrase" required />
+              <button class="btn" type="submit">Send</button>
+            </form>
+            <p id="translator-status" class="status"></p>
+          </section>
         </div>
       </section>
       <section id="citizenship" class="view">
@@ -2684,6 +2742,11 @@
                   translations.</small
                 >
               </button>
+              <button id="manage-ai-users" class="track-choice-card" type="button">
+                <span aria-hidden="true">🤖</span>
+                <strong>LaiTech AI users</strong>
+                <small>Review registered learners using the AI translator.</small>
+              </button>
             </div>
           </div>
           <div id="language-admin" class="hidden">
@@ -2764,6 +2827,12 @@
               <p id="citizenship-admin-message" class="status"></p>
             </form>
             <div id="citizenship-admin-list"></div>
+          </section>
+          <section id="ai-users-admin" class="panel hidden">
+            <button id="ai-users-track-back" class="plain" type="button">← Choose another course</button>
+            <h2>LaiTech AI user list</h2>
+            <p class="status">Registered learners who have opened the LaiTech AI beta.</p>
+            <div id="ai-users-list"><p class="status">Loading AI users…</p></div>
           </section>
         </div>
       </section>
@@ -4516,6 +4585,10 @@
           "hidden",
           adminSelection !== "citizenship",
         );
+        $("ai-users-admin").classList.toggle(
+          "hidden",
+          adminSelection !== "ai",
+        );
         if (adminSelection === "holh") {
           fillCategories();
           $("adminlist").innerHTML = cards
@@ -4553,6 +4626,7 @@
           );
         }
         if (adminSelection === "citizenship") loadCitizenshipAdmin();
+        if (adminSelection === "ai") loadAiUsersAdmin();
       }
       function chooseAdminTrack(selection) {
         adminSelection = selection;
@@ -4561,8 +4635,37 @@
       }
       $("manage-holh").onclick = () => chooseAdminTrack("holh");
       $("manage-citizenship").onclick = () => chooseAdminTrack("citizenship");
+      $("manage-ai-users").onclick = () => chooseAdminTrack("ai");
       $("admin-track-back").onclick = () => chooseAdminTrack("");
       $("citizenship-track-back").onclick = () => chooseAdminTrack("");
+      $("ai-users-track-back").onclick = () => chooseAdminTrack("");
+      async function loadAiUsersAdmin() {
+        if (!user?.admin || !db) return;
+        const list = $("ai-users-list");
+        try {
+          const snapshot = await getDocs(
+            query(collection(db, "aiUsers"), orderBy("lastUsedAt", "desc")),
+          );
+          list.innerHTML = snapshot.empty
+            ? '<p class="status">No LaiTech AI users yet.</p>'
+            : snapshot.docs
+                .map((item) => {
+                  const data = item.data();
+                  return (
+                    '<div class="card-inline-edit"><b>' +
+                    esc(data.name || "Unnamed learner") +
+                    '</b><span class="status">' +
+                    esc(data.email || "") +
+                    " · " +
+                    Number(data.requestCount || 0) +
+                    " requests</span></div>"
+                  );
+                })
+                .join("");
+        } catch (error) {
+          list.innerHTML = '<p class="status">Could not load AI users.</p>';
+        }
+      }
       async function loadCitizenshipAdmin() {
         if (!user?.admin || !db) return;
         const list = $("citizenship-admin-list");
@@ -4915,6 +5018,7 @@
         [
           "home",
           "track-choice",
+          "lai-tech",
           "citizenship",
           "categories",
           "learn",
@@ -5172,6 +5276,7 @@
         if (view === "learn") render();
         if (view === "quiz") renderQuizLobby();
         if (view === "top-learners") renderTopLearners();
+        if (view === "lai-tech") prepareLaiTech();
         if (view === "adminview") {
           adminSelection = "";
           manage();
@@ -5642,6 +5747,7 @@
       const appViewIds = [
         "home",
         "track-choice",
+        "lai-tech",
         "citizenship",
         "categories",
         "learn",
@@ -5674,6 +5780,7 @@
         if (view === "learn") render();
         if (view === "quiz") renderQuizLobby();
         if (view === "top-learners") renderTopLearners();
+        if (view === "lai-tech") prepareLaiTech();
         if (view === "adminview") {
           adminSelection = "";
           manage();
@@ -5722,6 +5829,52 @@
           $("generate-citizenship").click();
         }
       };
+      async function prepareLaiTech() {
+        $("lai-tech-chat").classList.add("hidden");
+        $("lai-tech-consent").classList.remove("hidden");
+        $("lai-tech-continue").disabled = true;
+        if (!user) {
+          $("lai-tech-title").textContent = "Sign in to meet LaiTech AI";
+          $("lai-tech-intro").textContent =
+            "This beta learning companion is available to registered learners.";
+          $("lai-tech-consent").querySelector("p").textContent =
+            "Please sign in or create an account before using LaiTech AI.";
+          $("lai-tech-continue").textContent = "Sign in to continue";
+          $("lai-tech-continue").disabled = false;
+          $("lai-tech-continue").onclick = () => $("login").click();
+          return;
+        }
+        const profile = await getDoc(doc(db, "users", user.uid));
+        const name = String(profile.data()?.displayName || user.displayName || "").trim();
+        if (name.length < 2) {
+          $("lai-tech-title").textContent = "Complete your profile first";
+          $("lai-tech-intro").textContent =
+            "Add your profile name so LaiTech AI knows how to welcome you.";
+          $("lai-tech-consent").querySelector("p").textContent =
+            "A profile name is required before using this beta feature.";
+          $("lai-tech-continue").textContent = "Open my profile";
+          $("lai-tech-continue").disabled = false;
+          $("lai-tech-continue").onclick = () => showAppView("profileview");
+          return;
+        }
+        $("lai-tech-title").textContent = "Welcome, " + name;
+        $("lai-tech-intro").textContent =
+          "I’m LaiTech AI, your friendly Hakha Chin to English learning companion.";
+        $("lai-tech-consent").querySelector("p").textContent =
+          "LaiTech AI is currently in beta testing. I may make mistakes, so please review translations carefully and help us improve.";
+        $("lai-tech-continue").textContent = "I understand — start learning";
+        $("lai-tech-continue").disabled = false;
+        $("lai-tech-continue").onclick = () => {
+          $("lai-tech-consent").classList.add("hidden");
+          $("lai-tech-chat").classList.remove("hidden");
+          $("translator-messages").innerHTML =
+            '<div class="translator-message assistant">Hello, ' +
+            esc(name) +
+            '! Send me a Hakha Chin word or phrase and I’ll help you explore its English meaning.</div>';
+          $("translator-input").focus();
+        };
+      }
+      $("choose-lai-tech").onclick = () => showAppView("lai-tech");
       $("home-quiz").onclick = () => showAppView("quiz");
       $("home-practice").onclick = () => showAppView("practice");
       $("translator-form").onsubmit = async (event) => {
@@ -5735,23 +5888,41 @@
         userMessage.textContent = text;
         messages.append(userMessage);
         input.value = "";
-        $("translator-status").textContent = "Translating…";
+        const thinking = document.createElement("div");
+        thinking.className = "translator-message assistant lai-tech-thinking";
+        thinking.textContent = "LaiTech AI is thinking";
+        messages.append(thinking);
+        let thinkingDots = 0;
+        const thinkingTimer = setInterval(() => {
+          thinkingDots = (thinkingDots + 1) % 4;
+          thinking.textContent = "LaiTech AI is thinking" + ".".repeat(thinkingDots);
+        }, 300);
+        $("translator-status").textContent = "Preparing your learning response…";
         const button = event.submitter || event.currentTarget.querySelector("button");
         button.disabled = true;
         try {
+          const token = await user.getIdToken();
           const response = await fetch(
             "https://us-central1-cawnnak-ca.cloudfunctions.net/translateHakhaChin",
             {
               method: "POST",
-              headers: { "Content-Type": "application/json" },
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + token,
+              },
               body: JSON.stringify({ text }),
             },
           );
           const payload = await response.json();
           if (!response.ok) throw new Error(payload.error || "Translation failed.");
+          clearInterval(thinkingTimer);
+          thinking.remove();
           const answer = document.createElement("div");
           answer.className = "translator-message assistant";
-          answer.textContent = "English: " + payload.translatedText;
+          answer.textContent =
+            "I explored that phrase for you.\n\nEnglish meaning: " +
+            payload.translatedText +
+            "\n\nTry comparing the wording with phrases you already know.";
           if (user?.admin && functions) {
             const verify = document.createElement("button");
             verify.className = "plain";
@@ -5766,6 +5937,8 @@
                 });
                 verify.textContent = "Verified translation saved";
               } catch (error) {
+                clearInterval(thinkingTimer);
+                thinking.remove();
                 verify.disabled = false;
                 verify.textContent = "Could not verify";
                 console.error(error);

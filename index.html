@@ -1541,6 +1541,14 @@
         border-radius: 12px;
         white-space: pre-wrap;
         overflow-wrap: anywhere;
+        animation: translator-message-float .32s ease-out both;
+      }
+      @keyframes translator-message-float {
+        from { opacity: 0; transform: translateY(10px) scale(.98); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .translator-message { animation: none; }
       }
       .translator-message.user {
         justify-self: end;
@@ -1773,6 +1781,15 @@
       .translator-form input {
         min-width: 0;
         flex: 1;
+      }
+      .translator-form textarea {
+        min-width: 0;
+        min-height: 42px;
+        max-height: 180px;
+        flex: 1;
+        resize: none;
+        overflow-y: hidden;
+        line-height: 1.35;
       }
       .translator-form button {
         flex: 0 0 auto;
@@ -2835,7 +2852,7 @@
             <form id="translator-form" class="translator-form">
               <textarea
                 id="translator-input"
-                rows="3"
+                rows="1"
                 maxlength="10000"
                 placeholder="Type Hakha Chin here…"
                 aria-label="Hakha Chin phrase"
@@ -7229,6 +7246,15 @@
       $("choose-lai-tech").onclick = () => showAppView("lai-tech");
       $("home-quiz").onclick = () => showAppView("quiz");
       $("home-practice").onclick = () => showAppView("practice");
+      const resizeTranslatorInput = () => {
+        const input = $("translator-input");
+        if (!input) return;
+        input.style.height = "auto";
+        input.style.height = Math.min(input.scrollHeight, 180) + "px";
+        input.style.overflowY = input.scrollHeight > 180 ? "auto" : "hidden";
+      };
+      $("translator-input").oninput = resizeTranslatorInput;
+      resizeTranslatorInput();
       $("translator-form").onsubmit = async (event) => {
         event.preventDefault();
         const input = $("translator-input");

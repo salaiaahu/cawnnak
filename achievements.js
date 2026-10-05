@@ -19,9 +19,11 @@ function summary() {
   return { studied, streak, categoryCount, bestScore, badges, updatedAt: Date.now() };
 }
 function cardCanvas(data) {
-  const canvas = document.createElement('canvas'); canvas.width = 1200; canvas.height = 630;
+  const canvas = document.createElement('canvas'); canvas.width = 1200; canvas.height = 760;
   const context = canvas.getContext('2d'), gradient = context.createLinearGradient(0, 0, 1200, 630);
-  gradient.addColorStop(0, '#0f6249'); gradient.addColorStop(1, '#23986d'); context.fillStyle = gradient; context.fillRect(0, 0, 1200, 630);
+  gradient.addColorStop(0, '#0f6249'); gradient.addColorStop(1, '#23986d'); context.fillStyle = gradient; context.fillRect(0, 0, 1200, 760);
+  context.strokeStyle = '#f5d77b'; context.lineWidth = 12; context.strokeRect(24, 24, 1152, 712);
+  context.strokeStyle = '#d8ffed'; context.lineWidth = 2; context.strokeRect(42, 42, 1116, 676);
   if (data.avatarImage?.complete && data.avatarImage.naturalWidth) {
     context.save(); context.beginPath(); context.arc(1060, 120, 62, 0, Math.PI * 2); context.clip(); context.drawImage(data.avatarImage, 998, 58, 124, 124); context.restore();
   } else {
@@ -33,11 +35,12 @@ function cardCanvas(data) {
   context.font = '400 28px system-ui'; context.fillStyle = '#ffffff'; context.fillText(`${data.studied} phrases studied  •  ${data.streak}-day streak  •  ${data.bestScore || '—'}% best quiz`, 78, 300);
   context.font = '600 25px system-ui'; context.fillStyle = '#e3fff2'; context.fillText('Achievements earned', 78, 370);
   context.font = '31px system-ui'; context.fillStyle = '#ffffff';
-  (data.badges.length ? data.badges : [{ icon: '🌱', name: 'Learning journey' }]).slice(0, 4).forEach((badge, index) => {
+  (data.badges.length ? data.badges : [{ icon: '🌱', name: 'Learning journey' }]).forEach((badge, index) => {
     context.fillText(`${badge.icon} ${badge.name}`, 88, 420 + index * 38);
   });
-  context.fillStyle = '#ffffff'; context.globalAlpha = .15; context.fillRect(75, 550, 1050, 2); context.globalAlpha = 1;
-  context.font = '600 29px system-ui'; context.fillText('Keep learning, one phrase at a time.', 75, 585); context.fillStyle = '#d8ffed'; context.font = '400 24px system-ui'; context.fillText('Awarded by Mirang Holh Cawnnak · Hakha Chin language learning', 75, 615);
+  const footerY = Math.min(660, 420 + data.badges.length * 38 + 30);
+  context.fillStyle = '#ffffff'; context.globalAlpha = .15; context.fillRect(75, footerY, 1050, 2); context.globalAlpha = 1;
+  context.font = '600 29px system-ui'; context.fillText('Keep learning, one phrase at a time.', 75, footerY + 38); context.fillStyle = '#d8ffed'; context.font = '400 24px system-ui'; context.fillText('Awarded by Mirang Holh Cawnnak · Hakha Chin language learning', 75, footerY + 76);
   return canvas;
 }
 function ensureDialog() {

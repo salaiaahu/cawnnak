@@ -2,6 +2,42 @@
 
 This is the continuation note for an AI agent working from a machine with Firebase CLI, Firebase Admin SDK, and Cloud Functions configured.
 
+## Current product state and maintenance handoff — October 5, 2026
+
+The app is a Firebase-backed single-page PWA for Hakha Chin learning. The browser shell and most UI logic are in [index.html](./index.html); supporting browser modules include [home.js](./home.js), [learning-progress.js](./learning-progress.js), [achievements.js](./achievements.js), and [service-worker.js](./service-worker.js). Backend authorization, translation, quotas, notifications, verification, audit logging, and public aggregate endpoints are in [functions/index.js](./functions/index.js). Security boundaries are defined in [firestore.rules](./firestore.rules) and [storage.rules](./storage.rules).
+
+### Features currently implemented
+
+- Holh Cawnnak language categories, practice, quizzes, review, favorites, progress, streaks, leaderboard, and profile achievements.
+- US Citizenship Cawnnak with state selection, USCIS civics questions, English/Chin question and answer translations, practice, quiz behavior, live-official integration, and inline mobile-friendly admin editing.
+- Role separation: admin-only User Management, Edit History, AI Users, and AI Chat History; editor access to content management and Translation Verification.
+- LaiTech AI translation chat using Google Cloud Translation, authenticated registered users, consent/beta messaging, quotas, caching, raw search logging, bilingual training fields, feedback, correction review, and verified translation memory.
+- AI user quotas, Free/Pro tier display, usage reset, usage summary, targeted notifications, notification history stored in localStorage, and direct admin offers through `sendAiUserOfferNotification`.
+- Community page with separate Top Learners and Top AI Contributors tabs, profile avatars, contributor counts, verified counts, and Home leaderboard navigation.
+- Achievement certificate preview with learner name, profile image when available, all earned badges, score/streak metrics, decorative border, Save, Share, and Cancel actions.
+
+### Important implementation notes for future agents
+
+- `index.html` contains several historical script sections and duplicated legacy handlers. The final canonical SPA navigation is the `appViewIds`/`showAppView` block near the end of the file. New views must be added there and must not rely only on older `navigateV2`.
+- Use `showAppView()` for navigation and keep physical browser back behavior intact. Do not add page-level Home buttons unless the product request explicitly requires one.
+- AI user profile images must be read from `users/{uid}` (`avatar`, `avatarURL`, or `photoURL`), not assumed to exist in `aiUsers/{uid}`.
+- `aiUsers/{uid}` is server-managed. It stores quotas and usage counters; never let the browser write quota or usage fields directly.
+- `aiFeedback` records preserve `inputLanguage`, `englishText`, `hakhaChinText`, `sourceText`, `translatedText`, response, correction, and review metadata. Verified records are hidden from pending review.
+- A correction submitted through `saveTranslationFeedback` marks `users/{uid}.aiContributor` and increments `aiContributionCount`. Profile badge rendering depends on those fields.
+- Targeted notifications use `notifications/{id}.targetUid`. Users may read only their own notifications; the UI removes read items from the active list and stores a local history copy.
+- `getLeaderboard` and `getAiContributors` are public aggregate endpoints. Do not add private phrases, emails, quota data, or raw feedback text to their responses.
+- Static UI changes require deployment through the project’s configured static host. Firebase Hosting is not currently configured in `firebase.json`; Functions and Firestore rules can still be deployed independently.
+- Service-worker cached assets require a cache-version bump in `service-worker.js` or a cache-busting asset URL when changing long-lived browser modules.
+
+### Recommended next maintenance work
+
+1. Consolidate duplicate inline auth, notification, and navigation handlers into one maintained browser module.
+2. Configure Firebase Hosting or another HTTPS static host and deploy the current UI/service worker.
+3. Add emulator/browser tests for admin/editor access, Community tabs, Continue Learning, achievement preview, quota actions, and notification history.
+4. Move remaining avatar data URLs fully to Firebase Storage and keep only Storage paths/download URLs in profiles.
+5. Add server-side contributor aggregation tests and prevent duplicate contribution increments on repeated feedback updates.
+6. Finish FCM/App Check configuration, scheduled backups, monitoring, and non-production restore verification.
+
 ## Scope
 
 Implement all roadmap items below except accessibility improvements. The app is currently a static GitHub Pages client with Firebase Web SDK code embedded in `index.html`; there is no Functions project yet. Never place Admin SDK credentials in the browser or repository.

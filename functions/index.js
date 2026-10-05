@@ -169,98 +169,6 @@ exports.getCitizenshipOfficials = onRequest({ cors: true }, async (request, resp
       headers: { 'X-API-KEY': apiKey, Accept: 'application/json' }
     });
 
-    exports.translateHakhaChin = onRequest({ cors: true }, async (request, response) => {
-      const sourceText = String(request.body?.text || '').trim();
-      const apiKey = process.env.GOOGLE_TRANSLATE_API_KEY;
-      const rateKey = request.auth?.uid ||
-        `guest_${String(request.headers['x-forwarded-for'] || request.ip || 'unknown')
-          .split(',')[0].replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 80)}`;
-      if (!sourceText) return response.status(400).json({ error: 'Enter a Hakha Chin word or phrase.' });
-      if (sourceText.length > 500) return response.status(400).json({ error: 'Please keep each phrase under 500 characters.' });
-      try {
-        await ensureRateLimit(rateKey, 'translateHakhaChin', 20, 24 * 60 * 60 * 1000);
-        const normalizedSourceText = sourceText.toLocaleLowerCase().replace(/\s+/g, ' ').trim();
-        const cached = await db.collection('translationMemory')
-          .where('normalizedSourceText', '==', normalizedSourceText)
-          .limit(10)
-          .get();
-        const cachedDocument = cached.docs.find(document =>
-          document.get('sourceLanguage') === 'cnh' && document.get('targetLanguage') === 'en'
-        );
-        if (cachedDocument) {
-          const translatedText = String(cachedDocument.get('translatedText') || '').trim();
-          await db.collection('translationSearches').add({
-            sourceText,
-            normalizedSourceText,
-            sourceLanguage: 'cnh',
-            targetLanguage: 'en',
-            translatedText,
-            provider: 'translation-memory',
-            verified: true,
-            qualityStatus: 'verified',
-            schemaVersion: 1,
-            userId: request.auth?.uid || null,
-            createdAt: FieldValue.serverTimestamp()
-          });
-          return response.json({ translatedText, sourceLanguage: 'cnh', targetLanguage: 'en', cached: true });
-        }
-        if (!apiKey) return response.status(503).json({ error: 'Translation is not configured yet.' });
-        const result = await fetch(`https://translation.googleapis.com/language/translate/v2?key=${encodeURIComponent(apiKey)}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ q: sourceText, source: 'cnh', target: 'en', format: 'text' })
-        });
-        if (!result.ok) throw new Error(`Google Translation returned ${result.status}`);
-        const payload = await result.json();
-        const translatedText = String(payload.data?.translations?.[0]?.translatedText || '').trim();
-        if (!translatedText) throw new Error('Google Translation returned no translation.');
-        const record = {
-          sourceText,
-          normalizedSourceText,
-          sourceLanguage: 'cnh',
-          targetLanguage: 'en',
-          translatedText,
-          provider: 'google-cloud-translation',
-          model: 'nmt',
-          verified: false,
-          qualityStatus: 'unreviewed',
-          schemaVersion: 1,
-          userId: request.auth?.uid || null,
-          createdAt: FieldValue.serverTimestamp()
-        };
-        await db.collection('translationSearches').add(record);
-        response.json({ translatedText, sourceLanguage: 'cnh', targetLanguage: 'en' });
-      } catch (error) {
-        if (error.code === 'resource-exhausted') return response.status(429).json({ error: error.message });
-        console.error('Could not translate Hakha Chin', error);
-        response.status(502).json({ error: 'Translation is temporarily unavailable. Please try again later.' });
-      }
-    });
-
-    exports.saveVerifiedTranslation = onCall(async request => {
-      await requireAdmin(request);
-      const data = request.data || {};
-      const sourceText = String(data.sourceText || '').trim();
-      const translatedText = String(data.translatedText || '').trim();
-      if (!sourceText || !translatedText || sourceText.length > 500 || translatedText.length > 1000)
-        throw new HttpsError('invalid-argument', 'A valid source and translation are required.');
-      const id = `${sourceText.toLocaleLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 80)}-cnh-en`;
-      await db.collection('translationMemory').doc(id).set({
-        sourceText,
-        normalizedSourceText: sourceText.toLocaleLowerCase().replace(/\s+/g, ' ').trim(),
-        sourceLanguage: 'cnh',
-        targetLanguage: 'en',
-        translatedText,
-        provider: 'google-cloud-translation',
-        verified: true,
-        qualityStatus: 'verified',
-        schemaVersion: 1,
-        verifiedBy: request.auth.uid,
-        verifiedAt: FieldValue.serverTimestamp(),
-        updatedAt: FieldValue.serverTimestamp()
-      }, { merge: true });
-      return { id };
-    });
     if (!result.ok) throw new Error(`Open States returned ${result.status}`);
     const data = await result.json();
     const officials = (data.results || []).map(person => ({
@@ -278,6 +186,98 @@ exports.getCitizenshipOfficials = onRequest({ cors: true }, async (request, resp
     console.error('Could not load citizenship officials', error);
     response.status(502).json({ error: 'Live official data is temporarily unavailable.' });
   }
+});
+
+exports.translateHakhaChin = onRequest({ cors: true }, async (request, response) => {
+  const sourceText = String(request.body?.text || '').trim();
+  const apiKey = process.env.GOOGLE_TRANSLATE_API_KEY;
+  const rateKey = request.auth?.uid ||
+    `guest_${String(request.headers['x-forwarded-for'] || request.ip || 'unknown')
+      .split(',')[0].replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 80)}`;
+  if (!sourceText) return response.status(400).json({ error: 'Enter a Hakha Chin word or phrase.' });
+  if (sourceText.length > 500) return response.status(400).json({ error: 'Please keep each phrase under 500 characters.' });
+  try {
+    await ensureRateLimit(rateKey, 'translateHakhaChin', 20, 24 * 60 * 60 * 1000);
+    const normalizedSourceText = sourceText.toLocaleLowerCase().replace(/\s+/g, ' ').trim();
+    const cached = await db.collection('translationMemory')
+      .where('normalizedSourceText', '==', normalizedSourceText)
+      .limit(10)
+      .get();
+    const cachedDocument = cached.docs.find(document =>
+      document.get('sourceLanguage') === 'cnh' && document.get('targetLanguage') === 'en'
+    );
+    if (cachedDocument) {
+      const translatedText = String(cachedDocument.get('translatedText') || '').trim();
+      await db.collection('translationSearches').add({
+        sourceText,
+        normalizedSourceText,
+        sourceLanguage: 'cnh',
+        targetLanguage: 'en',
+        translatedText,
+        provider: 'translation-memory',
+        verified: true,
+        qualityStatus: 'verified',
+        schemaVersion: 1,
+        userId: request.auth?.uid || null,
+        createdAt: FieldValue.serverTimestamp()
+      });
+      return response.json({ translatedText, sourceLanguage: 'cnh', targetLanguage: 'en', cached: true });
+    }
+    if (!apiKey) return response.status(503).json({ error: 'Translation is not configured yet.' });
+    const result = await fetch(`https://translation.googleapis.com/language/translate/v2?key=${encodeURIComponent(apiKey)}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ q: sourceText, source: 'cnh', target: 'en', format: 'text' })
+    });
+    if (!result.ok) throw new Error(`Google Translation returned ${result.status}`);
+    const payload = await result.json();
+    const translatedText = String(payload.data?.translations?.[0]?.translatedText || '').trim();
+    if (!translatedText) throw new Error('Google Translation returned no translation.');
+    await db.collection('translationSearches').add({
+      sourceText,
+      normalizedSourceText,
+      sourceLanguage: 'cnh',
+      targetLanguage: 'en',
+      translatedText,
+      provider: 'google-cloud-translation',
+      model: 'nmt',
+      verified: false,
+      qualityStatus: 'unreviewed',
+      schemaVersion: 1,
+      userId: request.auth?.uid || null,
+      createdAt: FieldValue.serverTimestamp()
+    });
+    response.json({ translatedText, sourceLanguage: 'cnh', targetLanguage: 'en' });
+  } catch (error) {
+    if (error.code === 'resource-exhausted') return response.status(429).json({ error: error.message });
+    console.error('Could not translate Hakha Chin', error);
+    response.status(502).json({ error: 'Translation is temporarily unavailable. Please try again later.' });
+  }
+});
+
+exports.saveVerifiedTranslation = onCall(async request => {
+  await requireAdmin(request);
+  const data = request.data || {};
+  const sourceText = String(data.sourceText || '').trim();
+  const translatedText = String(data.translatedText || '').trim();
+  if (!sourceText || !translatedText || sourceText.length > 500 || translatedText.length > 1000)
+    throw new HttpsError('invalid-argument', 'A valid source and translation are required.');
+  const id = `${sourceText.toLocaleLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 80)}-cnh-en`;
+  await db.collection('translationMemory').doc(id).set({
+    sourceText,
+    normalizedSourceText: sourceText.toLocaleLowerCase().replace(/\s+/g, ' ').trim(),
+    sourceLanguage: 'cnh',
+    targetLanguage: 'en',
+    translatedText,
+    provider: 'google-cloud-translation',
+    verified: true,
+    qualityStatus: 'verified',
+    schemaVersion: 1,
+    verifiedBy: request.auth.uid,
+    verifiedAt: FieldValue.serverTimestamp(),
+    updatedAt: FieldValue.serverTimestamp()
+  }, { merge: true });
+  return { id };
 });
 
 exports.onAuthUserCreated = functionsV1.auth.user().onCreate(async user => {

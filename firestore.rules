@@ -8,6 +8,12 @@ service cloud.firestore {
         && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin'
         && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.disabled != true;
     }
+    function editor() {
+      return signedIn()
+        && (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin'
+          || get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'editor')
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.disabled != true;
+    }
     function allowedProfileKeys() {
       return request.resource.data.diff(resource.data).affectedKeys().hasOnly([
         'displayName', 'photoURL', 'avatarPath', 'avatarURL', 'progress',
@@ -24,12 +30,12 @@ service cloud.firestore {
     match /content/{id} {
       // Legacy documents without a status remain readable during migration.
       allow read: if !('status' in resource.data) || resource.data.status == 'published' || admin();
-      allow create, update, delete: if admin();
+      allow create, update, delete: if editor();
     }
 
     match /citizenship/{id} {
       allow read: if !('status' in resource.data) || resource.data.status == 'published' || admin();
-      allow create, update, delete: if admin();
+      allow create, update, delete: if editor();
     }
 
     match /categories/{id} {
@@ -71,5 +77,6 @@ service cloud.firestore {
     match /translationSearches/{id} { allow read, write: if false; }
     match /translationMemory/{id} { allow read: if true; allow write: if false; }
     match /aiUsers/{uid} { allow read: if admin(); allow write: if false; }
+    match /aiFeedback/{id} { allow read: if admin(); allow write: if false; }
   }
 }

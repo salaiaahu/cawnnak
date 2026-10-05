@@ -1393,6 +1393,18 @@
       .translator-chat {
         overflow: hidden;
       }
+      html,
+      body,
+      * {
+        scrollbar-width: none;
+      }
+      html::-webkit-scrollbar,
+      body::-webkit-scrollbar,
+      *::-webkit-scrollbar {
+        display: none;
+        width: 0;
+        height: 0;
+      }
       .translator-messages {
         display: grid;
         gap: 8px;
@@ -1401,6 +1413,10 @@
         margin: 12px 0;
       }
       .translator-message {
+        display: grid;
+        grid-template-columns: 30px minmax(0, 1fr);
+        gap: 8px;
+        align-items: start;
         max-width: 88%;
         padding: 9px 11px;
         border-radius: 12px;
@@ -1415,6 +1431,48 @@
         justify-self: start;
         background: #fff;
         border: 1px solid var(--l);
+      }
+      .translator-avatar {
+        display: grid;
+        width: 28px;
+        height: 28px;
+        place-items: center;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #1d3d3a, #bb8352);
+        color: #fff;
+        font-size: 0.9rem;
+      }
+      .translator-content {
+        min-width: 0;
+      }
+      .translation-label {
+        color: #73506e;
+        font-size: 0.76rem;
+        font-weight: 800;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+      .translation-feedback {
+        display: grid;
+        gap: 8px;
+        margin-top: 10px;
+        padding-top: 9px;
+        border-top: 1px solid #eadccf;
+      }
+      .translation-feedback-actions {
+        display: flex;
+        gap: 7px;
+      }
+      .translation-feedback textarea {
+        width: 100%;
+        min-height: 64px;
+        resize: vertical;
+      }
+      .tabs {
+        display: flex;
+        gap: 6px;
+        margin: 12px 0;
+        border-bottom: 1px solid var(--l);
       }
       .translator-form {
         display: flex;
@@ -2317,6 +2375,11 @@
       <button id="admin" class="btn hidden">Content manager</button
       ><button id="users" class="btn hidden">User management</button
       ><button id="history-menu" class="btn">Edit history</button
+      ><button id="ai-users-menu" class="btn hidden">AI users</button
+      ><button id="ai-history-menu" class="btn hidden">AI chat history</button
+      ><button id="translation-verification-menu" class="btn hidden">
+        Translation verification
+      </button
       ><button id="login" class="btn">Log in</button>
     </aside>
     <main>
@@ -2747,6 +2810,11 @@
                 <strong>LaiTech AI users</strong>
                 <small>Review registered learners using the AI translator.</small>
               </button>
+              <button id="manage-ai-history" class="track-choice-card" type="button">
+                <span aria-hidden="true">🗂️</span>
+                <strong>LaiTech AI chat history</strong>
+                <small>Review Yes, No, and unanswered translation feedback.</small>
+              </button>
             </div>
           </div>
           <div id="language-admin" class="hidden">
@@ -2833,6 +2901,16 @@
             <h2>LaiTech AI user list</h2>
             <p class="status">Registered learners who have opened the LaiTech AI beta.</p>
             <div id="ai-users-list"><p class="status">Loading AI users…</p></div>
+          </section>
+          <section id="ai-history-admin" class="panel hidden">
+            <button id="ai-history-track-back" class="plain" type="button">← Choose another course</button>
+            <h2 id="ai-history-title">LaiTech AI chat history</h2>
+            <div class="tabs" role="tablist">
+              <button class="plain ai-history-tab" data-feedback-tab="yes" type="button">Yes</button>
+              <button class="plain ai-history-tab" data-feedback-tab="no" type="button">No</button>
+              <button class="plain ai-history-tab" data-feedback-tab="na" type="button">N/A</button>
+            </div>
+            <div id="ai-history-list"><p class="status">Choose a feedback tab.</p></div>
           </section>
         </div>
       </section>
@@ -4572,7 +4650,7 @@
       }
       let adminSelection = "";
       function manage() {
-        if (!user?.admin) return showAppView("home");
+        if (!user?.editor) return showAppView("home");
         $("admin-track-choice").classList.toggle(
           "hidden",
           Boolean(adminSelection),
@@ -4589,7 +4667,14 @@
           "hidden",
           adminSelection !== "ai",
         );
+        $("ai-history-admin").classList.toggle(
+          "hidden",
+          !["history", "verification"].includes(adminSelection),
+        );
+        $("manage-ai-users").classList.toggle("hidden", !user?.admin);
+        $("manage-ai-history").classList.toggle("hidden", !user?.admin);
         if (adminSelection === "holh") {
+          $("admin-new-category").classList.toggle("hidden", !user.admin);
           fillCategories();
           $("adminlist").innerHTML = cards
             .filter(
@@ -4626,7 +4711,13 @@
           );
         }
         if (adminSelection === "citizenship") loadCitizenshipAdmin();
+        $("import-citizenship-seed").classList.toggle(
+          "hidden",
+          !user?.admin,
+        );
         if (adminSelection === "ai") loadAiUsersAdmin();
+        if (adminSelection === "history") loadAiHistoryAdmin("yes");
+        if (adminSelection === "verification") loadAiHistoryAdmin("no");
       }
       function chooseAdminTrack(selection) {
         adminSelection = selection;
@@ -4636,9 +4727,11 @@
       $("manage-holh").onclick = () => chooseAdminTrack("holh");
       $("manage-citizenship").onclick = () => chooseAdminTrack("citizenship");
       $("manage-ai-users").onclick = () => chooseAdminTrack("ai");
+      $("manage-ai-history").onclick = () => chooseAdminTrack("history");
       $("admin-track-back").onclick = () => chooseAdminTrack("");
       $("citizenship-track-back").onclick = () => chooseAdminTrack("");
       $("ai-users-track-back").onclick = () => chooseAdminTrack("");
+      $("ai-history-track-back").onclick = () => chooseAdminTrack("");
       async function loadAiUsersAdmin() {
         if (!user?.admin || !db) return;
         const list = $("ai-users-list");
@@ -4666,8 +4759,45 @@
           list.innerHTML = '<p class="status">Could not load AI users.</p>';
         }
       }
+      async function loadAiHistoryAdmin(tab) {
+          if (!user?.admin || !db) return;
+          $("ai-history-title").textContent =
+            adminSelection === "verification"
+              ? "Translation verification"
+              : "LaiTech AI chat history";
+          const list = $("ai-history-list");
+          try {
+            const snapshot = await getDocs(
+              query(collection(db, "aiFeedback"), orderBy("createdAt", "desc")),
+            );
+            const records = snapshot.docs
+              .map((item) => ({ id: item.id, ...item.data() }))
+              .filter((item) => (tab === "na" ? !item.response : item.response === tab));
+            list.innerHTML = records.length
+              ? records
+                  .map(
+                    (item) =>
+                      '<div class="card-inline-edit"><b>User: ' +
+                      esc(item.userName || "Learner") +
+                      '</b><span class="status">Hakha Chin: ' +
+                      esc(item.sourceText) +
+                      "<br>Google: " +
+                      esc(item.translatedText) +
+                      (item.correction ? "<br>Correction: " + esc(item.correction) : "") +
+                      "</span></div>",
+                  )
+                  .join("")
+              : '<p class="status">No feedback in this group.</p>';
+          } catch (error) {
+            list.innerHTML = '<p class="status">Could not load AI chat history.</p>';
+          }
+        }
+        document.querySelectorAll(".ai-history-tab").forEach(
+          (button) =>
+            (button.onclick = () => loadAiHistoryAdmin(button.dataset.feedbackTab)),
+        );
       async function loadCitizenshipAdmin() {
-        if (!user?.admin || !db) return;
+        if (!user?.editor || !db) return;
         const list = $("citizenship-admin-list");
         try {
           const snapshot = await getDocs(
@@ -4764,7 +4894,7 @@
       };
       $("citizenship-admin-form").onsubmit = async (event) => {
         event.preventDefault();
-        if (!user?.admin) return;
+        if (!user?.editor) return;
         const form = event.currentTarget;
         const data = {
           question: form.question.value.trim(),
@@ -4839,7 +4969,7 @@
       async function load() {
         try {
           let remote;
-          if (user?.admin) {
+          if (user?.editor) {
             const snapshot = await getDocs(
               query(collection(db, "content"), orderBy("english")),
             );
@@ -4919,13 +5049,14 @@
           if (user) {
             let d = await getDoc(doc(db, "users", user.uid));
             user.admin = d.data()?.role === "admin";
+            user.editor = user.admin || d.data()?.role === "editor";
             if (d.data()?.progress) p = d.data().progress;
             if (user.admin) {
               await seedFirestore();
               await load();
             }
           }
-          $("admin").classList.toggle("hidden", !user?.admin);
+          $("admin").classList.toggle("hidden", !user?.editor);
           dash();
         });
         await load();
@@ -5065,7 +5196,8 @@
           }
           user = account;
           user.admin = profile.data()?.role === "admin";
-          $("admin").classList.toggle("hidden", !user.admin);
+          user.editor = user.admin || profile.data()?.role === "editor";
+          $("admin").classList.toggle("hidden", !user.editor);
           $("users").classList.toggle("hidden", !user.admin);
           $("notifications").classList.toggle("hidden", !user.admin);
           dash();
@@ -5408,6 +5540,7 @@
           profileV2 = data;
           user = account;
           user.admin = data.role === "admin";
+          user.editor = user.admin || data.role === "editor";
           $("profile").classList.remove("hidden");
           $("notifications").classList.toggle("hidden", !user.admin);
           if (user.admin) {
@@ -5433,7 +5566,8 @@
         list.innerHTML = rows.length
           ? rows
               .map((profile) => {
-                let admin = profile.role === "admin",
+                let role = profile.role || "user",
+                  admin = role === "admin",
                   self = profile.id === user?.uid,
                   avatar = profile.avatar
                     ? '<img class="avatar" src="' +
@@ -5453,16 +5587,16 @@
                   '</small><span class="role-pill ' +
                   (admin ? "admin" : "") +
                   '">' +
-                  (admin ? "Admin" : "User") +
+                  (role === "admin" ? "Admin" : role === "editor" ? "Editor" : "User") +
                   "</span></div>" +
                   (self
                     ? '<span class="status">Your account</span>'
                     : '<button class="btn role-toggle" data-id="' +
                       esc(profile.id) +
                       '" data-role="' +
-                      (admin ? "user" : "admin") +
+                      (role === "user" ? "editor" : role === "editor" ? "admin" : "user") +
                       '">Make ' +
-                      (admin ? "user" : "admin") +
+                      (role === "user" ? "editor" : role === "editor" ? "admin" : "user") +
                       "</button>") +
                   "</div>"
                 );
@@ -5732,16 +5866,23 @@
         onAuthStateChanged(auth, async (account) => {
           if (!account) {
             $("history-menu").classList.add("hidden");
+            $("ai-users-menu").classList.add("hidden");
+            $("ai-history-menu").classList.add("hidden");
+            $("translation-verification-menu").classList.add("hidden");
             return;
           }
           try {
             let profile = await getDoc(doc(db, "users", account.uid));
-            $("history-menu").classList.toggle(
-              "hidden",
-              profile.data()?.role !== "admin",
-            );
+            const isAdmin = profile.data()?.role === "admin";
+            $("history-menu").classList.toggle("hidden", !isAdmin);
+            $("ai-users-menu").classList.toggle("hidden", !isAdmin);
+            $("ai-history-menu").classList.toggle("hidden", !isAdmin);
+            $("translation-verification-menu").classList.toggle("hidden", !isAdmin);
           } catch (error) {
             $("history-menu").classList.add("hidden");
+            $("ai-users-menu").classList.add("hidden");
+            $("ai-history-menu").classList.add("hidden");
+            $("translation-verification-menu").classList.add("hidden");
           }
         });
       const appViewIds = [
@@ -5765,10 +5906,9 @@
         const currentView =
           appViewIds.find((id) => $(id)?.classList.contains("active")) ||
           "home";
+        if (view === "adminview" && !user?.editor) view = "home";
         if (
-          (view === "adminview" ||
-            view === "usersview" ||
-            view === "auditview") &&
+          (view === "usersview" || view === "auditview") &&
           !user?.admin
         )
           view = "home";
@@ -5816,6 +5956,14 @@
       });
       $("profile").onclick = () => showAppView("profileview");
       $("admin").onclick = () => showAppView("adminview");
+      const openAdminSection = (section) => {
+        showAppView("adminview");
+        chooseAdminTrack(section);
+      };
+      $("ai-users-menu").onclick = () => openAdminSection("ai");
+      $("ai-history-menu").onclick = () => openAdminSection("history");
+      $("translation-verification-menu").onclick = () =>
+        openAdminSection("verification");
       $("users").onclick = () => showAppView("usersview");
       $("audit").onclick = () => showAppView("auditview");
       $("history-menu").onclick = () => showAppView("auditview");
@@ -5829,6 +5977,85 @@
           $("generate-citizenship").click();
         }
       };
+      function addTranslatorBubble(kind, text, avatar) {
+        const bubble = document.createElement("div");
+        bubble.className = "translator-message " + kind;
+        const icon = document.createElement("span");
+        icon.className = "translator-avatar";
+        icon.textContent = avatar;
+        const content = document.createElement("div");
+        content.className = "translator-content";
+        content.textContent = text;
+        bubble.append(icon, content);
+        $("translator-messages").append(bubble);
+        return { bubble, content };
+      }
+      async function saveAiFeedback(sourceText, translatedText, response, correction = "", feedbackId = "") {
+        await httpsCallable(functions, "saveTranslationFeedback")({
+          sourceText,
+          translatedText,
+          response,
+          correction,
+          feedbackId,
+        });
+      }
+      function addTranslationFeedback(parent, sourceText, translatedText, feedbackId) {
+        const box = document.createElement("div");
+        box.className = "translation-feedback";
+        const prompt = document.createElement("span");
+        prompt.textContent = "Is this translation correct?";
+        const actions = document.createElement("div");
+        actions.className = "translation-feedback-actions";
+        const yes = document.createElement("button");
+        yes.className = "plain";
+        yes.type = "button";
+        yes.textContent = "Yes";
+        const no = document.createElement("button");
+        no.className = "plain";
+        no.type = "button";
+        no.textContent = "No";
+        actions.append(yes, no);
+        box.append(prompt, actions);
+        parent.append(box);
+        const finish = (message) => {
+          prompt.textContent = message;
+          actions.remove();
+        };
+        yes.onclick = async () => {
+          yes.disabled = no.disabled = true;
+          try {
+            await saveAiFeedback(sourceText, translatedText, "yes", "", feedbackId);
+            finish("Thank you — your response was saved.");
+          } catch (error) {
+            yes.disabled = no.disabled = false;
+            prompt.textContent = error.message;
+          }
+        };
+        no.onclick = () => {
+          actions.remove();
+          const correction = document.createElement("textarea");
+          correction.placeholder = "What is the correct English meaning?";
+          correction.maxLength = 1000;
+          const submit = document.createElement("button");
+          submit.className = "btn";
+          submit.type = "button";
+          submit.textContent = "Send correction";
+          box.append(correction, submit);
+          submit.onclick = async () => {
+            if (!correction.value.trim()) return;
+            submit.disabled = true;
+            try {
+              await saveAiFeedback(sourceText, translatedText, "no", correction.value.trim(), feedbackId);
+                correction.remove();
+                submit.remove();
+                finish("Thank you — your correction was saved for review.");
+            } catch (error) {
+              submit.disabled = false;
+              prompt.textContent = error.message;
+            }
+          };
+        };
+      }
       async function prepareLaiTech() {
         $("lai-tech-chat").classList.add("hidden");
         $("lai-tech-consent").classList.remove("hidden");
@@ -5867,10 +6094,14 @@
         $("lai-tech-continue").onclick = () => {
           $("lai-tech-consent").classList.add("hidden");
           $("lai-tech-chat").classList.remove("hidden");
-          $("translator-messages").innerHTML =
-            '<div class="translator-message assistant">Hello, ' +
-            esc(name) +
-            '! Send me a Hakha Chin word or phrase and I’ll help you explore its English meaning.</div>';
+          $("translator-messages").innerHTML = "";
+          addTranslatorBubble(
+            "assistant",
+            "Hello, " +
+              name +
+              "! Send me a Hakha Chin word or phrase and I’ll help you explore its English meaning.",
+            "🤖",
+          );
           $("translator-input").focus();
         };
       }
@@ -5883,19 +6114,19 @@
         const text = input.value.trim();
         if (!text) return;
         const messages = $("translator-messages");
-        const userMessage = document.createElement("div");
-        userMessage.className = "translator-message user";
-        userMessage.textContent = text;
-        messages.append(userMessage);
+        addTranslatorBubble("user", text, "👤");
         input.value = "";
-        const thinking = document.createElement("div");
-        thinking.className = "translator-message assistant lai-tech-thinking";
-        thinking.textContent = "LaiTech AI is thinking";
-        messages.append(thinking);
+        const thinkingBubble = addTranslatorBubble(
+          "assistant",
+          "LaiTech AI is thinking",
+          "🤖",
+        );
+        thinkingBubble.bubble.classList.add("lai-tech-thinking");
         let thinkingDots = 0;
         const thinkingTimer = setInterval(() => {
           thinkingDots = (thinkingDots + 1) % 4;
-          thinking.textContent = "LaiTech AI is thinking" + ".".repeat(thinkingDots);
+          thinkingBubble.content.textContent =
+            "LaiTech AI is thinking" + ".".repeat(thinkingDots);
         }, 300);
         $("translator-status").textContent = "Preparing your learning response…";
         const button = event.submitter || event.currentTarget.querySelector("button");
@@ -5916,13 +6147,15 @@
           const payload = await response.json();
           if (!response.ok) throw new Error(payload.error || "Translation failed.");
           clearInterval(thinkingTimer);
-          thinking.remove();
-          const answer = document.createElement("div");
-          answer.className = "translator-message assistant";
-          answer.textContent =
-            "I explored that phrase for you.\n\nEnglish meaning: " +
-            payload.translatedText +
-            "\n\nTry comparing the wording with phrases you already know.";
+          thinkingBubble.bubble.remove();
+          const answer = addTranslatorBubble("assistant", "", "🤖");
+          const label = document.createElement("span");
+          label.className = "translation-label";
+          label.textContent = "English meaning";
+          const meaning = document.createElement("p");
+          meaning.textContent = payload.translatedText;
+          answer.content.append(label, meaning);
+          addTranslationFeedback(answer.content, text, payload.translatedText, payload.feedbackId);
           if (user?.admin && functions) {
             const verify = document.createElement("button");
             verify.className = "plain";
@@ -5937,25 +6170,21 @@
                 });
                 verify.textContent = "Verified translation saved";
               } catch (error) {
-                clearInterval(thinkingTimer);
-                thinking.remove();
                 verify.disabled = false;
                 verify.textContent = "Could not verify";
                 console.error(error);
               }
             };
-            answer.append(document.createElement("br"), verify);
+            answer.content.append(verify);
           }
-          messages.append(answer);
-          answer.scrollIntoView({ block: "nearest" });
+          answer.bubble.scrollIntoView({ block: "nearest" });
           $("translator-status").textContent = payload.cached
             ? "Verified translation memory result."
             : "Translation saved for future review.";
         } catch (error) {
-          const answer = document.createElement("div");
-          answer.className = "translator-message assistant";
-          answer.textContent = error.message;
-          messages.append(answer);
+          clearInterval(thinkingTimer);
+          thinkingBubble.bubble.remove();
+          addTranslatorBubble("assistant", error.message, "🤖");
           $("translator-status").textContent = "";
         } finally {
           button.disabled = false;

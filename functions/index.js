@@ -246,7 +246,17 @@ exports.translateHakhaChin = onRequest({ cors: true }, async (request, response)
         lastUsedAt: FieldValue.serverTimestamp(),
         requestCount: FieldValue.increment(1)
       }, { merge: true });
-      return response.json({ translatedText, sourceLanguage: 'cnh', targetLanguage: 'en', cached: true });
+      const feedback = await db.collection('aiFeedback').add({
+        sourceText,
+        translatedText,
+        response: null,
+        correction: '',
+        userId: translationUser.uid,
+        userName: translationUser.name,
+        createdAt: FieldValue.serverTimestamp(),
+        schemaVersion: 1
+      });
+      return response.json({ translatedText, sourceLanguage: 'cnh', targetLanguage: 'en', cached: true, feedbackId: feedback.id });
     }
     if (!apiKey) return response.status(503).json({ error: 'Translation is not configured yet.' });
     const result = await fetch(`https://translation.googleapis.com/language/translate/v2?key=${encodeURIComponent(apiKey)}`, {
@@ -280,7 +290,17 @@ exports.translateHakhaChin = onRequest({ cors: true }, async (request, response)
       lastUsedAt: FieldValue.serverTimestamp(),
       requestCount: FieldValue.increment(1)
     }, { merge: true });
-    response.json({ translatedText, sourceLanguage: 'cnh', targetLanguage: 'en' });
+    const feedback = await db.collection('aiFeedback').add({
+      sourceText,
+      translatedText,
+      response: null,
+      correction: '',
+      userId: translationUser.uid,
+      userName: translationUser.name,
+      createdAt: FieldValue.serverTimestamp(),
+      schemaVersion: 1
+    });
+    response.json({ translatedText, sourceLanguage: 'cnh', targetLanguage: 'en', feedbackId: feedback.id });
   } catch (error) {
     if (error.code === 'resource-exhausted') return response.status(429).json({ error: error.message });
     console.error('Could not translate Hakha Chin', error);
@@ -311,6 +331,48 @@ exports.saveVerifiedTranslation = onCall(async request => {
     updatedAt: FieldValue.serverTimestamp()
   }, { merge: true });
   return { id };
+});
+
+exports.saveTranslationFeedback = onCall(async request => {
+  if (!request.auth) throw new HttpsError('unauthenticated', 'Sign in is required.');
+  const sourceText = String(request.data?.sourceText || '').trim();
+  const translatedText = String(request.data?.translatedText || '').trim();
+  const response = String(request.data?.response || '');
+  const correction = String(request.data?.correction || '').trim();
+  const feedbackId = String(request.data?.feedbackId || '').trim();
+  if (!sourceText || !translatedText || !['yes', 'no'].includes(response))
+    throw new HttpsError('invalid-argument', 'A valid translation response is required.');
+  if (response === 'no' && !correction)
+    throw new HttpsError('invalid-argument', 'A correction is required when the translation is marked incorrect.');
+  if (correction.length > 1000) throw new HttpsError('invalid-argument', 'The correction is too long.');
+  const profile = await db.doc(`users/${request.auth.uid}`).get();
+  const feedback = feedbackId ? db.doc(`aiFeedback/${feedbackId}`) : null;
+  const existing = feedback ? await feedback.get() : null;
+  if (feedbackId && !existing?.exists)
+    throw new HttpsError('not-found', 'The translation feedback record was not found.');
+  if (existing?.exists && existing.get('userId') !== request.auth.uid)
+    throw new HttpsError('permission-denied', 'You cannot update another user’s feedback.');
+  if (existing?.exists) {
+    await feedback.set({
+      response,
+      correction: response === 'no' ? correction : '',
+      userName: String(profile.data()?.displayName || request.auth.token.name || ''),
+      userEmail: String(profile.data()?.email || request.auth.token.email || ''),
+      respondedAt: FieldValue.serverTimestamp()
+    }, { merge: true });
+  } else {
+    await db.collection('aiFeedback').add({
+      sourceText,
+      translatedText,
+      response,
+      correction: response === 'no' ? correction : '',
+      userId: request.auth.uid,
+      userName: String(profile.data()?.displayName || request.auth.token.name || ''),
+      createdAt: FieldValue.serverTimestamp(),
+      schemaVersion: 1
+    });
+  }
+  return { saved: true };
 });
 
 exports.onAuthUserCreated = functionsV1.auth.user().onCreate(async user => {
@@ -412,7 +474,7 @@ exports.setUserRole = onCall(async request => {
   await ensureRateLimit(actor.uid, 'setUserRole');
   const uid = validUid(request.data?.uid);
   const role = request.data?.role;
-  if (!['admin', 'user'].includes(role)) throw new HttpsError('invalid-argument', 'Role must be admin or user.');
+  if (!['admin', 'editor', 'user'].includes(role)) throw new HttpsError('invalid-argument', 'Role must be admin, editor, or user.');
   const target = await db.doc(`users/${uid}`).get();
   if (!target.exists) throw new HttpsError('not-found', 'User profile was not found.');
   const before = target.data();

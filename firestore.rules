@@ -16,9 +16,16 @@ service cloud.firestore {
     }
     function allowedProfileKeys() {
       return request.resource.data.diff(resource.data).affectedKeys().hasOnly([
-        'displayName', 'photoURL', 'avatarPath', 'avatarURL', 'progress',
-        'achievementSummary', 'favorites', 'updatedAt'
+        'displayName', 'photoURL', 'avatar', 'avatarPath', 'avatarURL',
+        'achievementBadge', 'progress', 'achievementSummary', 'favorites',
+        'email', 'createdAt', 'updatedAt'
       ]);
+    }
+    function validProfileBootstrap() {
+      return (!request.resource.data.diff(resource.data).affectedKeys().hasAny(['email'])
+          || request.resource.data.email == request.auth.token.email)
+        && (!request.resource.data.diff(resource.data).affectedKeys().hasAny(['createdAt'])
+          || !('createdAt' in resource.data));
     }
     function validAvatarPathChange() {
       return !request.resource.data.diff(resource.data).affectedKeys().hasAny(['avatarPath'])
@@ -50,7 +57,8 @@ service cloud.firestore {
       // without allowing role, account-state, or avatar-path assignment.
       allow create: if own(uid)
         && !request.resource.data.keys().hasAny(['role', 'disabled', 'avatarPath', 'avatarURL']);
-      allow update: if admin() || (own(uid) && allowedProfileKeys() && validAvatarPathChange());
+      allow update: if admin()
+        || (own(uid) && allowedProfileKeys() && validAvatarPathChange() && validProfileBootstrap());
       allow delete: if false;
     }
 

@@ -16,6 +16,7 @@ test.before(async () => {
     const db = context.firestore();
     await db.doc('users/admin').set({ role: 'admin', disabled: false });
     await db.doc('users/learner').set({ role: 'user', disabled: false });
+    await db.doc('users/editor').set({ role: 'editor', disabled: false });
     await db.doc('content/published').set({ english: 'Hello', status: 'published' });
     await db.doc('content/draft').set({ english: 'Private', status: 'draft' });
     await db.doc('content/legacy').set({ english: 'Existing card' });
@@ -52,6 +53,26 @@ test('learners can save permitted progress but cannot alter account-sensitive fi
   await assertFails(learner.doc('users/learner').update({ disabled: true }));
   await assertFails(learner.doc('users/learner').update({ avatarPath: 'avatars/other-user/image.jpg' }));
   await assertSucceeds(learner.doc('users/learner').update({ avatarPath: 'avatars/learner/image.jpg' }));
+});
+
+test('users and editors can update their own profile fields', { skip: !enabled }, async () => {
+  const learner = environment.authenticatedContext('learner', { email: 'learner@example.com' }).firestore();
+  await assertSucceeds(learner.doc('users/learner').update({
+    displayName: 'Learner Name',
+    avatar: 'data:image/jpeg;base64,profile',
+    achievementBadge: 'Dedicated learner',
+    email: 'learner@example.com',
+    updatedAt: new Date()
+  }));
+  await assertFails(learner.doc('users/learner').update({ role: 'editor' }));
+
+  const editor = environment.authenticatedContext('editor', { email: 'editor@example.com' }).firestore();
+  await assertSucceeds(editor.doc('users/editor').update({
+    displayName: 'Editor Name',
+    photoURL: 'https://example.com/profile.jpg',
+    updatedAt: new Date()
+  }));
+  await assertFails(editor.doc('users/editor').update({ disabled: true }));
 });
 
 test('learners can read and acknowledge only their own notifications', { skip: !enabled }, async () => {

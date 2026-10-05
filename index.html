@@ -3755,7 +3755,7 @@
       function updateQuizLengthOptions() {
         let category = $("quiz-category").value || "all",
           source = category === "citizenship"
-            ? (window.CITIZENSHIP_SEED || []).map((item) => ({ ...item, english: item.question, chin: item.answer, quiz: true }))
+            ? (window.CITIZENSHIP_SEED || []).map((item) => ({ ...item, english: item.question, chin: item.answer, category: "citizenship", quiz: true }))
             : cards,
           total = source.filter(
             (c) =>
@@ -4058,7 +4058,7 @@
         $("quiz-progress-wrap").classList.remove("hidden");
         let category = $("quiz-category").value || "all",
           source = category === "citizenship"
-            ? (window.CITIZENSHIP_SEED || []).map((item) => ({ ...item, english: item.question, chin: item.answer, quiz: true }))
+            ? (window.CITIZENSHIP_SEED || []).map((item) => ({ ...item, english: item.question, chin: item.answer, category: "citizenship", quiz: true }))
             : cards,
           a = source.filter(
             (c) =>

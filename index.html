@@ -2494,10 +2494,31 @@
 
       <section id="adminview" class="view">
         <div class="admin">
-          <button id="admin-new-category" class="btn" type="button">
-            + New category
-          </button>
-          <form id="form" class="panel">
+          <div id="admin-track-choice" class="track-choice">
+            <div class="head">
+              <small class="eyebrow">CONTENT MANAGER</small>
+              <h1>What would you like to manage?</h1>
+              <p class="status">Choose a learning course to edit.</p>
+            </div>
+            <div class="track-choice-grid">
+              <button id="manage-holh" class="track-choice-card" type="button">
+                <span aria-hidden="true">💬</span>
+                <strong>Holh Cawnnak</strong>
+                <small>Manage Chin language phrases, translations, and categories.</small>
+              </button>
+              <button id="manage-citizenship" class="track-choice-card" type="button">
+                <span aria-hidden="true">🇺🇸</span>
+                <strong>US Citizenship Cawnnak</strong>
+                <small>Manage civics questions, answers, and Chin translations.</small>
+              </button>
+            </div>
+          </div>
+          <div id="language-admin" class="hidden">
+            <button id="admin-track-back" class="plain" type="button">← Choose another course</button>
+            <button id="admin-new-category" class="btn" type="button">
+              + New category
+            </button>
+            <form id="form" class="panel">
             <h2 id="form-title">Add content</h2>
             <label class="field"
               >English phrase<input name="english" required /></label
@@ -2520,12 +2541,14 @@
               Cancel edit
             </button>
             <p id="message"></p>
-          </form>
-          <div class="panel">
-            <h2>Published cards</h2>
-            <div id="adminlist"></div>
+            </form>
+            <div class="panel">
+              <h2>Published cards</h2>
+              <div id="adminlist"></div>
+            </div>
           </div>
-          <section class="panel">
+          <section id="citizenship-admin" class="panel hidden">
+            <button id="citizenship-track-back" class="plain" type="button">← Choose another course</button>
             <h2>US Citizenship questions</h2>
             <p class="status">Add the English and Chin question and answer. State-specific answers can be updated as official data is configured.</p>
             <button id="import-citizenship-seed" class="btn" type="button">Import USCIS 100 questions</button>
@@ -4239,10 +4262,15 @@
         $("cancel-edit").classList.add("hidden");
         fillCategories();
       }
+      let adminSelection = "";
       function manage() {
         if (!user?.admin) return showAppView("home");
-        fillCategories();
-        $("adminlist").innerHTML = cards
+        $("admin-track-choice").classList.toggle("hidden", Boolean(adminSelection));
+        $("language-admin").classList.toggle("hidden", adminSelection !== "holh");
+        $("citizenship-admin").classList.toggle("hidden", adminSelection !== "citizenship");
+        if (adminSelection === "holh") {
+          fillCategories();
+          $("adminlist").innerHTML = cards
           .filter(
             (c) => (c.category || "Driving") === $("content-category").value,
           )
@@ -4259,7 +4287,7 @@
               '">Edit</button></p>',
           )
           .join("");
-        document.querySelectorAll(".edit-card").forEach(
+          document.querySelectorAll(".edit-card").forEach(
           (b) =>
             (b.onclick = () => {
               let c = cards.find((x) => x.id === b.dataset.id);
@@ -4274,9 +4302,19 @@
               $("cancel-edit").classList.remove("hidden");
               window.scrollTo({ top: 0, behavior: "smooth" });
             }),
-        );
-        loadCitizenshipAdmin();
+          );
+        }
+        if (adminSelection === "citizenship") loadCitizenshipAdmin();
       }
+      function chooseAdminTrack(selection) {
+        adminSelection = selection;
+        manage();
+        window.scrollTo({ top: 0, behavior: "auto" });
+      }
+      $("manage-holh").onclick = () => chooseAdminTrack("holh");
+      $("manage-citizenship").onclick = () => chooseAdminTrack("citizenship");
+      $("admin-track-back").onclick = () => chooseAdminTrack("");
+      $("citizenship-track-back").onclick = () => chooseAdminTrack("");
       async function loadCitizenshipAdmin() {
         if (!user?.admin || !db) return;
         const list = $("citizenship-admin-list");
@@ -4872,7 +4910,10 @@
         if (view === "learn") render();
         if (view === "quiz") renderQuizLobby();
         if (view === "top-learners") renderTopLearners();
-        if (view === "adminview") manage();
+        if (view === "adminview") {
+          adminSelection = "";
+          manage();
+        }
         if (view === "usersview") loadManagedUsers();
         if (view === "profileview") profileViewV2();
         window.scrollTo({ top: 0, left: 0, behavior: "auto" });
@@ -5179,7 +5220,10 @@
         if (view === "categories") renderCategories();
         if (view === "learn") render();
         if (view === "quiz") renderQuizLobby();
-        if (view === "adminview") manage();
+        if (view === "adminview") {
+          adminSelection = "";
+          manage();
+        }
         if (view === "usersview") loadManagedUsers();
         if (view === "profileview") profileViewV2();
         if (view === "auditview") loadAuditV3();
@@ -5368,7 +5412,10 @@
         if (view === "learn") render();
         if (view === "quiz") renderQuizLobby();
         if (view === "top-learners") renderTopLearners();
-        if (view === "adminview") manage();
+        if (view === "adminview") {
+          adminSelection = "";
+          manage();
+        }
         if (view === "usersview") loadManagedUsers();
         if (view === "profileview") profileViewV2();
         if (view === "auditview") loadAuditV3();

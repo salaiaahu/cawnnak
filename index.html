@@ -5762,21 +5762,25 @@
               item.number +
               ". " +
               esc(item.question) +
-              '</b><button class="plain citizenship-speak" data-text="' +
+              "</b>" +
+              (item.chinQuestion
+                ? '<small class="citizenship-question-translation">' +
+                  esc(item.chinQuestion) +
+                  "</small>"
+                : "") +
+              '<button class="plain citizenship-speak" data-text="' +
               esc(item.question) +
               '" aria-label="Read question">🔊</button><span>' +
               esc(item.answer) +
-              '</span><button class="plain citizenship-speak" data-text="' +
-              esc(item.answer) +
-              '" aria-label="Read answer">🔊</button>' +
-              (item.chinQuestion || item.chinAnswer
-                ? "<small>" +
-                  esc(item.chinQuestion || "") +
-                  "<br>" +
-                  esc(item.chinAnswer || "") +
+              "</span>" +
+              (item.chinAnswer
+                ? '<small class="citizenship-answer-translation">' +
+                  esc(item.chinAnswer) +
                   "</small>"
                 : "") +
-              "</article>",
+              '<button class="plain citizenship-speak" data-text="' +
+              esc(item.answer) +
+              '" aria-label="Read answer">🔊</button></article>',
           )
           .join("");
         document.querySelectorAll(".citizenship-speak").forEach((button) => {

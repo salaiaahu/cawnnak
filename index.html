@@ -431,6 +431,15 @@
         margin-top: 4px;
         color: var(--g);
       }
+      .citizenship-question .citizenship-speak {
+        padding: 2px 5px;
+        margin-left: 4px;
+      }
+      .citizenship-question small {
+        display: block;
+        margin-top: 6px;
+        color: var(--m);
+      }
       .top-learner-row {
         display: grid;
         grid-template-columns: 38px 44px minmax(0, 1fr) auto;
@@ -2283,11 +2292,32 @@
             <h1>Set up your civics study</h1>
             <p class="status">Choose your state so state-specific answers can be included.</p>
           </div>
-          <section class="panel">
+          <section id="citizenship-setup-panel" class="panel">
             <label class="field">Your state<select id="citizenship-state"></select></label>
             <button id="generate-citizenship" class="btn" type="button">Generate 100 questions</button>
             <p id="citizenship-status" class="status">The USCIS 2008 questions will be generated immediately. Chin translations are shown when an administrator has added them.</p>
-            <div id="citizenship-question-preview" class="status"></div>
+          </section>
+          <section id="citizenship-study-panel" class="panel hidden">
+            <div class="section-heading">
+              <div>
+                <small class="eyebrow">STUDY RANGE</small>
+                <h2 id="citizenship-study-title">100 questions</h2>
+              </div>
+              <button id="citizenship-change-state" class="plain" type="button">Change state</button>
+            </div>
+            <label class="field">Official section<select id="citizenship-range">
+              <option value="all">All 100 questions</option>
+              <option value="1-57">American Government (1–57)</option>
+              <option value="58-87">American History (58–87)</option>
+              <option value="88-100">Integrated Civics (88–100)</option>
+              <option value="custom">Custom number range</option>
+            </select></label>
+            <div id="citizenship-custom-range" class="hidden">
+              <label class="field">From<input id="citizenship-range-start" type="number" min="1" max="100" value="1"></label>
+              <label class="field">To<input id="citizenship-range-end" type="number" min="1" max="100" value="10"></label>
+            </div>
+            <button id="apply-citizenship-range" class="btn" type="button">Show questions</button>
+            <div id="citizenship-question-preview"></div>
           </section>
         </div>
       </section>
@@ -5297,6 +5327,32 @@
         citizenshipStates
           .map((state) => `<option value="${esc(state)}">${esc(state)}</option>`)
           .join("");
+      let citizenshipQuestions = [];
+      function renderCitizenshipRange() {
+        const choice = $("citizenship-range").value;
+        let start = 1, end = 100;
+        if (choice === "custom") {
+          start = Math.max(1, Number($("citizenship-range-start").value) || 1);
+          end = Math.min(100, Number($("citizenship-range-end").value) || 100);
+        } else if (choice.includes("-")) {
+          [start, end] = choice.split("-").map(Number);
+        }
+        const selected = citizenshipQuestions.filter((item) => item.number >= start && item.number <= end);
+        $("citizenship-study-title").textContent = `${selected.length} questions`;
+        $("citizenship-question-preview").innerHTML = selected.map((item) =>
+          '<article class="citizenship-question"><b>' + item.number + ". " +
+          esc(item.question) + '</b><button class="plain citizenship-speak" data-text="' +
+          esc(item.question) + '" aria-label="Read question">🔊</button><span>' +
+          esc(item.answer) + '</span><button class="plain citizenship-speak" data-text="' +
+          esc(item.answer) + '" aria-label="Read answer">🔊</button>' +
+          (item.chinQuestion || item.chinAnswer ? "<small>" +
+            esc(item.chinQuestion || "") + "<br>" + esc(item.chinAnswer || "") + "</small>" : "") +
+          "</article>"
+        ).join("");
+        document.querySelectorAll(".citizenship-speak").forEach((button) => {
+          button.onclick = () => speak(button.dataset.text);
+        });
+      }
       $("generate-citizenship").onclick = async () => {
         const state = $("citizenship-state").value;
         const status = $("citizenship-status");
@@ -5321,30 +5377,25 @@
           const questions = (window.CITIZENSHIP_SEED || [])
             .map((item) => ({ ...item, ...overrides.get(item.id) }))
             .filter((item) => !item.state || item.state === state);
+          citizenshipQuestions = questions;
           status.textContent = `${questions.length} questions generated for ${state}. English questions and answers are ready; Chin translations appear when available.`;
-          preview.innerHTML = questions.length
-            ? questions
-                .map(
-                  (item, index) =>
-                    '<article class="citizenship-question"><b>' +
-                    (index + 1) +
-                    ". " +
-                    esc(item.question) +
-                    "</b><span>" +
-                    esc(item.answer) +
-                    (item.chinQuestion || item.chinAnswer
-                      ? "<br>" +
-                        esc(item.chinQuestion || "") +
-                        "<br>" +
-                        esc(item.chinAnswer || "")
-                      : "") +
-                    "</span></article>",
-                )
-                .join("")
-            : "Translations and state-specific answers can be added by an administrator.";
+          $("citizenship-setup-panel").classList.add("hidden");
+          $("citizenship-study-panel").classList.remove("hidden");
+          renderCitizenshipRange();
         } catch (error) {
           status.textContent = "Citizenship questions are temporarily unavailable.";
         }
+      };
+      $("citizenship-range").onchange = () => {
+        $("citizenship-custom-range").classList.toggle(
+          "hidden",
+          $("citizenship-range").value !== "custom",
+        );
+      };
+      $("apply-citizenship-range").onclick = renderCitizenshipRange;
+      $("citizenship-change-state").onclick = () => {
+        $("citizenship-study-panel").classList.add("hidden");
+        $("citizenship-setup-panel").classList.remove("hidden");
       };
       function vibrateInteraction() {
         if (window.matchMedia("(pointer: coarse)").matches) buzz(8);

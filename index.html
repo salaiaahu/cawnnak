@@ -2842,6 +2842,10 @@
       };
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
       import {
+        getFunctions,
+        httpsCallable,
+      } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-functions.js";
+      import {
         getAuth,
         onAuthStateChanged,
         signInWithEmailAndPassword,
@@ -2976,6 +2980,7 @@
         );
       let auth,
         db,
+        functions,
         user,
         cards = seed,
         p = JSON.parse(
@@ -4804,6 +4809,7 @@
         let app = initializeApp(firebaseConfig);
         auth = getAuth(app);
         db = getFirestore(app);
+        functions = getFunctions(app);
         loadCustomCategories();
         onAuthStateChanged(auth, async (a) => {
           user = a;
@@ -5746,6 +5752,27 @@
           const answer = document.createElement("div");
           answer.className = "translator-message assistant";
           answer.textContent = "English: " + payload.translatedText;
+          if (user?.admin && functions) {
+            const verify = document.createElement("button");
+            verify.className = "plain";
+            verify.type = "button";
+            verify.textContent = "Save as verified";
+            verify.onclick = async () => {
+              verify.disabled = true;
+              try {
+                await httpsCallable(functions, "saveVerifiedTranslation")({
+                  sourceText: text,
+                  translatedText: payload.translatedText,
+                });
+                verify.textContent = "Verified translation saved";
+              } catch (error) {
+                verify.disabled = false;
+                verify.textContent = "Could not verify";
+                console.error(error);
+              }
+            };
+            answer.append(document.createElement("br"), verify);
+          }
           messages.append(answer);
           answer.scrollIntoView({ block: "nearest" });
           $("translator-status").textContent = payload.cached

@@ -1390,6 +1390,50 @@
         content: "";
         pointer-events: none;
       }
+      .translator-chat {
+        overflow: hidden;
+      }
+      .translator-messages {
+        display: grid;
+        gap: 8px;
+        max-height: 300px;
+        overflow-y: auto;
+        margin: 12px 0;
+      }
+      .translator-message {
+        max-width: 88%;
+        padding: 9px 11px;
+        border-radius: 12px;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+      }
+      .translator-message.user {
+        justify-self: end;
+        background: #dff4e8;
+      }
+      .translator-message.assistant {
+        justify-self: start;
+        background: #fff;
+        border: 1px solid var(--l);
+      }
+      .translator-form {
+        display: flex;
+        gap: 8px;
+        align-items: stretch;
+      }
+      .translator-form input {
+        min-width: 0;
+        flex: 1;
+      }
+      .translator-form button {
+        flex: 0 0 auto;
+      }
+      @media (max-width: 600px) {
+        .translator-form {
+          display: grid;
+          grid-template-columns: 1fr auto;
+        }
+      }
       .hero h2 {
         max-width: 650px;
         margin: 12px 0 16px;
@@ -2266,6 +2310,35 @@
           To install on iPhone or iPad: tap Share, then choose
           <b>Add to Home Screen</b>.
         </p>
+        <section class="home-section translator-chat">
+          <div class="section-heading">
+            <div>
+              <small class="eyebrow">ASK CAWNNAK</small>
+              <h2>Learn from your own phrase</h2>
+            </div>
+            <span aria-hidden="true">💬</span>
+          </div>
+          <p class="status">
+            Type a Hakha Chin word or phrase and get an English translation.
+          </p>
+          <div id="translator-messages" class="translator-messages" aria-live="polite">
+            <div class="translator-message assistant">
+              Try a word or phrase in Hakha Chin.
+            </div>
+          </div>
+          <form id="translator-form" class="translator-form">
+            <input
+              id="translator-input"
+              maxlength="500"
+              autocomplete="off"
+              placeholder="Type Hakha Chin here…"
+              aria-label="Hakha Chin phrase"
+              required
+            />
+            <button class="btn" type="submit">Translate</button>
+          </form>
+          <p id="translator-status" class="status"></p>
+        </section>
         <div class="stats">
           <div class="stat"><b id="studied">0</b>Studied</div>
           <div class="stat"><b id="best">—</b>Best score</div>
@@ -5645,6 +5718,50 @@
       };
       $("home-quiz").onclick = () => showAppView("quiz");
       $("home-practice").onclick = () => showAppView("practice");
+      $("translator-form").onsubmit = async (event) => {
+        event.preventDefault();
+        const input = $("translator-input");
+        const text = input.value.trim();
+        if (!text) return;
+        const messages = $("translator-messages");
+        const userMessage = document.createElement("div");
+        userMessage.className = "translator-message user";
+        userMessage.textContent = text;
+        messages.append(userMessage);
+        input.value = "";
+        $("translator-status").textContent = "Translating…";
+        const button = event.submitter || event.currentTarget.querySelector("button");
+        button.disabled = true;
+        try {
+          const response = await fetch(
+            "https://us-central1-cawnnak-ca.cloudfunctions.net/translateHakhaChin",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ text }),
+            },
+          );
+          const payload = await response.json();
+          if (!response.ok) throw new Error(payload.error || "Translation failed.");
+          const answer = document.createElement("div");
+          answer.className = "translator-message assistant";
+          answer.textContent = "English: " + payload.translatedText;
+          messages.append(answer);
+          answer.scrollIntoView({ block: "nearest" });
+          $("translator-status").textContent = payload.cached
+            ? "Verified translation memory result."
+            : "Translation saved for future review.";
+        } catch (error) {
+          const answer = document.createElement("div");
+          answer.className = "translator-message assistant";
+          answer.textContent = error.message;
+          messages.append(answer);
+          $("translator-status").textContent = "";
+        } finally {
+          button.disabled = false;
+          input.focus();
+        }
+      };
       const citizenshipStates = [
         "Alabama",
         "Alaska",

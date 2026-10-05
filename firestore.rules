@@ -68,5 +68,7 @@ service cloud.firestore {
 
     match /functionRateLimits/{id} { allow read, write: if false; }
     match /operations/{id} { allow read: if admin(); allow write: if false; }
+    match /translationSearches/{id} { allow read, write: if false; }
+    match /translationMemory/{id} { allow read: if true; allow write: if false; }
   }
 }

@@ -2422,6 +2422,7 @@
             <h2>Quiz complete</h2>
             <p id="result"></p>
             <button id="restart" class="btn">Try again</button>
+            <button id="quiz-menu" class="plain">Back to Quiz menu</button>
           </article>
         </div>
       </section>
@@ -2453,13 +2454,13 @@
                   <small>English</small>
                   <h2 id="practice-english"></h2>
                   <p id="practice-question-translation"></p>
-                  <p>Tap to reveal the translation</p>
+                  <p id="practice-front-prompt">Tap to reveal the translation</p>
                 </div>
                 <div class="practice-face practice-back">
                   <small id="practice-answer-label">Answer</small>
                   <h2 id="practice-chin"></h2>
                   <p id="practice-answer-translation"></p>
-                  <p>Tap to see the English phrase</p>
+                  <p id="practice-back-prompt">Tap to see the English phrase</p>
                 </div>
               </div>
             </div>
@@ -3321,6 +3322,14 @@
           card.category === "citizenship" ? "English answer" : "Hakha Chin";
         $("practice-answer-translation").textContent =
           card.category === "citizenship" ? card.chinAnswer || "" : "";
+        $("practice-front-prompt").textContent =
+          card.category === "citizenship"
+            ? "Tap to see answer"
+            : "Tap to reveal the translation";
+        $("practice-back-prompt").textContent =
+          card.category === "citizenship"
+            ? "Tap to see question"
+            : "Tap to see the English phrase";
         surface.classList.toggle("flipped", practiceFlipped);
       }
       function flipPracticeCard() {
@@ -4060,6 +4069,46 @@
       function sh(a) {
         return [...a].sort(() => Math.random() - 0.5);
       }
+      function citizenshipDistractors(questionItem) {
+        let answer = String(questionItem.chin || "").trim(),
+          allAnswers = (window.CITIZENSHIP_SEED || [])
+            .map((item) => String(item.answer || "").trim())
+            .filter((item) => item && item !== answer),
+          lower = answer.toLowerCase(),
+          year = /\b(1[6-9]\d{2}|20\d{2})\b/.test(answer),
+          number = /^\d+|^\w+\s+\d+/.test(answer),
+          name = /^[A-Z][a-z]+(?:\s+[A-Z][a-z]+){1,3}$/.test(answer),
+          term = lower.includes("president")
+            ? ["the Vice President", "the Chief Justice", "the Speaker of the House"]
+            : lower.includes("congress")
+              ? ["the Senate", "the House of Representatives", "the Supreme Court"]
+              : lower.includes("constitution")
+                ? ["the Declaration of Independence", "the Bill of Rights", "the Articles of Confederation"]
+                : [];
+        if (year) {
+          let value = Number(answer.match(/\d{4}/)?.[0] || 0);
+          return [String(value - 4), String(value + 4), String(value + 10)];
+        }
+        if (number) {
+          let value = Number(answer.match(/\d+/)?.[0] || 0);
+          return [String(value + 1), String(Math.max(1, value - 1)), String(value + 10)];
+        }
+        if (name) {
+          return sh([
+            "James Madison",
+            "Benjamin Franklin",
+            "George Washington",
+            ...allAnswers.filter((item) => /^[A-Z][a-z]+(?:\s+[A-Z][a-z]+){1,3}$/.test(item)),
+          ]).slice(0, 3);
+        }
+        if (term.length) return term;
+        let words = lower.split(/\s+/).filter((word) => word.length > 3),
+          related = allAnswers.filter((item) => {
+            let candidate = item.toLowerCase();
+            return words.some((word) => candidate.includes(word));
+          });
+        return sh([...related, ...allAnswers]).slice(0, 3);
+      }
       function start() {
         $("quiz-lobby").classList.add("hidden");
         $("qcard").classList.remove("hidden");
@@ -4097,18 +4146,11 @@
         let q = quiz[i],
           citizenship = q.category === "citizenship",
           answerPool = citizenship
-            ? (window.CITIZENSHIP_SEED || []).map((item) => item.answer)
+            ? citizenshipDistractors(q)
             : cards.filter((c) => c.chin && c.chin !== q.chin).map((c) => c.chin),
-          similar = /(\b(1[6-9]\d{2}|20\d{2})\b|^[A-Z][a-z]+(?:\s+[A-Z][a-z]+){1,2}$)/.test(q.chin),
-          generated = similar
-            ? (/^\d/.test(q.chin)
-              ? ["1787", "1865", "1964"]
-              : ["James Madison", "Benjamin Franklin", "George Washington"])
-            : [],
           a = sh([
             q.chin,
-            ...sh([...generated, ...answerPool.filter((answer) => answer && answer !== q.chin)])
-              .slice(0, 3),
+            ...answerPool.filter((answer) => answer && answer !== q.chin).slice(0, 3),
           ]);
         $("score").textContent = "Question " + (i + 1) + " of " + quiz.length;
         $("line").style.width = (i / quiz.length) * 100 + "%";
@@ -4163,6 +4205,12 @@
       $("speak").onclick = () => speak(quiz[i].english);
       $("speak-answer").onclick = () => speak(quiz[i].chin);
       $("restart").onclick = start;
+      $("quiz-menu").onclick = () => {
+        $("summary").classList.add("hidden");
+        $("quiz-lobby").classList.remove("hidden");
+        $("score").classList.add("hidden");
+        $("quiz-progress-wrap").classList.add("hidden");
+      };
       $("start-quiz").onclick = start;
       function finish() {
         let s = Math.round((good / quiz.length) * 100),

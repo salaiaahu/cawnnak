@@ -4095,10 +4095,19 @@
       function question() {
         done = false;
         let q = quiz[i],
+          citizenship = q.category === "citizenship",
+          answerPool = citizenship
+            ? (window.CITIZENSHIP_SEED || []).map((item) => item.answer)
+            : cards.filter((c) => c.chin && c.chin !== q.chin).map((c) => c.chin),
+          similar = /(\b(1[6-9]\d{2}|20\d{2})\b|^[A-Z][a-z]+(?:\s+[A-Z][a-z]+){1,2}$)/.test(q.chin),
+          generated = similar
+            ? (/^\d/.test(q.chin)
+              ? ["1787", "1865", "1964"]
+              : ["James Madison", "Benjamin Franklin", "George Washington"])
+            : [],
           a = sh([
             q.chin,
-            ...sh(cards.filter((c) => c.chin && c.chin !== q.chin))
-              .map((c) => c.chin)
+            ...sh([...generated, ...answerPool.filter((answer) => answer && answer !== q.chin)])
               .slice(0, 3),
           ]);
         $("score").textContent = "Question " + (i + 1) + " of " + quiz.length;

@@ -3272,6 +3272,20 @@
         practiceSwipeWasFlipped = false;
       function renderPractice() {
         let category = $("practice-category").value || "Driving";
+        if (category === "citizenship") {
+          practiceCards = sh(
+            (window.CITIZENSHIP_SEED || []).map((item) => ({
+              ...item,
+              english: item.question,
+              chin: item.answer,
+              category: "citizenship",
+            })),
+          );
+          practiceIndex = 0;
+          practiceFlipped = false;
+          updatePracticeCard();
+          return;
+        }
         practiceCards = sh(
           cards.filter(
             (c) =>
@@ -3700,12 +3714,20 @@
                 '<option value="' + esc(name) + '">' + esc(name) + "</option>",
             )
             .join("");
+        $("quiz-category").insertAdjacentHTML(
+          "beforeend",
+          '<option value="citizenship">US Citizenship</option>',
+        );
         $("practice-category").innerHTML = all
           .map(
             ([name]) =>
               '<option value="' + esc(name) + '">' + esc(name) + "</option>",
           )
           .join("");
+        $("practice-category").insertAdjacentHTML(
+          "beforeend",
+          '<option value="citizenship">US Citizenship</option>',
+        );
         if (
           currentContent &&
           [...$("content-category").options].some(
@@ -3732,7 +3754,10 @@
       }
       function updateQuizLengthOptions() {
         let category = $("quiz-category").value || "all",
-          total = cards.filter(
+          source = category === "citizenship"
+            ? (window.CITIZENSHIP_SEED || []).map((item) => ({ ...item, english: item.question, chin: item.answer, quiz: true }))
+            : cards,
+          total = source.filter(
             (c) =>
               c.quiz !== false &&
               (category === "all" || (c.category || "Driving") === category),
@@ -4032,7 +4057,10 @@
         $("score").classList.remove("hidden");
         $("quiz-progress-wrap").classList.remove("hidden");
         let category = $("quiz-category").value || "all",
-          a = cards.filter(
+          source = category === "citizenship"
+            ? (window.CITIZENSHIP_SEED || []).map((item) => ({ ...item, english: item.question, chin: item.answer, quiz: true }))
+            : cards,
+          a = source.filter(
             (c) =>
               c.quiz !== false &&
               (category === "all" || (c.category || "Driving") === category),
@@ -5327,6 +5355,11 @@
         citizenshipStates
           .map((state) => `<option value="${esc(state)}">${esc(state)}</option>`)
           .join("");
+      const savedCitizenshipState = localStorage.getItem("cawnnak-citizenship-state");
+      if (savedCitizenshipState && citizenshipStates.includes(savedCitizenshipState))
+        $("citizenship-state").value = savedCitizenshipState;
+      $("citizenship-state").onchange = () =>
+        localStorage.setItem("cawnnak-citizenship-state", $("citizenship-state").value);
       let citizenshipQuestions = [];
       function renderCitizenshipRange() {
         const choice = $("citizenship-range").value;
@@ -5361,6 +5394,7 @@
           status.textContent = "Choose your state first.";
           return;
         }
+        localStorage.setItem("cawnnak-citizenship-state", state);
         status.textContent = `Generating the 100-question study set for ${state}…`;
         preview.textContent = "";
         try {

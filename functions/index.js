@@ -156,6 +156,37 @@ exports.getLeaderboard = onRequest({ cors: true }, async (request, response) => 
   }
 });
 
+exports.getCitizenshipOfficials = onRequest({ cors: true }, async (request, response) => {
+  const state = String(request.query.state || '').trim();
+  const apiKey = process.env.OPENSTATES_API_KEY;
+  if (!state) return response.status(400).json({ error: 'A state is required.' });
+  if (!apiKey) return response.status(503).json({ error: 'Live official data is not configured.' });
+  try {
+    const url = new URL('https://v3.openstates.org/people');
+    url.searchParams.set('jurisdiction', state);
+    url.searchParams.set('include', 'current_role');
+    const result = await fetch(url, {
+      headers: { 'X-API-KEY': apiKey, Accept: 'application/json' }
+    });
+    if (!result.ok) throw new Error(`Open States returned ${result.status}`);
+    const data = await result.json();
+    const officials = (data.results || []).map(person => ({
+      name: person.name,
+      role: person.current_role?.title || ''
+    }));
+    response.json({
+      governor: officials.find(item => /governor/i.test(item.role))?.name || '',
+      senators: officials
+        .filter(item => /senator/i.test(item.role))
+        .map(item => item.name)
+        .slice(0, 2)
+    });
+  } catch (error) {
+    console.error('Could not load citizenship officials', error);
+    response.status(502).json({ error: 'Live official data is temporarily unavailable.' });
+  }
+});
+
 exports.onAuthUserCreated = functionsV1.auth.user().onCreate(async user => {
   const profileRef = db.doc(`users/${user.uid}`);
   const existing = await profileRef.get();

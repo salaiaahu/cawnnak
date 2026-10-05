@@ -303,7 +303,11 @@
         border: 1px solid #b9dfc9;
         border-radius: 18px;
         background:
-          radial-gradient(circle at 92% 18%, #ffdc6a99 0 18px, transparent 19px),
+          radial-gradient(
+            circle at 92% 18%,
+            #ffdc6a99 0 18px,
+            transparent 19px
+          ),
           linear-gradient(135deg, #dff7e8, #fff8d9);
         box-shadow: 0 12px 28px #17342b12;
       }
@@ -414,7 +418,7 @@
         .track-choice .head h1,
         .citizenship-setup .head h1 {
           margin: 7px 0 0;
-          font-size: 1.7rem;
+          font-size: 1.45rem;
           line-height: 1.1;
         }
         .track-choice .head p,
@@ -2246,9 +2250,7 @@
             Choose a topic, study useful phrases, test yourself, and save
             progress when you sign in.
           </p>
-          <button id="choose-track" class="btn start-learning">
-            Cawnnak
-          </button>
+          <button id="choose-track" class="btn start-learning">Cawnnak</button>
           <button id="home-quiz" class="btn take-quiz" data-v="quiz">
             Quiz
           </button>
@@ -2315,12 +2317,25 @@
             <button class="track-choice-card" id="choose-holh" type="button">
               <span aria-hidden="true">💬</span>
               <strong>Holh Cawnnak</strong>
-              <small>Learn Chin language phrases and everyday conversation.</small>
+              <small
+                >Learn Chin language phrases and everyday conversation.</small
+              >
             </button>
-            <button class="track-choice-card" id="choose-citizenship" type="button">
-              <span class="us-flag" aria-label="American flag" role="img"></span>
+            <button
+              class="track-choice-card"
+              id="choose-citizenship"
+              type="button"
+            >
+              <span
+                class="us-flag"
+                aria-label="American flag"
+                role="img"
+              ></span>
               <strong>US Citizenship Cawnnak</strong>
-              <small>Study the 100 civics questions and answers for your state.</small>
+              <small
+                >Study the 100 civics questions and answers for your
+                state.</small
+              >
             </button>
           </div>
         </div>
@@ -2330,12 +2345,21 @@
           <div class="head">
             <small class="eyebrow">US CITIZENSHIP CAWNNAK</small>
             <h1>Set up your civics study</h1>
-            <p class="status">Choose your state so state-specific answers can be included.</p>
+            <p class="status">
+              Choose your state so state-specific answers can be included.
+            </p>
           </div>
           <section id="citizenship-setup-panel" class="panel">
-            <label class="field">Your state<select id="citizenship-state"></select></label>
-            <button id="generate-citizenship" class="btn" type="button">Generate 100 questions</button>
-            <p id="citizenship-status" class="status">The USCIS 2008 questions will be generated immediately. Chin translations are shown when an administrator has added them.</p>
+            <label class="field"
+              >Your state<select id="citizenship-state"></select
+            ></label>
+            <button id="generate-citizenship" class="btn" type="button">
+              Generate 100 questions
+            </button>
+            <p id="citizenship-status" class="status">
+              The USCIS 2008 questions will be generated immediately. Chin
+              translations are shown when an administrator has added them.
+            </p>
           </section>
           <section id="citizenship-study-panel" class="panel hidden">
             <div class="section-heading">
@@ -2343,20 +2367,40 @@
                 <small class="eyebrow">STUDY RANGE</small>
                 <h2 id="citizenship-study-title">100 questions</h2>
               </div>
-              <button id="citizenship-change-state" class="plain" type="button">Change state</button>
+              <button id="citizenship-change-state" class="plain" type="button">
+                Change state
+              </button>
             </div>
-            <label class="field">Official section<select id="citizenship-range">
-              <option value="all">All 100 questions</option>
-              <option value="1-57">American Government (1–57)</option>
-              <option value="58-87">American History (58–87)</option>
-              <option value="88-100">Integrated Civics (88–100)</option>
-              <option value="custom">Custom number range</option>
-            </select></label>
+            <label class="field"
+              >Official section<select id="citizenship-range">
+                <option value="all">All 100 questions</option>
+                <option value="1-57">American Government (1–57)</option>
+                <option value="58-87">American History (58–87)</option>
+                <option value="88-100">Integrated Civics (88–100)</option>
+                <option value="custom">Custom number range</option>
+              </select></label
+            >
             <div id="citizenship-custom-range" class="hidden">
-              <label class="field">From<input id="citizenship-range-start" type="number" min="1" max="100" value="1"></label>
-              <label class="field">To<input id="citizenship-range-end" type="number" min="1" max="100" value="10"></label>
+              <label class="field"
+                >From<input
+                  id="citizenship-range-start"
+                  type="number"
+                  min="1"
+                  max="100"
+                  value="1"
+              /></label>
+              <label class="field"
+                >To<input
+                  id="citizenship-range-end"
+                  type="number"
+                  min="1"
+                  max="100"
+                  value="10"
+              /></label>
             </div>
-            <button id="apply-citizenship-range" class="btn" type="button">Show questions</button>
+            <button id="apply-citizenship-range" class="btn" type="button">
+              Show questions
+            </button>
             <div id="citizenship-question-preview"></div>
           </section>
         </div>
@@ -2494,7 +2538,9 @@
                   <small>English</small>
                   <h2 id="practice-english"></h2>
                   <p id="practice-question-translation"></p>
-                  <p id="practice-front-prompt">Tap to reveal the translation</p>
+                  <p id="practice-front-prompt">
+                    Tap to reveal the translation
+                  </p>
                 </div>
                 <div class="practice-face practice-back">
                   <small id="practice-answer-label">Answer</small>
@@ -2544,43 +2590,59 @@
               <button id="manage-holh" class="track-choice-card" type="button">
                 <span aria-hidden="true">💬</span>
                 <strong>Holh Cawnnak</strong>
-                <small>Manage Chin language phrases, translations, and categories.</small>
+                <small
+                  >Manage Chin language phrases, translations, and
+                  categories.</small
+                >
               </button>
-              <button id="manage-citizenship" class="track-choice-card" type="button">
-                <span class="us-flag" aria-label="American flag" role="img"></span>
+              <button
+                id="manage-citizenship"
+                class="track-choice-card"
+                type="button"
+              >
+                <span
+                  class="us-flag"
+                  aria-label="American flag"
+                  role="img"
+                ></span>
                 <strong>US Citizenship Cawnnak</strong>
-                <small>Manage civics questions, answers, and Chin translations.</small>
+                <small
+                  >Manage civics questions, answers, and Chin
+                  translations.</small
+                >
               </button>
             </div>
           </div>
           <div id="language-admin" class="hidden">
-            <button id="admin-track-back" class="plain" type="button">← Choose another course</button>
+            <button id="admin-track-back" class="plain" type="button">
+              ← Choose another course
+            </button>
             <button id="admin-new-category" class="btn" type="button">
               + New category
             </button>
             <form id="form" class="panel">
-            <h2 id="form-title">Add content</h2>
-            <label class="field"
-              >English phrase<input name="english" required /></label
-            ><label class="field"
-              >Hakha Chin translation
-              <span class="status">(add when ready)</span
-              ><input name="chin" /></label
-            ><label class="field"
-              >Category<select
-                id="content-category"
-                name="category"
-              ></select></label
-            ><label class="field"
-              >Use in quiz<select name="quiz">
-                <option value="true">Yes</option>
-                <option value="false">No, translation pending</option>
-              </select></label
-            ><button id="save-content" class="btn">Publish</button
-            ><button id="cancel-edit" type="button" class="plain hidden">
-              Cancel edit
-            </button>
-            <p id="message"></p>
+              <h2 id="form-title">Add content</h2>
+              <label class="field"
+                >English phrase<input name="english" required /></label
+              ><label class="field"
+                >Hakha Chin translation
+                <span class="status">(add when ready)</span
+                ><input name="chin" /></label
+              ><label class="field"
+                >Category<select
+                  id="content-category"
+                  name="category"
+                ></select></label
+              ><label class="field"
+                >Use in quiz<select name="quiz">
+                  <option value="true">Yes</option>
+                  <option value="false">No, translation pending</option>
+                </select></label
+              ><button id="save-content" class="btn">Publish</button
+              ><button id="cancel-edit" type="button" class="plain hidden">
+                Cancel edit
+              </button>
+              <p id="message"></p>
             </form>
             <div class="panel">
               <h2>Published cards</h2>
@@ -2588,20 +2650,43 @@
             </div>
           </div>
           <section id="citizenship-admin" class="panel hidden">
-            <button id="citizenship-track-back" class="plain" type="button">← Choose another course</button>
+            <button id="citizenship-track-back" class="plain" type="button">
+              ← Choose another course
+            </button>
             <h2>US Citizenship questions</h2>
-            <p class="status">Add the English and Chin question and answer. State-specific answers can be updated as official data is configured.</p>
-            <button id="import-citizenship-seed" class="btn" type="button">Import USCIS 100 questions</button>
+            <p class="status">
+              Add the English and Chin question and answer. State-specific
+              answers can be updated as official data is configured.
+            </p>
+            <button id="import-citizenship-seed" class="btn" type="button">
+              Import USCIS 100 questions
+            </button>
             <form id="citizenship-admin-form">
               <input type="hidden" name="id" />
-              <label class="field">English question<input name="question" required /></label>
-              <label class="field">Chin question<input name="chinQuestion" /></label>
-              <label class="field">English answer<input name="answer" required /></label>
-              <label class="field">Chin answer<input name="chinAnswer" /></label>
-              <label class="field">State (optional)<input name="state" placeholder="All states" /></label>
+              <label class="field"
+                >English question<input name="question" required
+              /></label>
+              <label class="field"
+                >Chin question<input name="chinQuestion"
+              /></label>
+              <label class="field"
+                >English answer<input name="answer" required
+              /></label>
+              <label class="field"
+                >Chin answer<input name="chinAnswer"
+              /></label>
+              <label class="field"
+                >State (optional)<input name="state" placeholder="All states"
+              /></label>
               <div class="actions">
                 <button class="btn" type="submit">Save question</button>
-                <button id="cancel-citizenship-edit" class="plain hidden" type="button">Cancel</button>
+                <button
+                  id="cancel-citizenship-edit"
+                  class="plain hidden"
+                  type="button"
+                >
+                  Cancel
+                </button>
               </div>
               <p id="citizenship-admin-message" class="status"></p>
             </form>
@@ -3288,10 +3373,10 @@
           );
           if (!response.ok) throw new Error("Leaderboard unavailable");
           const data = await response.json();
-          const learners = (data.entries || [])
-            .sort((a, b) => b.totalPoints - a.totalPoints);
-          const trophy = (rank) =>
-            ["🏆", "🥈", "🥉"][rank] || "🏅";
+          const learners = (data.entries || []).sort(
+            (a, b) => b.totalPoints - a.totalPoints,
+          );
+          const trophy = (rank) => ["🏆", "🥈", "🥉"][rank] || "🏅";
           const row = (learner, index) =>
             '<div class="top-learner-row"><span class="top-learner-rank">' +
             trophy(index) +
@@ -3836,9 +3921,16 @@
       }
       function updateQuizLengthOptions() {
         let category = $("quiz-category").value || "all",
-          source = category === "citizenship"
-            ? (window.CITIZENSHIP_SEED || []).map((item) => ({ ...item, english: item.question, chin: item.answer, category: "citizenship", quiz: true }))
-            : cards,
+          source =
+            category === "citizenship"
+              ? (window.CITIZENSHIP_SEED || []).map((item) => ({
+                  ...item,
+                  english: item.question,
+                  chin: item.answer,
+                  category: "citizenship",
+                  quiz: true,
+                }))
+              : cards,
           total = source.filter(
             (c) =>
               c.quiz !== false &&
@@ -4142,11 +4234,23 @@
           number = /^\d+|^\w+\s+\d+/.test(answer),
           name = /^[A-Z][a-z]+(?:\s+[A-Z][a-z]+){1,3}$/.test(answer),
           term = lower.includes("president")
-            ? ["the Vice President", "the Chief Justice", "the Speaker of the House"]
+            ? [
+                "the Vice President",
+                "the Chief Justice",
+                "the Speaker of the House",
+              ]
             : lower.includes("congress")
-              ? ["the Senate", "the House of Representatives", "the Supreme Court"]
+              ? [
+                  "the Senate",
+                  "the House of Representatives",
+                  "the Supreme Court",
+                ]
               : lower.includes("constitution")
-                ? ["the Declaration of Independence", "the Bill of Rights", "the Articles of Confederation"]
+                ? [
+                    "the Declaration of Independence",
+                    "the Bill of Rights",
+                    "the Articles of Confederation",
+                  ]
                 : [];
         if (year) {
           let value = Number(answer.match(/\d{4}/)?.[0] || 0);
@@ -4154,14 +4258,20 @@
         }
         if (number) {
           let value = Number(answer.match(/\d+/)?.[0] || 0);
-          return [String(value + 1), String(Math.max(1, value - 1)), String(value + 10)];
+          return [
+            String(value + 1),
+            String(Math.max(1, value - 1)),
+            String(value + 10),
+          ];
         }
         if (name) {
           return sh([
             "James Madison",
             "Benjamin Franklin",
             "George Washington",
-            ...allAnswers.filter((item) => /^[A-Z][a-z]+(?:\s+[A-Z][a-z]+){1,3}$/.test(item)),
+            ...allAnswers.filter((item) =>
+              /^[A-Z][a-z]+(?:\s+[A-Z][a-z]+){1,3}$/.test(item),
+            ),
           ]).slice(0, 3);
         }
         if (term.length) return term;
@@ -4179,9 +4289,16 @@
         $("score").classList.remove("hidden");
         $("quiz-progress-wrap").classList.remove("hidden");
         let category = $("quiz-category").value || "all",
-          source = category === "citizenship"
-            ? (window.CITIZENSHIP_SEED || []).map((item) => ({ ...item, english: item.question, chin: item.answer, category: "citizenship", quiz: true }))
-            : cards,
+          source =
+            category === "citizenship"
+              ? (window.CITIZENSHIP_SEED || []).map((item) => ({
+                  ...item,
+                  english: item.question,
+                  chin: item.answer,
+                  category: "citizenship",
+                  quiz: true,
+                }))
+              : cards,
           a = source.filter(
             (c) =>
               c.quiz !== false &&
@@ -4210,10 +4327,14 @@
           citizenship = q.category === "citizenship",
           answerPool = citizenship
             ? citizenshipDistractors(q)
-            : cards.filter((c) => c.chin && c.chin !== q.chin).map((c) => c.chin),
+            : cards
+                .filter((c) => c.chin && c.chin !== q.chin)
+                .map((c) => c.chin),
           a = sh([
             q.chin,
-            ...answerPool.filter((answer) => answer && answer !== q.chin).slice(0, 3),
+            ...answerPool
+              .filter((answer) => answer && answer !== q.chin)
+              .slice(0, 3),
           ]);
         $("score").textContent = "Question " + (i + 1) + " of " + quiz.length;
         $("line").style.width = (i / quiz.length) * 100 + "%";
@@ -4305,43 +4426,52 @@
       let adminSelection = "";
       function manage() {
         if (!user?.admin) return showAppView("home");
-        $("admin-track-choice").classList.toggle("hidden", Boolean(adminSelection));
-        $("language-admin").classList.toggle("hidden", adminSelection !== "holh");
-        $("citizenship-admin").classList.toggle("hidden", adminSelection !== "citizenship");
+        $("admin-track-choice").classList.toggle(
+          "hidden",
+          Boolean(adminSelection),
+        );
+        $("language-admin").classList.toggle(
+          "hidden",
+          adminSelection !== "holh",
+        );
+        $("citizenship-admin").classList.toggle(
+          "hidden",
+          adminSelection !== "citizenship",
+        );
         if (adminSelection === "holh") {
           fillCategories();
           $("adminlist").innerHTML = cards
-          .filter(
-            (c) => (c.category || "Driving") === $("content-category").value,
-          )
-          .map(
-            (c) =>
-              "<p><b>" +
-              esc(c.english) +
-              '</b><br><span class="status">' +
-              esc(c.category || "Driving") +
-              " · " +
-              esc(c.chin) +
-              '</span><br><button class="plain edit-card" data-id="' +
-              c.id +
-              '">Edit</button></p>',
-          )
-          .join("");
+            .filter(
+              (c) => (c.category || "Driving") === $("content-category").value,
+            )
+            .map(
+              (c) =>
+                "<p><b>" +
+                esc(c.english) +
+                '</b><br><span class="status">' +
+                esc(c.category || "Driving") +
+                " · " +
+                esc(c.chin) +
+                '</span><br><button class="plain edit-card" data-id="' +
+                c.id +
+                '">Edit</button></p>',
+            )
+            .join("");
           document.querySelectorAll(".edit-card").forEach(
-          (b) =>
-            (b.onclick = () => {
-              let c = cards.find((x) => x.id === b.dataset.id);
-              editingId = c.id;
-              $("form").english.value = c.english;
-              $("form").chin.value = c.chin;
-              fillCategories();
-              $("content-category").value = c.category || "Driving";
-              $("form").quiz.value = String(c.quiz !== false);
-              $("form-title").textContent = "Edit content";
-              $("save-content").textContent = "Save changes";
-              $("cancel-edit").classList.remove("hidden");
-              window.scrollTo({ top: 0, behavior: "smooth" });
-            }),
+            (b) =>
+              (b.onclick = () => {
+                let c = cards.find((x) => x.id === b.dataset.id);
+                editingId = c.id;
+                $("form").english.value = c.english;
+                $("form").chin.value = c.chin;
+                fillCategories();
+                $("content-category").value = c.category || "Driving";
+                $("form").quiz.value = String(c.quiz !== false);
+                $("form-title").textContent = "Edit content";
+                $("save-content").textContent = "Save changes";
+                $("cancel-edit").classList.remove("hidden");
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }),
           );
         }
         if (adminSelection === "citizenship") loadCitizenshipAdmin();
@@ -4359,77 +4489,87 @@
         if (!user?.admin || !db) return;
         const list = $("citizenship-admin-list");
         try {
-            const snapshot = await getDocs(
-              query(collection(db, "citizenship"), orderBy("question")),
-            );
-            const remote = snapshot.docs.map((item) => ({
-              id: item.id,
-              ...item.data(),
-            }));
-            const overrides = new Map(remote.map((item) => [item.id, item]));
-            const seedIds = new Set((window.CITIZENSHIP_SEED || []).map((item) => item.id));
-            const records = (window.CITIZENSHIP_SEED || [])
-              .map((item) => ({ ...item, ...overrides.get(item.id) }))
-              .concat(remote.filter((item) => !seedIds.has(item.id)));
-            list.innerHTML = records.length
-              ? records
-                  .map(
-                    (item) =>
-                      '<div class="card-inline-edit"><b>' +
-                      esc(item.question) +
-                      '</b><span class="status">' +
-                      esc(item.answer) +
-                      (item.state ? " · " + esc(item.state) : "") +
-                      '</span><div><button class="plain citizenship-edit" data-id="' +
-                      item.id +
-                      '">Edit</button><button class="plain citizenship-delete" data-id="' +
-                      item.id +
-                      '">Delete</button></div></div>',
-                  )
-                  .join("")
-              : '<p class="status">No citizenship questions added yet.</p>';
-            list.querySelectorAll(".citizenship-edit").forEach(
-              (button) =>
-                (button.onclick = () => {
-                  const item = records.find((record) => record.id === button.dataset.id);
-                  const form = $("citizenship-admin-form");
-                  form.id.value = item.id;
-                  form.question.value = item.question || "";
-                  form.chinQuestion.value = item.chinQuestion || "";
-                  form.answer.value = item.answer || "";
-                  form.chinAnswer.value = item.chinAnswer || "";
-                  form.state.value = item.state || "";
-                  $("cancel-citizenship-edit").classList.remove("hidden");
-                }),
-            );
-            list.querySelectorAll(".citizenship-delete").forEach(
-              (button) =>
-                (button.onclick = async () => {
-                  if (!confirm("Delete this citizenship question?")) return;
-                  await deleteDoc(doc(db, "citizenship", button.dataset.id));
-                  loadCitizenshipAdmin();
-                }),
-            );
+          const snapshot = await getDocs(
+            query(collection(db, "citizenship"), orderBy("question")),
+          );
+          const remote = snapshot.docs.map((item) => ({
+            id: item.id,
+            ...item.data(),
+          }));
+          const overrides = new Map(remote.map((item) => [item.id, item]));
+          const seedIds = new Set(
+            (window.CITIZENSHIP_SEED || []).map((item) => item.id),
+          );
+          const records = (window.CITIZENSHIP_SEED || [])
+            .map((item) => ({ ...item, ...overrides.get(item.id) }))
+            .concat(remote.filter((item) => !seedIds.has(item.id)));
+          list.innerHTML = records.length
+            ? records
+                .map(
+                  (item) =>
+                    '<div class="card-inline-edit"><b>' +
+                    esc(item.question) +
+                    '</b><span class="status">' +
+                    esc(item.answer) +
+                    (item.state ? " · " + esc(item.state) : "") +
+                    '</span><div><button class="plain citizenship-edit" data-id="' +
+                    item.id +
+                    '">Edit</button><button class="plain citizenship-delete" data-id="' +
+                    item.id +
+                    '">Delete</button></div></div>',
+                )
+                .join("")
+            : '<p class="status">No citizenship questions added yet.</p>';
+          list.querySelectorAll(".citizenship-edit").forEach(
+            (button) =>
+              (button.onclick = () => {
+                const item = records.find(
+                  (record) => record.id === button.dataset.id,
+                );
+                const form = $("citizenship-admin-form");
+                form.id.value = item.id;
+                form.question.value = item.question || "";
+                form.chinQuestion.value = item.chinQuestion || "";
+                form.answer.value = item.answer || "";
+                form.chinAnswer.value = item.chinAnswer || "";
+                form.state.value = item.state || "";
+                $("cancel-citizenship-edit").classList.remove("hidden");
+              }),
+          );
+          list.querySelectorAll(".citizenship-delete").forEach(
+            (button) =>
+              (button.onclick = async () => {
+                if (!confirm("Delete this citizenship question?")) return;
+                await deleteDoc(doc(db, "citizenship", button.dataset.id));
+                loadCitizenshipAdmin();
+              }),
+          );
         } catch (error) {
-            list.innerHTML = '<p class="status">Could not load citizenship questions.</p>';
+          list.innerHTML =
+            '<p class="status">Could not load citizenship questions.</p>';
         }
       }
       $("import-citizenship-seed").onclick = async () => {
         if (!user?.admin || !Array.isArray(window.CITIZENSHIP_SEED)) return;
         const button = $("import-citizenship-seed");
         button.disabled = true;
-        $("citizenship-admin-message").textContent = "Importing the official 100-question set…";
+        $("citizenship-admin-message").textContent =
+          "Importing the official 100-question set…";
         try {
           await Promise.all(
             window.CITIZENSHIP_SEED.map((item) =>
-              setDoc(doc(db, "citizenship", item.id), {
-                ...item,
-                createdBy: user.uid,
-                createdAt: serverTimestamp(),
-                updatedBy: user.uid,
-                updatedByName: user.displayName || "",
-                updatedAt: serverTimestamp(),
-              }, { merge: true }),
+              setDoc(
+                doc(db, "citizenship", item.id),
+                {
+                  ...item,
+                  createdBy: user.uid,
+                  createdAt: serverTimestamp(),
+                  updatedBy: user.uid,
+                  updatedByName: user.displayName || "",
+                  updatedAt: serverTimestamp(),
+                },
+                { merge: true },
+              ),
             ),
           );
           $("citizenship-admin-message").textContent =
@@ -4446,32 +4586,35 @@
         if (!user?.admin) return;
         const form = event.currentTarget;
         const data = {
-            question: form.question.value.trim(),
-            chinQuestion: form.chinQuestion.value.trim(),
-            answer: form.answer.value.trim(),
-            chinAnswer: form.chinAnswer.value.trim(),
-            state: form.state.value.trim(),
-            status: "published",
-            updatedBy: user.uid,
-            updatedByName: user.displayName || "",
-            updatedAt: serverTimestamp(),
+          question: form.question.value.trim(),
+          chinQuestion: form.chinQuestion.value.trim(),
+          answer: form.answer.value.trim(),
+          chinAnswer: form.chinAnswer.value.trim(),
+          state: form.state.value.trim(),
+          status: "published",
+          updatedBy: user.uid,
+          updatedByName: user.displayName || "",
+          updatedAt: serverTimestamp(),
         };
         try {
-            if (form.id.value) {
-              await setDoc(doc(db, "citizenship", form.id.value), data, { merge: true });
-            } else {
-              await addDoc(collection(db, "citizenship"), {
-                ...data,
-                createdBy: user.uid,
-                createdAt: serverTimestamp(),
-              });
-            }
-            form.reset();
-            $("citizenship-admin-message").textContent = "Citizenship question saved.";
-            $("cancel-citizenship-edit").classList.add("hidden");
-            loadCitizenshipAdmin();
+          if (form.id.value) {
+            await setDoc(doc(db, "citizenship", form.id.value), data, {
+              merge: true,
+            });
+          } else {
+            await addDoc(collection(db, "citizenship"), {
+              ...data,
+              createdBy: user.uid,
+              createdAt: serverTimestamp(),
+            });
+          }
+          form.reset();
+          $("citizenship-admin-message").textContent =
+            "Citizenship question saved.";
+          $("cancel-citizenship-edit").classList.add("hidden");
+          loadCitizenshipAdmin();
         } catch (error) {
-            $("citizenship-admin-message").textContent = error.message;
+          $("citizenship-admin-message").textContent = error.message;
         }
       };
       $("cancel-citizenship-edit").onclick = () => {
@@ -5492,53 +5635,150 @@
       $("history-menu").onclick = () => showAppView("auditview");
       $("choose-track").onclick = () => showAppView("track-choice");
       $("choose-holh").onclick = () => showAppView("categories");
-      $("choose-citizenship").onclick = () => showAppView("citizenship");
+      $("choose-citizenship").onclick = () => {
+        showAppView("citizenship");
+        const savedState = localStorage.getItem("cawnnak-citizenship-state");
+        if (savedState && citizenshipStates.includes(savedState)) {
+          $("citizenship-state").value = savedState;
+          $("generate-citizenship").click();
+        }
+      };
       $("home-quiz").onclick = () => showAppView("quiz");
       $("home-practice").onclick = () => showAppView("practice");
       const citizenshipStates = [
-        "Alabama", "Alaska", "Arizona", "Arkansas", "California",
-        "Colorado", "Connecticut", "Delaware", "Florida", "Georgia",
-        "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas",
-        "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts",
-        "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana",
-        "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico",
-        "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma",
-        "Oregon", "Pennsylvania", "Rhode Island", "South Carolina",
-        "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia",
-        "Washington", "West Virginia", "Wisconsin", "Wyoming",
+        "Alabama",
+        "Alaska",
+        "Arizona",
+        "Arkansas",
+        "California",
+        "Colorado",
+        "Connecticut",
+        "Delaware",
+        "Florida",
+        "Georgia",
+        "Hawaii",
+        "Idaho",
+        "Illinois",
+        "Indiana",
+        "Iowa",
+        "Kansas",
+        "Kentucky",
+        "Louisiana",
+        "Maine",
+        "Maryland",
+        "Massachusetts",
+        "Michigan",
+        "Minnesota",
+        "Mississippi",
+        "Missouri",
+        "Montana",
+        "Nebraska",
+        "Nevada",
+        "New Hampshire",
+        "New Jersey",
+        "New Mexico",
+        "New York",
+        "North Carolina",
+        "North Dakota",
+        "Ohio",
+        "Oklahoma",
+        "Oregon",
+        "Pennsylvania",
+        "Rhode Island",
+        "South Carolina",
+        "South Dakota",
+        "Tennessee",
+        "Texas",
+        "Utah",
+        "Vermont",
+        "Virginia",
+        "Washington",
+        "West Virginia",
+        "Wisconsin",
+        "Wyoming",
       ];
       $("citizenship-state").innerHTML =
         '<option value="">Select a state</option>' +
         citizenshipStates
-          .map((state) => `<option value="${esc(state)}">${esc(state)}</option>`)
+          .map(
+            (state) => `<option value="${esc(state)}">${esc(state)}</option>`,
+          )
           .join("");
-      const savedCitizenshipState = localStorage.getItem("cawnnak-citizenship-state");
-      if (savedCitizenshipState && citizenshipStates.includes(savedCitizenshipState))
+      const savedCitizenshipState = localStorage.getItem(
+        "cawnnak-citizenship-state",
+      );
+      if (
+        savedCitizenshipState &&
+        citizenshipStates.includes(savedCitizenshipState)
+      )
         $("citizenship-state").value = savedCitizenshipState;
       $("citizenship-state").onchange = () =>
-        localStorage.setItem("cawnnak-citizenship-state", $("citizenship-state").value);
+        localStorage.setItem(
+          "cawnnak-citizenship-state",
+          $("citizenship-state").value,
+        );
       let citizenshipQuestions = [];
+      async function enrichCitizenshipOfficials(questions, state) {
+        const liveQuestions = questions.filter((item) =>
+          /state.?s U\.S\. Senator|governor/i.test(item.question),
+        );
+        if (!liveQuestions.length) return;
+        try {
+          const response = await fetch(
+            "https://us-central1-cawnnak-ca.cloudfunctions.net/getCitizenshipOfficials?state=" +
+              encodeURIComponent(state),
+          );
+          if (!response.ok) return;
+          const officials = await response.json();
+          questions.forEach((item) => {
+            if (/state.?s U\.S\. Senator/i.test(item.question) && officials.senators?.length)
+              item.answer = officials.senators.join(" / ");
+            if (/governor/i.test(item.question) && officials.governor)
+              item.answer = officials.governor;
+          });
+        } catch (error) {
+          console.warn("Live citizenship officials unavailable", error);
+        }
+      }
       function renderCitizenshipRange() {
         const choice = $("citizenship-range").value;
-        let start = 1, end = 100;
+        let start = 1,
+          end = 100;
         if (choice === "custom") {
           start = Math.max(1, Number($("citizenship-range-start").value) || 1);
           end = Math.min(100, Number($("citizenship-range-end").value) || 100);
         } else if (choice.includes("-")) {
           [start, end] = choice.split("-").map(Number);
         }
-        const selected = citizenshipQuestions.filter((item) => item.number >= start && item.number <= end);
-        $("citizenship-study-title").textContent = `${selected.length} questions`;
-        $("citizenship-question-preview").innerHTML = selected.map((item) =>
-          '<article class="citizenship-question"><b>' + item.number + ". " +
-          esc(item.question) + '</b><button class="plain citizenship-speak" data-text="' +
-          esc(item.question) + '" aria-label="Read question">🔊</button><span>' +
-          esc(item.answer) + '</span><button class="plain citizenship-speak" data-text="' +
-          esc(item.answer) + '" aria-label="Read answer">🔊</button>' +
-          (item.chinQuestion || item.chinAnswer ? "<small>" +
-            esc(item.chinQuestion || "") + "<br>" + esc(item.chinAnswer || "") + "</small>" : "") +
-          "</article>"
-        ).join("");
+        const selected = citizenshipQuestions.filter(
+          (item) => item.number >= start && item.number <= end,
+        );
+        $("citizenship-study-title").textContent =
+          `${selected.length} questions`;
+        $("citizenship-question-preview").innerHTML = selected
+          .map(
+            (item) =>
+              '<article class="citizenship-question"><b>' +
+              item.number +
+              ". " +
+              esc(item.question) +
+              '</b><button class="plain citizenship-speak" data-text="' +
+              esc(item.question) +
+              '" aria-label="Read question">🔊</button><span>' +
+              esc(item.answer) +
+              '</span><button class="plain citizenship-speak" data-text="' +
+              esc(item.answer) +
+              '" aria-label="Read answer">🔊</button>' +
+              (item.chinQuestion || item.chinAnswer
+                ? "<small>" +
+                  esc(item.chinQuestion || "") +
+                  "<br>" +
+                  esc(item.chinAnswer || "") +
+                  "</small>"
+                : "") +
+              "</article>",
+          )
+          .join("");
         document.querySelectorAll(".citizenship-speak").forEach((button) => {
           button.onclick = () => speak(button.dataset.text);
         });
@@ -5558,9 +5798,15 @@
           let translated = [];
           try {
             const snapshot = await getDocs(
-              query(collection(db, "citizenship"), where("status", "==", "published")),
+              query(
+                collection(db, "citizenship"),
+                where("status", "==", "published"),
+              ),
             );
-            translated = snapshot.docs.map((item) => ({ id: item.id, ...item.data() }));
+            translated = snapshot.docs.map((item) => ({
+              id: item.id,
+              ...item.data(),
+            }));
           } catch (_) {
             translated = [];
           }
@@ -5568,13 +5814,15 @@
           const questions = (window.CITIZENSHIP_SEED || [])
             .map((item) => ({ ...item, ...overrides.get(item.id) }))
             .filter((item) => !item.state || item.state === state);
+          await enrichCitizenshipOfficials(questions, state);
           citizenshipQuestions = questions;
           status.textContent = `${questions.length} questions generated for ${state}. English questions and answers are ready; Chin translations appear when available.`;
           $("citizenship-setup-panel").classList.add("hidden");
           $("citizenship-study-panel").classList.remove("hidden");
           renderCitizenshipRange();
         } catch (error) {
-          status.textContent = "Citizenship questions are temporarily unavailable.";
+          status.textContent =
+            "Citizenship questions are temporarily unavailable.";
         }
       };
       $("citizenship-range").onchange = () => {

@@ -3827,6 +3827,382 @@
         margin: 0 !important;
       }
 
+      /* Dialogs & Celebration Modal */
+      dialog {
+        background: linear-gradient(160deg, #111a2e 0%, #0b1120 100%) !important;
+        border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        border-radius: 22px !important;
+        max-width: 440px;
+        padding: 24px;
+        color: #f8fafc !important;
+        box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 35px rgba(59, 130, 246, 0.12) !important;
+        backdrop-filter: blur(20px) !important;
+        -webkit-backdrop-filter: blur(20px) !important;
+      }
+      dialog::backdrop {
+        background: rgba(4, 7, 15, 0.78) !important;
+        backdrop-filter: blur(8px) !important;
+        -webkit-backdrop-filter: blur(8px) !important;
+      }
+      dialog h2 {
+        color: #f8fafc !important;
+        font-weight: 800 !important;
+      }
+      dialog p {
+        color: #94a3b8 !important;
+      }
+      .celebration {
+        text-align: center !important;
+        overflow: hidden !important;
+        width: min(440px, calc(100vw - 32px)) !important;
+        padding: 34px 24px 28px !important;
+        border-radius: 24px !important;
+        background: radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.22) 0%, transparent 65%),
+                    linear-gradient(160deg, #131d33 0%, #090e19 100%) !important;
+        border: 1px solid rgba(255, 255, 255, 0.15) !important;
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8),
+                    0 0 45px rgba(59, 130, 246, 0.2),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+        animation: celebrationPop 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      }
+      @keyframes celebrationPop {
+        from {
+          opacity: 0;
+          transform: scale(0.9) translateY(14px);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1) translateY(0);
+        }
+      }
+      .celebration .emoji {
+        font-size: 3.8rem !important;
+        margin: 0 0 10px !important;
+        display: inline-block !important;
+        filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.4)) !important;
+      }
+      .celebration h2 {
+        font-size: 2rem !important;
+        font-weight: 800 !important;
+        letter-spacing: -0.02em !important;
+        margin: 0 0 10px !important;
+        background: linear-gradient(135deg, #ffffff 40%, #93c5fd 100%) !important;
+        -webkit-background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
+      }
+      .celebration p {
+        color: #94a3b8 !important;
+        font-size: 1rem !important;
+        line-height: 1.55 !important;
+        margin: 0 0 24px !important;
+      }
+      .celebration button,
+      #celebration-close {
+        width: 100% !important;
+        padding: 13px 24px !important;
+        font-size: 1rem !important;
+        font-weight: 700 !important;
+        border-radius: 14px !important;
+        background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
+        box-shadow: 0 10px 24px -4px rgba(37, 99, 235, 0.5) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        cursor: pointer !important;
+        transition: transform 0.15s ease, box-shadow 0.15s ease !important;
+      }
+      .celebration button:hover,
+      #celebration-close:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 14px 28px -4px rgba(37, 99, 235, 0.65) !important;
+      }
+
+      /* AI History Summary Cards & Drilldown Detail View */
+      .ai-history-summary-grid {
+        grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)) !important;
+        gap: 14px !important;
+      }
+      .summary-card-btn {
+        display: flex !important;
+        flex-direction: column !important;
+        text-align: left !important;
+        padding: 20px !important;
+        border-radius: 18px !important;
+        background: linear-gradient(145deg, rgba(19, 31, 52, 0.8), rgba(11, 19, 34, 0.85)) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35) !important;
+        cursor: pointer !important;
+        position: relative !important;
+        overflow: hidden !important;
+        transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease !important;
+      }
+      .summary-card-btn:hover {
+        transform: translateY(-3px) !important;
+        border-color: rgba(59, 130, 246, 0.5) !important;
+        box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45), 0 0 25px rgba(59, 130, 246, 0.2) !important;
+      }
+      .summary-card-btn .summary-card-top {
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        margin-bottom: 8px !important;
+      }
+      .summary-card-btn .summary-card-icon {
+        font-size: 1.25rem !important;
+      }
+      .summary-card-btn b {
+        color: #93c5fd !important;
+        font-size: 0.95rem !important;
+        font-weight: 700 !important;
+        margin: 0 !important;
+      }
+      .summary-card-btn .summary-card-metric {
+        font-size: 2.3rem !important;
+        font-weight: 800 !important;
+        line-height: 1.1 !important;
+        letter-spacing: -0.02em !important;
+        color: #f8fafc !important;
+        margin-bottom: 6px !important;
+        background: linear-gradient(135deg, #ffffff 40%, #60a5fa 100%) !important;
+        -webkit-background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
+      }
+      .summary-card-btn p {
+        color: #94a3b8 !important;
+        font-size: 0.85rem !important;
+        line-height: 1.45 !important;
+        margin: 0 !important;
+      }
+      .summary-card-hint {
+        display: inline-block;
+        margin-top: 8px;
+        color: #38bdf8;
+        font-weight: 600;
+        font-size: 0.82rem;
+      }
+
+      /* Summary Detail View */
+      .summary-detail-view {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      .summary-detail-header {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        flex-wrap: wrap;
+        padding-bottom: 12px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .summary-detail-header-left {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      .summary-back-btn {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        padding: 9px 16px !important;
+        border-radius: 12px !important;
+        font-size: 0.9rem !important;
+        font-weight: 600 !important;
+        background: rgba(30, 41, 59, 0.7) !important;
+        border: 1px solid rgba(255, 255, 255, 0.15) !important;
+        color: #f8fafc !important;
+        cursor: pointer !important;
+        transition: all 0.18s ease !important;
+      }
+      .summary-back-btn:hover {
+        background: rgba(59, 130, 246, 0.25) !important;
+        border-color: rgba(59, 130, 246, 0.5) !important;
+        color: #93c5fd !important;
+      }
+      .summary-detail-header h3 {
+        margin: 0 !important;
+        font-size: 1.35rem !important;
+        font-weight: 800 !important;
+        color: #f8fafc !important;
+      }
+      .summary-detail-header p {
+        margin: 2px 0 0 !important;
+        color: #94a3b8 !important;
+        font-size: 0.88rem !important;
+      }
+      .summary-detail-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .summary-detail-row {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 12px 16px;
+        border-radius: 14px;
+        background: rgba(17, 26, 42, 0.75);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+        transition: border-color 0.18s ease, transform 0.18s ease;
+      }
+      .summary-detail-row:hover {
+        border-color: rgba(59, 130, 246, 0.35);
+        transform: translateY(-1px);
+      }
+      .summary-rank-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        font-weight: 800;
+        font-size: 0.88rem;
+        color: #94a3b8;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .summary-rank-badge.gold {
+        color: #fbbf24;
+        background: rgba(245, 158, 11, 0.18);
+        border-color: rgba(245, 158, 11, 0.45);
+      }
+      .summary-rank-badge.silver {
+        color: #cbd5e1;
+        background: rgba(148, 163, 184, 0.18);
+        border-color: rgba(148, 163, 184, 0.45);
+      }
+      .summary-rank-badge.bronze {
+        color: #fb923c;
+        background: rgba(249, 115, 22, 0.18);
+        border-color: rgba(249, 115, 22, 0.45);
+      }
+      .summary-detail-main {
+        flex: 1;
+        min-width: 0;
+      }
+      .summary-detail-main strong {
+        display: block;
+        color: #f1f5f9;
+        font-size: 0.95rem;
+        word-break: break-word;
+      }
+      .summary-detail-main small {
+        display: block;
+        color: #94a3b8;
+        font-size: 0.82rem;
+        margin-top: 2px;
+      }
+      .summary-progress-bar {
+        width: 100%;
+        max-width: 220px;
+        height: 6px;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 999px;
+        overflow: hidden;
+        margin-top: 6px;
+      }
+      .summary-progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #3b82f6, #60a5fa);
+        border-radius: 999px;
+      }
+      .summary-count-pill {
+        display: inline-flex;
+        align-items: center;
+        padding: 5px 12px;
+        border-radius: 999px;
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: #93c5fd;
+        background: rgba(59, 130, 246, 0.15);
+        border: 1px solid rgba(59, 130, 246, 0.35);
+        white-space: nowrap;
+      }
+      .summary-count-pill.contributor-pill {
+        color: #34d399;
+        background: rgba(16, 185, 129, 0.15);
+        border-color: rgba(16, 185, 129, 0.35);
+      }
+      .summary-count-pill.phrase-pill {
+        color: #a78bfa;
+        background: rgba(139, 92, 246, 0.15);
+        border-color: rgba(139, 92, 246, 0.35);
+      }
+      .feedback-detail-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 14px;
+      }
+      .feedback-stat-card {
+        padding: 20px;
+        border-radius: 18px;
+        background: rgba(17, 26, 42, 0.8);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
+      }
+      .feedback-stat-card.positive {
+        border-color: rgba(16, 185, 129, 0.35);
+      }
+      .feedback-stat-card.negative {
+        border-color: rgba(239, 68, 68, 0.35);
+      }
+      .feedback-stat-card.neutral {
+        border-color: rgba(148, 163, 184, 0.35);
+      }
+      .feedback-stat-icon {
+        font-size: 2rem;
+        margin-bottom: 2px;
+      }
+      .feedback-stat-card strong {
+        font-size: 1.05rem;
+        color: #f1f5f9;
+      }
+      .feedback-stat-num {
+        font-size: 2.4rem;
+        font-weight: 800;
+        line-height: 1;
+        margin: 6px 0;
+      }
+      .feedback-stat-card.positive .feedback-stat-num {
+        color: #34d399;
+      }
+      .feedback-stat-card.negative .feedback-stat-num {
+        color: #f87171;
+      }
+      .feedback-stat-card.neutral .feedback-stat-num {
+        color: #cbd5e1;
+      }
+      .feedback-stat-card button {
+        margin-top: 10px;
+        font-size: 0.86rem;
+        color: #60a5fa;
+        cursor: pointer;
+      }
+      .feedback-stat-card button:hover {
+        text-decoration: underline;
+      }
+      .summary-phrases-container {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .summary-phrase-search {
+        width: 100%;
+        padding: 12px 16px;
+        border-radius: 12px;
+        background: #101726 !important;
+        border: 1px solid rgba(255, 255, 255, 0.14) !important;
+        color: #f8fafc !important;
+      }
+
+
       h1,
       h2,
       h3,
@@ -4516,7 +4892,7 @@
       }
       .ai-welcome h2 {
         margin: 0;
-        font-size: clamp(2rem, 6vw, 3.2rem);
+        font-size: clamp(1.85rem, 6vw, 3.2rem);
         font-weight: 700;
         line-height: 1.1;
         letter-spacing: -0.03em;
@@ -8556,30 +8932,180 @@
               },
               { yes: 0, no: 0, na: 0, phrases: {}, contributors: {} },
             );
-            const top = (values) =>
-              Object.entries(values)
-                .sort((a, b) => b[1] - a[1])
-                .slice(0, 10);
-            list.innerHTML =
-              '<div class="summary-grid"><div><b>Top requesters</b><p>' +
-              (top(requesters)
-                .map(([name, count]) => esc(name) + " (" + count + ")")
-                .join("<br>") || "None yet") +
-              "</p></div><div><b>Feedback totals</b><p>Yes: " +
-              counts.yes +
-              " · No: " +
-              counts.no +
-              " · N/A: " +
-              counts.na +
-              "</p></div><div><b>Top contributors</b><p>" +
-              (top(counts.contributors)
-                .map(([name, count]) => esc(name) + " (" + count + ")")
-                .join("<br>") || "None yet") +
-              "</p></div><div><b>Common phrases</b><p>" +
-              (top(counts.phrases)
-                .map(([phrase, count]) => esc(phrase) + " (" + count + ")")
-                .join("<br>") || "None yet") +
-              "</p></div></div>";
+            const requestersList = Object.entries(requesters)
+              .filter(([_, count]) => count > 0)
+              .sort((a, b) => b[1] - a[1]);
+            const totalRequestsCount = requestersList.reduce((acc, cur) => acc + cur[1], 0);
+
+            const totalFeedback = counts.yes + counts.no + counts.na;
+
+            const contributorsList = Object.entries(counts.contributors)
+              .filter(([_, count]) => count > 0)
+              .sort((a, b) => b[1] - a[1]);
+            const totalCorrectionsCount = contributorsList.reduce((acc, cur) => acc + cur[1], 0);
+
+            const phrasesList = Object.entries(counts.phrases)
+              .sort((a, b) => b[1] - a[1]);
+            const totalPhrasesCount = phrasesList.reduce((acc, cur) => acc + cur[1], 0);
+
+            const renderSummaryGrid = () => {
+              list.innerHTML =
+                '<div class="summary-grid ai-history-summary-grid">' +
+                '<button class="summary-card-btn" type="button" data-summary-type="requesters">' +
+                  '<div class="summary-card-top"><span class="summary-card-icon">👥</span><b>Top requesters</b></div>' +
+                  '<div class="summary-card-metric">' + requestersList.length + '</div>' +
+                  '<p>' + totalRequestsCount + ' total requests</p>' +
+                  '<span class="summary-card-hint">View rankings →</span>' +
+                '</button>' +
+                '<button class="summary-card-btn" type="button" data-summary-type="feedback">' +
+                  '<div class="summary-card-top"><span class="summary-card-icon">📊</span><b>Feedback totals</b></div>' +
+                  '<div class="summary-card-metric">' + totalFeedback + '</div>' +
+                  '<p>Yes: ' + counts.yes + ' · No: ' + counts.no + ' · N/A: ' + counts.na + '</p>' +
+                  '<span class="summary-card-hint">View breakdown →</span>' +
+                '</button>' +
+                '<button class="summary-card-btn" type="button" data-summary-type="contributors">' +
+                  '<div class="summary-card-top"><span class="summary-card-icon">✍️</span><b>Top contributors</b></div>' +
+                  '<div class="summary-card-metric">' + contributorsList.length + '</div>' +
+                  '<p>' + totalCorrectionsCount + ' corrections submitted</p>' +
+                  '<span class="summary-card-hint">View rankings →</span>' +
+                '</button>' +
+                '<button class="summary-card-btn" type="button" data-summary-type="phrases">' +
+                  '<div class="summary-card-top"><span class="summary-card-icon">💬</span><b>Common phrases</b></div>' +
+                  '<div class="summary-card-metric">' + phrasesList.length + '</div>' +
+                  '<p>' + totalPhrasesCount + ' total queries</p>' +
+                  '<span class="summary-card-hint">View phrases →</span>' +
+                '</button>' +
+                '</div>';
+
+              list.querySelectorAll(".summary-card-btn").forEach((btn) => {
+                btn.onclick = () => renderSummaryDetail(btn.dataset.summaryType);
+              });
+            };
+
+            const renderSummaryDetail = (type) => {
+              let title = "", subtitle = "", contentHtml = "";
+
+              if (type === "requesters") {
+                title = "Top requesters";
+                subtitle = requestersList.length + " active learners · " + totalRequestsCount + " total requests";
+                const maxReq = requestersList[0]?.[1] || 1;
+                contentHtml = '<div class="summary-detail-list">' +
+                  (requestersList.length
+                    ? requestersList.map(([name, count], index) => {
+                        const rankClass = index === 0 ? "gold" : index === 1 ? "silver" : index === 2 ? "bronze" : "";
+                        const pct = Math.max(8, Math.min(100, Math.round((count / maxReq) * 100)));
+                        return '<div class="summary-detail-row">' +
+                          '<span class="summary-rank-badge ' + rankClass + '">#' + (index + 1) + '</span>' +
+                          '<div class="summary-detail-main">' +
+                            '<strong>' + esc(name) + '</strong>' +
+                            '<div class="summary-progress-bar"><div class="summary-progress-fill" style="width:' + pct + '%"></div></div>' +
+                          '</div>' +
+                          '<span class="summary-count-pill">' + count + ' requests</span>' +
+                        '</div>';
+                      }).join("")
+                    : '<p class="status">No active requesters recorded yet.</p>') +
+                  '</div>';
+              } else if (type === "feedback") {
+                title = "Feedback totals";
+                subtitle = totalFeedback + " total feedback evaluations recorded";
+                const yesPct = totalFeedback ? Math.round((counts.yes / totalFeedback) * 100) : 0;
+                const noPct = totalFeedback ? Math.round((counts.no / totalFeedback) * 100) : 0;
+                const naPct = totalFeedback ? Math.round((counts.na / totalFeedback) * 100) : 0;
+                contentHtml = '<div class="summary-detail-list feedback-detail-grid">' +
+                  '<div class="feedback-stat-card positive">' +
+                    '<div class="feedback-stat-icon">👍</div>' +
+                    '<strong>Helpful (Yes)</strong>' +
+                    '<div class="feedback-stat-num">' + counts.yes + '</div>' +
+                    '<span class="status">' + yesPct + '% of total feedback</span>' +
+                    '<button class="plain goto-feedback-tab" type="button" data-tab="yes">View Helpful logs →</button>' +
+                  '</div>' +
+                  '<div class="feedback-stat-card negative">' +
+                    '<div class="feedback-stat-icon">👎</div>' +
+                    '<strong>Not helpful (No)</strong>' +
+                    '<div class="feedback-stat-num">' + counts.no + '</div>' +
+                    '<span class="status">' + noPct + '% of total feedback</span>' +
+                    '<button class="plain goto-feedback-tab" type="button" data-tab="no">View Not Helpful logs →</button>' +
+                  '</div>' +
+                  '<div class="feedback-stat-card neutral">' +
+                    '<div class="feedback-stat-icon">⚪</div>' +
+                    '<strong>No feedback (N/A)</strong>' +
+                    '<div class="feedback-stat-num">' + counts.na + '</div>' +
+                    '<span class="status">' + naPct + '% of total feedback</span>' +
+                    '<button class="plain goto-feedback-tab" type="button" data-tab="na">View unrated logs →</button>' +
+                  '</div>' +
+                '</div>';
+              } else if (type === "contributors") {
+                title = "Top contributors";
+                subtitle = contributorsList.length + " community contributors · " + totalCorrectionsCount + " corrections";
+                contentHtml = '<div class="summary-detail-list">' +
+                  (contributorsList.length
+                    ? contributorsList.map(([name, count], index) => {
+                        const rankClass = index === 0 ? "gold" : index === 1 ? "silver" : index === 2 ? "bronze" : "";
+                        return '<div class="summary-detail-row">' +
+                          '<span class="summary-rank-badge ' + rankClass + '">#' + (index + 1) + '</span>' +
+                          '<div class="summary-detail-main">' +
+                            '<strong>' + esc(name) + '</strong>' +
+                            '<small class="status">' + count + ' community ' + (count === 1 ? 'correction' : 'corrections') + ' submitted</small>' +
+                          '</div>' +
+                          '<span class="summary-count-pill contributor-pill">' + count + ' ' + (count === 1 ? 'edit' : 'edits') + '</span>' +
+                        '</div>';
+                      }).join("")
+                    : '<p class="status">No community corrections recorded yet.</p>') +
+                  '</div>';
+              } else if (type === "phrases") {
+                title = "Common phrases";
+                subtitle = phrasesList.length + " unique phrases queried · " + totalPhrasesCount + " total queries";
+                contentHtml = '<div class="summary-phrases-container">' +
+                  '<input type="search" id="summary-phrases-search" class="search summary-phrase-search" placeholder="Filter phrases...">' +
+                  '<div id="summary-phrases-rows" class="summary-detail-list">' +
+                    (phrasesList.length
+                      ? phrasesList.map(([phrase, count], index) =>
+                          '<div class="summary-detail-row phrase-row" data-phrase="' + esc(phrase.toLowerCase()) + '">' +
+                            '<span class="summary-rank-badge">#' + (index + 1) + '</span>' +
+                            '<div class="summary-detail-main">' +
+                              '<strong>“' + esc(phrase) + '”</strong>' +
+                            '</div>' +
+                            '<span class="summary-count-pill phrase-pill">' + count + ' ' + (count === 1 ? 'query' : 'queries') + '</span>' +
+                          '</div>'
+                        ).join("")
+                      : '<p class="status">No common phrases recorded yet.</p>') +
+                  '</div>' +
+                '</div>';
+              }
+
+              list.innerHTML =
+                '<div class="summary-detail-view">' +
+                  '<div class="summary-detail-header">' +
+                    '<button class="btn summary-back-btn" type="button">← Back to summary</button>' +
+                    '<div class="summary-detail-header-left">' +
+                      '<h3>' + esc(title) + '</h3>' +
+                      '<p class="status">' + esc(subtitle) + '</p>' +
+                    '</div>' +
+                  '</div>' +
+                  contentHtml +
+                '</div>';
+
+              const backBtn = list.querySelector(".summary-back-btn");
+              if (backBtn) backBtn.onclick = renderSummaryGrid;
+
+              list.querySelectorAll(".goto-feedback-tab").forEach((btn) => {
+                btn.onclick = () => {
+                  loadAiHistoryAdmin(btn.dataset.tab);
+                };
+              });
+
+              const phraseSearch = list.querySelector("#summary-phrases-search");
+              if (phraseSearch) {
+                phraseSearch.oninput = () => {
+                  const query = phraseSearch.value.trim().toLowerCase();
+                  list.querySelectorAll(".phrase-row").forEach((row) => {
+                    row.style.display = (!query || row.dataset.phrase.includes(query)) ? "" : "none";
+                  });
+                };
+              }
+            };
+
+            renderSummaryGrid();
             return;
           }
           list.innerHTML = records.length
@@ -10069,6 +10595,7 @@
         const savedState = localStorage.getItem("cawnnak-citizenship-state");
         if (savedState && citizenshipStates.includes(savedState)) {
           $("citizenship-state").value = savedState;
+          buildSelect($("citizenship-state"));
           $("generate-citizenship").click();
         }
       };
@@ -10780,11 +11307,14 @@
         citizenshipStates.includes(savedCitizenshipState)
       )
         $("citizenship-state").value = savedCitizenshipState;
-      $("citizenship-state").onchange = () =>
+      $("citizenship-state").onchange = () => {
         localStorage.setItem(
           "cawnnak-citizenship-state",
           $("citizenship-state").value,
         );
+        buildSelect($("citizenship-state"));
+      };
+      buildSelect($("citizenship-state"));
       let citizenshipQuestions = [];
       async function enrichCitizenshipOfficials(questions, state) {
         const liveQuestions = questions.filter((item) =>
@@ -10905,11 +11435,14 @@
           "hidden",
           $("citizenship-range").value !== "custom",
         );
+        buildSelect($("citizenship-range"));
       };
+      buildSelect($("citizenship-range"));
       $("apply-citizenship-range").onclick = renderCitizenshipRange;
       $("citizenship-change-state").onclick = () => {
         $("citizenship-study-panel").classList.add("hidden");
         $("citizenship-setup-panel").classList.remove("hidden");
+        buildSelect($("citizenship-state"));
       };
       function vibrateInteraction() {
         if (window.matchMedia("(pointer: coarse)").matches) buzz(8);

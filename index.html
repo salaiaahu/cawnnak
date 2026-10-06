@@ -1533,8 +1533,6 @@
       }
       .translator-message {
         display: grid;
-        grid-template-columns: 30px minmax(0, 1fr);
-        gap: 8px;
         align-items: start;
         max-width: 88%;
         padding: 9px 11px;
@@ -1551,23 +1549,58 @@
         .translator-message { animation: none; }
       }
       .translator-message.user {
-        justify-self: end;
         background: #dff4e8;
       }
       .translator-message.assistant {
-        justify-self: start;
         background: #fff;
         border: 1px solid var(--l);
       }
+      .translator-message-row {
+        display: flex;
+        width: 100%;
+        align-items: flex-end;
+        gap: 9px;
+      }
+      .translator-message-row.user {
+        justify-content: flex-end;
+      }
+      .translator-message-row.user .translator-avatar {
+        order: 2;
+      }
+      .translator-message-row.user .translator-message {
+        order: 1;
+      }
+      .translator-message-row .translator-message {
+        position: relative;
+      }
+      .translator-message-row .translator-message::after {
+        position: absolute;
+        bottom: 9px;
+        width: 0;
+        height: 0;
+        border-top: 8px solid transparent;
+        border-bottom: 2px solid transparent;
+        content: "";
+      }
+      .translator-message-row.assistant .translator-message::after {
+        left: -7px;
+        border-right: 8px solid #f5faf9;
+      }
+      .translator-message-row.user .translator-message::after {
+        right: -7px;
+        border-left: 8px solid #227c91;
+      }
       .translator-avatar {
         display: grid;
-        width: 28px;
-        height: 28px;
+        width: 34px;
+        height: 34px;
+        flex: 0 0 34px;
         place-items: center;
-        border-radius: 50%;
+        border-radius: 50% !important;
         background: linear-gradient(135deg, #1d3d3a, #bb8352);
         color: #fff;
         font-size: 0.9rem;
+        overflow: hidden;
       }
       .translator-content {
         min-width: 0;
@@ -1581,14 +1614,26 @@
       }
       .translation-feedback {
         display: grid;
-        gap: 8px;
-        margin-top: 10px;
-        padding-top: 9px;
-        border-top: 1px solid #eadccf;
+        gap: 5px;
+        margin-top: 8px;
+        padding: 7px 9px 0;
+        border-top: 1px solid #d8e7e2;
+        color: #6d7f82;
+        font-size: .76rem;
+        font-style: italic;
       }
       .translation-feedback-actions {
         display: flex;
-        gap: 7px;
+        gap: 5px;
+      }
+      .translation-feedback-actions .plain {
+        padding: 3px 8px;
+        border: 1px solid #b9d5ce;
+        border-radius: 999px;
+        color: #52736d;
+        background: #f4faf8;
+        font-size: .72rem;
+        font-style: normal;
       }
       .translation-feedback textarea {
         width: 100%;
@@ -1795,9 +1840,19 @@
         flex: 0 0 auto;
       }
       .lai-tech-page {
-        max-width: 780px;
+        max-width: 1080px;
         margin: auto;
       }
+      body.lai-tech-mode { overflow:hidden; }
+      body.lai-tech-mode .bar { display:none; }
+      body.lai-tech-mode main { min-height:100dvh; padding:0; }
+      body.lai-tech-mode #lai-tech.active { position:fixed; inset:0; z-index:30; padding:0; }
+      .lai-tech-page { display:flex; width:100%; max-width:none; height:100dvh; flex-direction:column; margin:0; }
+      .ai-app-header { display:flex; align-items:center; gap:10px; min-height:54px; padding:4px 14px; border-bottom:1px solid #d7e6e1; background:#f8fcfa; }
+      .ai-app-header h1 { margin:1px 0 0; font-size:1.08rem; letter-spacing:-.02em; }
+      .ai-app-header .eyebrow { color:#158a78; font-weight:800; }
+      .ai-menu-toggle { border:0; background:transparent; color:#146f66; font-size:1.5rem; cursor:pointer; padding:8px 10px; }
+      .ai-home-button { margin-left:auto; border:1px solid #b8d8cf; border-radius:999px; background:#fff; color:#146f66; font-size:.78rem; font-weight:800; cursor:pointer; padding:7px 11px; }
       .lai-tech-hero {
         position: relative;
         overflow: hidden;
@@ -1834,18 +1889,66 @@
         margin-top: 0;
       }
       #lai-tech-chat {
-        min-height: 430px;
+        min-height:0; flex:1; margin:0; color:#eef8f6; border:0; border-radius:0; background:radial-gradient(circle at 80% 0%,#254b68 0,transparent 35%),linear-gradient(145deg,#101827,#172f42 48%,#26394e); box-shadow:none; overflow:hidden;
       }
+      .ai-chat-toolbar { display:flex; justify-content:space-between; gap:16px; align-items:center; padding-bottom:14px; border-bottom:1px solid #ffffff1c; }
+      .ai-chat-toolbar small { display:block; margin-top:3px; }
+      .ai-chat-actions { display:flex; gap:8px; flex-wrap:wrap; }
+      .ai-chat-actions .plain { color:#c9f5eb; }
+      #ai-chat-layout { display:block; height:100%; padding:0; }
+      #ai-conversation-list { position:fixed; inset:0 auto 0 0; z-index:52; display:flex; width:min(340px,88vw); max-height:none; flex-direction:column; gap:6px; overflow-y:auto; padding:24px 16px; background:#132b38; box-shadow:18px 0 45px #07111b66; transform:translateX(-105%); transition:transform .22s ease; }
+      #ai-conversation-list.open { transform:translateX(0); }
+      #ai-conversation-backdrop { position:fixed; inset:0; z-index:51; border:0; background:#07111b99; opacity:0; pointer-events:none; transition:opacity .22s ease; }
+      #ai-conversation-backdrop.open { opacity:1; pointer-events:auto; }
+      .ai-side-heading { color:#9bc9c5; font-size:.78rem; text-transform:uppercase; letter-spacing:.12em; font-weight:800; padding:4px 11px 8px; }
+      .ai-side-action { display:block; width:100%; text-align:left; border:0; border-radius:12px; background:#ffffff0d; color:#e8faf6; padding:12px; margin-bottom:5px; cursor:pointer; font:inherit; }
+      .ai-side-action:hover { background:#ffffff1b; }
+      .ai-history-label { margin-top:18px; border-top:1px solid #ffffff1c; padding-top:18px; }
+      .ai-conversation { position:relative; display:flex; align-items:center; gap:8px; text-align:left; border:1px solid transparent; background:transparent; border-radius:12px; padding:11px; cursor:pointer; color:inherit; width:100%; }
+      .ai-conversation.active { border-color:#52c7b1; background:#205064; }
+      .ai-conversation.active small { color:#b6ddd6; }
+      .ai-conversation-main { min-width:0; flex:1; }
+      .ai-conversation strong,.ai-conversation small { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+      .ai-conversation small { color:#82647f; margin-top:3px; }
+      .ai-conversation-menu { border:0; background:transparent; color:#82647f; font-size:1.2rem; padding:2px 5px; cursor:pointer; }
+      .ai-conversation-popover { position:absolute; right:10px; z-index:3; display:grid; min-width:150px; padding:5px; border:1px solid #47717a; border-radius:10px; background:#183d4c; box-shadow:0 12px 28px #07111b66; }
+      .ai-conversation-popover input { width:230px; margin:2px; padding:8px 9px; border:1px solid #47717a; border-radius:7px; color:#e8faf6; background:#102d3b; }
+      .ai-conversation-popover button { border:0; border-radius:7px; padding:8px 10px; color:#e8faf6; background:transparent; text-align:left; cursor:pointer; }
+      .ai-conversation-popover button:hover { background:#ffffff1b; }
+      .ai-chat-thread { min-width:0; }
       #lai-tech-chat .translator-messages {
-        min-height: 340px;
-        max-height: 52vh;
-        padding: 4px;
+        display:flex; flex:1; min-height:0;
+        max-height:none;
+        width:100%;
+        flex-direction:column;
+        margin:0 auto;
+        padding: 12px 2px;
       }
+      #lai-tech-chat .translator-message { max-width:78%; border-radius:20px; padding:13px 16px; margin:12px 0; box-shadow:0 8px 18px #07111b33; }
+      #lai-tech-chat .translator-message.user { margin-left:auto; background:linear-gradient(135deg,#35b99d,#227c91); color:white; }
+      #lai-tech-chat .translator-message.assistant { background:#f5faf9; color:#18343c; border:1px solid #c7e4df; }
+      #lai-tech-chat .translator-avatar { width:34px; height:34px; display:grid; place-items:center; border-radius:50% !important; background:#d4b277; flex:0 0 34px; }
+      #lai-tech-chat .translator-content { line-height:1.5;         overflow: hidden;
+      }
+      .translator-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      #lai-tech-chat .translator-form { border:1px solid #ffffff33; background:#0d1b2a; border-radius:18px; padding:7px; align-items:end; }
+      #lai-tech-chat .ai-chat-thread { display:flex; height:100%; flex-direction:column; padding:18px 4px; }
+      #lai-tech-chat .translator-form { width:min(900px,100%); margin:12px auto 0; }
+      #lai-tech-chat .translator-form textarea { background:transparent; color:#eef8f6; border:0; outline:0; }
+      #lai-tech-chat .translator-form textarea::placeholder { color:#96afb5; }
+      #lai-tech-chat .translator-form .btn { border-radius:13px; background:#32b692; }
+      #lai-tech-chat .status { color:#a9ccc8; }
       .lai-tech-thinking {
         color: #82647f;
         font-style: italic;
       }
       @media (max-width: 600px) {
+        .ai-chat-toolbar { align-items:flex-start; flex-direction:column; }
+        #ai-conversation-list { width:min(320px,90vw); }
         .translator-form {
           display: grid;
           grid-template-columns: 1fr auto;
@@ -1853,6 +1956,7 @@
         .lai-tech-hero {
           padding: 22px 18px;
         }
+        .ai-app-header { padding-inline:10px; }
       }
       .hero h2 {
         max-width: 650px;
@@ -2657,6 +2761,7 @@
         <span class="brand-icon">🌐</span>Mirang Holh Cawnnak
       </button>
       <div class="header-actions">
+        <button id="lai-tech-home" class="plain hidden" aria-label="Back to home" title="Back to home">⌂</button>
         <button
           id="notifications"
           class="plain notification-button hidden"
@@ -2824,10 +2929,10 @@
       </section>
       <section id="lai-tech" class="view">
         <div class="lai-tech-page">
-          <div class="lai-tech-hero">
-            <small class="eyebrow">LAITECH AI · BETA</small>
-            <h1 id="lai-tech-title">Welcome to LaiTech AI</h1>
-            <p id="lai-tech-intro" class="status"></p>
+          <div class="ai-app-header">
+            <button id="ai-menu-toggle" class="ai-menu-toggle" type="button" aria-label="Open LaiTech AI menu" aria-expanded="false">☰</button>
+            <div><small class="eyebrow">LAITECH AI · BETA</small><h1 id="lai-tech-title">Welcome to LaiTech AI</h1><p id="lai-tech-intro" class="hidden"></p></div>
+            <button id="ai-inline-home" class="ai-home-button" type="button" aria-label="Back to home" title="Back to home">← Home</button>
           </div>
           <section id="lai-tech-consent" class="panel">
             <h2>Before you begin</h2>
@@ -2844,6 +2949,16 @@
             </button>
           </section>
           <section id="lai-tech-chat" class="panel hidden">
+            <div id="ai-chat-layout">
+              <aside id="ai-conversation-list" aria-label="Conversation history">
+                <div class="ai-side-heading">LaiTech AI</div>
+                <button id="ai-new-chat" class="ai-side-action" type="button">＋ New chat</button>
+                <button id="ai-backup-chat" class="ai-side-action" type="button">↥ Back up chats</button>
+                <div class="ai-side-heading ai-history-label">Chat history</div>
+                <small id="ai-sync-status" class="status">Saved on this device</small>
+              </aside>
+              <button id="ai-conversation-backdrop" type="button" aria-label="Close chat menu"></button>
+              <div class="ai-chat-thread">
             <div
               id="translator-messages"
               class="translator-messages"
@@ -2861,6 +2976,8 @@
               <button class="btn" type="submit">Send</button>
             </form>
             <p id="translator-status" class="status"></p>
+              </div>
+            </div>
           </section>
         </div>
       </section>
@@ -7009,6 +7126,9 @@
         if (view === "auditview") loadAuditV3();
         if (view === "practice") renderPractice();
         if (view === "review") window.CawnnakLearning?.renderReview?.();
+        $("lai-tech-home")?.classList.toggle("hidden", view !== "lai-tech");
+        $("menu-toggle")?.classList.toggle("hidden", view === "lai-tech");
+        document.body.classList.toggle("lai-tech-mode", view === "lai-tech");
         window.scrollTo({ top: 0, left: 0, behavior: "auto" });
         if (recordHistory && view !== currentView) {
           if (view === "home") {
@@ -7023,6 +7143,9 @@
         $("menu-drawer").classList.add("hidden");
         document.body.classList.remove("menu-open");
         $("menu-toggle").setAttribute("aria-expanded", "false");
+        $("ai-conversation-list")?.classList.remove("open");
+        $("ai-conversation-backdrop")?.classList.remove("open");
+        $("ai-menu-toggle")?.setAttribute("aria-expanded", "false");
       }
       window.addEventListener("popstate", (event) => {
         showAppView(event.state?.view || "home", false);
@@ -7087,19 +7210,140 @@
           $("generate-citizenship").click();
         }
       };
+      function chatAvatarUrl() {
+        return profileV2.avatar || profileV2.avatarURL || profileV2.photoURL || user?.photoURL || "";
+      }
       function addTranslatorBubble(kind, text, avatar) {
+        const row = document.createElement("div");
+        row.className = "translator-message-row " + kind;
         const bubble = document.createElement("div");
         bubble.className = "translator-message " + kind;
         const icon = document.createElement("span");
         icon.className = "translator-avatar";
-        icon.textContent = avatar;
+        const imageUrl = kind === "user" ? chatAvatarUrl() : "";
+        if (imageUrl) {
+          const image = document.createElement("img");
+          image.src = imageUrl;
+          image.alt = "Your profile picture";
+          image.onerror = () => {
+            image.remove();
+            icon.textContent = avatar;
+          };
+          icon.append(image);
+        } else {
+          icon.textContent = avatar;
+        }
         const content = document.createElement("div");
         content.className = "translator-content";
         content.textContent = text;
-        bubble.append(icon, content);
-        $("translator-messages").append(bubble);
+        bubble.append(content);
+        row.append(icon, bubble);
+        $("translator-messages").append(row);
         return { bubble, content };
       }
+      const AI_LOCAL_KEY = "cawnnak-lai-tech-chats-v1";
+      let aiChats = [], activeAiChatId = "";
+      function aiStoreKey() { return user ? AI_LOCAL_KEY + ":" + user.uid : AI_LOCAL_KEY + ":guest"; }
+      function loadAiChats() { try { aiChats = JSON.parse(localStorage.getItem(aiStoreKey()) || "[]").filter(c => c && Array.isArray(c.messages) && c.messages.length); } catch { aiChats = []; } }
+      function saveAiChats() { localStorage.setItem(aiStoreKey(), JSON.stringify(aiChats.slice(-30))); }
+      function currentAiChat() { return aiChats.find(c => c.id === activeAiChatId); }
+      function closeAiMenu() {
+        $("ai-conversation-list")?.classList.remove("open");
+        $("ai-conversation-backdrop")?.classList.remove("open");
+        $("ai-menu-toggle")?.setAttribute("aria-expanded", "false");
+      }
+      function showAiChatMenu(event, chat, row) {
+        event.stopPropagation();
+        document.querySelector(".ai-conversation-popover")?.remove();
+        const menu = document.createElement("div");
+        menu.className = "ai-conversation-popover";
+        const rename = document.createElement("button");
+        rename.type = "button";
+        rename.textContent = "Rename";
+        rename.onclick = () => {
+          menu.innerHTML = "";
+          const renameInput = document.createElement("input");
+          renameInput.type = "text";
+          renameInput.maxLength = 80;
+          renameInput.value = chat.title || "";
+          renameInput.setAttribute("aria-label", "Chat name");
+          const saveName = document.createElement("button");
+          saveName.type = "button";
+          saveName.textContent = "Save name";
+          saveName.onclick = () => {
+            const title = renameInput.value.trim();
+            if (!title) return;
+            chat.title = title;
+            chat.updatedAt = Date.now();
+            saveAiChats();
+            renderAiConversations();
+          };
+          const cancel = document.createElement("button");
+          cancel.type = "button";
+          cancel.textContent = "Cancel";
+          cancel.onclick = () => menu.remove();
+          menu.append(renameInput, saveName, cancel);
+          renameInput.focus();
+        };
+        const remove = document.createElement("button");
+        remove.type = "button";
+        remove.textContent = "Delete";
+        remove.onclick = () => {
+          if (!confirm("Delete this chat from this device?")) return;
+          aiChats = aiChats.filter(item => item.id !== chat.id);
+          if (activeAiChatId === chat.id) {
+            activeAiChatId = aiChats[aiChats.length - 1]?.id || "";
+            if (activeAiChatId) openAiChat(activeAiChatId);
+            else $("translator-messages").innerHTML = "";
+          }
+          saveAiChats();
+          renderAiConversations();
+        };
+        menu.append(rename, remove);
+        menu.onclick = event => event.stopPropagation();
+        row.append(menu);
+      }
+      function renderAiConversations() {
+        const list = $("ai-conversation-list");
+        if (!list) return;
+        list.querySelectorAll(".ai-conversation, .ai-history-empty").forEach(item => item.remove());
+        if (!aiChats.length) {
+          const empty = document.createElement("p");
+          empty.className = "status ai-history-empty";
+          empty.textContent = "No saved chats yet.";
+          list.append(empty);
+          return;
+        }
+        aiChats.slice().reverse().forEach(chat => {
+          const row = document.createElement("div");
+          row.className = "ai-conversation" + (chat.id === activeAiChatId ? " active" : "");
+          row.innerHTML = "<span class=\"ai-conversation-main\"><strong></strong><small></small></span><button class=\"ai-conversation-menu\" type=\"button\" aria-label=\"Chat options\">⋮</button>";
+          row.querySelector("strong").textContent = chat.title || "New conversation";
+          row.querySelector("small").textContent = new Date(chat.updatedAt).toLocaleDateString();
+          row.onclick = () => { openAiChat(chat.id); closeAiMenu(); };
+          row.querySelector(".ai-conversation-menu").onclick = event => showAiChatMenu(event, chat, row);
+          list.append(row);
+        });
+      }
+      function newAiChat() {
+        const chat = { id: crypto.randomUUID(), title: "New conversation", updatedAt: Date.now(), messages: [] };
+        aiChats.push(chat);
+        activeAiChatId = chat.id;
+        saveAiChats();
+        openAiChat(chat.id);
+        closeAiMenu();
+        $("translator-input")?.focus();
+      }
+      function openAiChat(id) {
+        activeAiChatId = id;
+        const chat = currentAiChat();
+        if (!chat) return;
+        $("translator-messages").innerHTML = "";
+        chat.messages.forEach(m => addTranslatorBubble(m.role, m.text, m.role === "user" ? "👤" : "🤖"));
+        renderAiConversations();
+      }
+      function recordAiMessage(role,text) { const chat=currentAiChat(); if (!chat) return; chat.messages.push({role,text,at:Date.now()}); chat.updatedAt=Date.now(); if (role==="user" && chat.title==="New conversation") chat.title=text.slice(0,34); saveAiChats(); renderAiConversations(); if (user && db) setDoc(doc(db,"users",user.uid),{laiTechLatest:{chatId:chat.id,role,text,updatedAt:chat.updatedAt,unread:role==="assistant"}},{merge:true}).catch(()=>{}); }
+      function exportAiBackup() { const blob=new Blob([JSON.stringify({exportedAt:new Date().toISOString(),conversations:aiChats},null,2)],{type:"application/json"}); const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="laitech-ai-chat-backup.json"; a.click(); URL.revokeObjectURL(a.href); $("ai-sync-status").textContent="Backup downloaded — you can upload it to your Google Drive."; }
       async function saveAiFeedback(
         sourceText,
         translatedText,
@@ -7145,21 +7389,13 @@
           prompt.textContent = message;
           actions.remove();
         };
-        yes.onclick = async () => {
+        yes.onclick = () => {
           yes.disabled = no.disabled = true;
-          try {
-            await saveAiFeedback(
-              sourceText,
-              translatedText,
-              "yes",
-              "",
-              feedbackId,
-            );
-            finish("Thank you — your response was saved.");
-          } catch (error) {
-            yes.disabled = no.disabled = false;
-            prompt.textContent = error.message;
-          }
+          finish("Thank you — your response was saved.");
+          saveAiFeedback(sourceText, translatedText, "yes", "", feedbackId)
+            .catch(error => {
+              prompt.textContent = "Saved on this device, but sync failed: " + error.message;
+            });
         };
         no.onclick = () => {
           actions.remove();
@@ -7171,24 +7407,17 @@
           submit.type = "button";
           submit.textContent = "Send correction";
           box.append(correction, submit);
-          submit.onclick = async () => {
+          submit.onclick = () => {
             if (!correction.value.trim()) return;
             submit.disabled = true;
-            try {
-              await saveAiFeedback(
-                sourceText,
-                translatedText,
-                "no",
-                correction.value.trim(),
-                feedbackId,
-              );
-              correction.remove();
-              submit.remove();
-              finish("Thank you — your correction was saved for review.");
-            } catch (error) {
-              submit.disabled = false;
-              prompt.textContent = error.message;
-            }
+            const correctionText = correction.value.trim();
+            correction.remove();
+            submit.remove();
+            finish("Thank you — your correction was saved for review.");
+            saveAiFeedback(sourceText, translatedText, "no", correctionText, feedbackId)
+              .catch(error => {
+                prompt.textContent = "Saved on this device, but sync failed: " + error.message;
+              });
           };
         };
       }
@@ -7222,6 +7451,9 @@
           $("lai-tech-continue").onclick = () => showAppView("profileview");
           return;
         }
+        loadAiChats();
+        const consentKey = "cawnnak-lai-tech-consent-v1:" + user.uid;
+        const alreadyConsented = localStorage.getItem(consentKey) === "true";
         $("lai-tech-title").textContent = "Welcome, " + name;
         $("lai-tech-intro").textContent =
           "I’m LaiTech AI, your friendly Hakha Chin to English learning companion.";
@@ -7230,20 +7462,25 @@
         $("lai-tech-continue").textContent = "I understand — start learning";
         $("lai-tech-continue").disabled = false;
         $("lai-tech-continue").onclick = () => {
+          localStorage.setItem(consentKey, "true");
           $("lai-tech-consent").classList.add("hidden");
           $("lai-tech-chat").classList.remove("hidden");
-          $("translator-messages").innerHTML = "";
-          addTranslatorBubble(
-            "assistant",
-            "Hello, " +
-              name +
-              "! Send me a Hakha Chin word or phrase and I’ll help you explore its English meaning.",
-            "🤖",
-          );
+          if (!aiChats.length) newAiChat(); else openAiChat(aiChats[aiChats.length-1].id);
           $("translator-input").focus();
         };
+        if (alreadyConsented) { $("lai-tech-consent").classList.add("hidden"); $("lai-tech-chat").classList.remove("hidden"); if (!aiChats.length) newAiChat(); else openAiChat(aiChats[aiChats.length-1].id); }
       }
       $("choose-lai-tech").onclick = () => showAppView("lai-tech");
+      $("lai-tech-home").onclick = () => showAppView("home");
+      $("ai-inline-home").onclick = () => showAppView("home");
+      $("ai-menu-toggle").onclick = () => {
+        const list = $("ai-conversation-list");
+        const open = !list.classList.contains("open");
+        list.classList.toggle("open", open);
+        $("ai-conversation-backdrop").classList.toggle("open", open);
+        $("ai-menu-toggle").setAttribute("aria-expanded", String(open));
+      };
+      $("ai-conversation-backdrop").onclick = closeAiMenu;
       $("home-quiz").onclick = () => showAppView("quiz");
       $("home-practice").onclick = () => showAppView("practice");
       const resizeTranslatorInput = () => {
@@ -7254,6 +7491,8 @@
         input.style.overflowY = input.scrollHeight > 180 ? "auto" : "hidden";
       };
       $("translator-input").oninput = resizeTranslatorInput;
+      $("ai-new-chat").onclick = newAiChat;
+      $("ai-backup-chat").onclick = exportAiBackup;
       resizeTranslatorInput();
       $("translator-form").onsubmit = async (event) => {
         event.preventDefault();
@@ -7262,6 +7501,7 @@
         if (!text) return;
         const messages = $("translator-messages");
         addTranslatorBubble("user", text, "👤");
+        recordAiMessage("user", text);
         input.value = "";
         const thinkingBubble = addTranslatorBubble(
           "assistant",
@@ -7306,6 +7546,7 @@
           const meaning = document.createElement("p");
           meaning.textContent = payload.translatedText;
           answer.content.append(label, meaning);
+          recordAiMessage("assistant", payload.translatedText);
           addTranslationFeedback(
             answer.content,
             text,

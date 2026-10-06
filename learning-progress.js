@@ -74,7 +74,7 @@ function addDashboard() {
     save();
   };
   const style = document.createElement('style');
-  style.textContent = `.learning-dashboard{background:linear-gradient(135deg,#edf8ff,#f8fff9)}.learning-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:15px 0}.learning-metrics div{padding:10px;border:1px solid var(--l);border-radius:11px;background:#fff}.learning-metrics b{display:block;font-size:1.12rem;color:var(--g)}.learning-metrics span{font-size:.72rem;color:var(--m)}.learning-actions{display:flex;align-items:center;justify-content:space-between;gap:10px}.favorite{font-size:.9rem}@media(max-width:600px){.learning-metrics{gap:6px}.learning-metrics div{padding:8px}.learning-metrics b{font-size:1rem}}`;
+  style.textContent = `.learning-dashboard{background:linear-gradient(145deg,#131d2e,#0d1522);border:1px solid rgba(255,255,255,0.08);color:#f8fafc}.learning-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:15px 0}.learning-metrics div{padding:10px;border:1px solid rgba(255,255,255,0.08);border-radius:11px;background:#162032}.learning-metrics b{display:block;font-size:1.12rem;color:var(--g)}.learning-metrics span{font-size:.72rem;color:var(--m)}.learning-actions{display:flex;align-items:center;justify-content:space-between;gap:10px}.favorite{font-size:.9rem}@media(max-width:600px){.learning-metrics{gap:6px}.learning-metrics div{padding:8px}.learning-metrics b{font-size:1rem}}`;
   document.head.append(style);
 }
 

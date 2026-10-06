@@ -6,11 +6,17 @@
       name="viewport"
       content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"
     />
-    <meta name="theme-color" content="#176b4d" />
+    <meta name="theme-color" content="#0a0e17" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
     <link rel="manifest" href="./manifest.json" />
     <link rel="apple-touch-icon" href="./icons/icon.svg" />
+    <link rel="apple-touch-icon" href="./icons/icon.png" />
+    <link rel="icon" type="image/png" href="./icons/icon.png" />
+    <link rel="icon" type="image/svg+xml" href="./icons/icon.svg" />
     <title>Holh Cawnnak</title>
     <style>
       :root {
@@ -464,7 +470,7 @@
         font-size: 1.12rem;
       }
       .track-choice-card span {
-        font-size: 2rem;
+        font-size: 0.85rem;
       }
       .us-flag {
         display: inline-block;
@@ -606,9 +612,10 @@
         align-items: center;
         gap: 10px;
         padding: 11px 12px;
-        border: 1px solid var(--l);
-        border-radius: 12px;
-        background: linear-gradient(135deg, #fff, #f1f8f4);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 14px;
+        background: linear-gradient(145deg, #131d2e, #0d1522);
+        color: #f8fafc;
       }
       .top-learner-rank {
         font-size: 1.2rem;
@@ -621,20 +628,20 @@
         place-items: center;
         width: 38px;
         height: 38px;
-        border: 2px solid #c4e5d1;
+        border: 2px solid rgba(59, 130, 246, 0.35);
         border-radius: 50%;
         object-fit: cover;
-        background: #e5f4eb;
+        background: #162032;
         font-size: 1.2rem;
       }
       .top-learner-row strong {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        color: var(--i);
+        color: #f8fafc;
       }
       .top-learner-points {
-        color: var(--g);
+        color: #3b82f6;
         font-weight: 800;
         white-space: nowrap;
       }
@@ -1265,98 +1272,191 @@
         display: grid;
         place-items: center;
         overflow: hidden;
-        background: radial-gradient(circle at 50% 35%, #3bae80, #14583f 65%);
-        color: white;
+        background:
+          radial-gradient(
+            900px 600px at 50% 30%,
+            rgba(59, 130, 246, 0.28),
+            transparent 70%
+          ),
+          radial-gradient(
+            700px 500px at 85% 85%,
+            rgba(245, 158, 11, 0.16),
+            transparent 60%
+          ),
+          radial-gradient(
+            800px 600px at 15% 85%,
+            rgba(99, 102, 241, 0.18),
+            transparent 65%
+          ),
+          linear-gradient(145deg, #0f172a 0%, #080d19 45%, #03060c 100%) !important;
+        color: #f8fafc;
         transition:
-          opacity 0.55s ease,
-          visibility 0.55s;
+          opacity 0.65s cubic-bezier(0.4, 0, 0.2, 1),
+          visibility 0.65s,
+          transform 0.65s cubic-bezier(0.4, 0, 0.2, 1),
+          filter 0.65s ease;
       }
       .splash.done {
         opacity: 0;
         visibility: hidden;
+        transform: scale(1.05);
+        filter: blur(10px);
+        pointer-events: none;
       }
       .splash::before,
       .splash::after {
         content: "";
         position: absolute;
-        border: 1px solid #d8f4e480;
         border-radius: 50%;
-        animation: ripple 2.8s ease-out infinite;
+        pointer-events: none;
       }
       .splash::before {
-        width: 220px;
-        height: 220px;
+        width: 320px;
+        height: 320px;
+        border: 1.5px solid rgba(59, 130, 246, 0.35);
+        box-shadow:
+          0 0 50px rgba(59, 130, 246, 0.2),
+          inset 0 0 30px rgba(59, 130, 246, 0.1);
+        animation: splashRipple 3.6s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
       }
       .splash::after {
-        width: 360px;
-        height: 360px;
-        animation-delay: 0.7s;
+        width: 480px;
+        height: 480px;
+        border: 1px solid rgba(245, 158, 11, 0.28);
+        box-shadow: 0 0 60px rgba(245, 158, 11, 0.12);
+        animation: splashRipple 3.6s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+        animation-delay: 1.2s;
+      }
+      .splash-aurora {
+        position: absolute;
+        inset: -20%;
+        background:
+          radial-gradient(
+            circle at 50% 35%,
+            rgba(59, 130, 246, 0.25) 0%,
+            transparent 55%
+          ),
+          radial-gradient(
+            circle at 80% 80%,
+            rgba(245, 158, 11, 0.16) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 20% 80%,
+            rgba(99, 102, 241, 0.18) 0%,
+            transparent 50%
+          );
+        filter: blur(45px);
+        animation: splashAuroraMove 8s ease-in-out infinite alternate;
+        pointer-events: none;
       }
       .splash-inner {
         position: relative;
         z-index: 1;
         text-align: center;
-        animation: rise 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        animation: splashRise 0.9s cubic-bezier(0.16, 1, 0.3, 1);
       }
       .splash-icon {
-        width: 116px;
-        height: 116px;
-        padding: 14px;
-        border-radius: 31px;
-        background: #fffdfa;
-        box-shadow: 0 18px 44px #08281955;
-        animation: float 2.2s ease-in-out infinite;
+        width: 124px;
+        height: 124px;
+        padding: 0;
+        border-radius: 28px;
+        background: transparent !important;
+        box-shadow: none !important;
+        filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.75))
+          drop-shadow(0 0 30px rgba(59, 130, 246, 0.45));
+        animation: splashFloat 3.2s ease-in-out infinite alternate;
       }
       .splash h1 {
-        margin: 18px 0 4px;
-        font-size: 1.55rem;
+        margin: 22px 0 6px;
+        font-size: 1.75rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        background: linear-gradient(
+          135deg,
+          #ffffff 0%,
+          #93c5fd 50%,
+          #fde047 100%
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0 4px 20px rgba(59, 130, 246, 0.25);
       }
       .splash p {
         margin: 0;
-        color: #e1fff0;
+        font-size: 0.92rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        font-weight: 600;
+        color: #94a3b8;
       }
       .splash-loader {
-        width: 120px;
-        height: 4px;
-        margin: 24px auto 0;
-        border-radius: 10px;
-        background: #ffffff55;
+        width: 140px;
+        height: 5px;
+        margin: 26px auto 0;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.08);
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
         overflow: hidden;
+        position: relative;
       }
       .splash-loader i {
         display: block;
         width: 45%;
         height: 100%;
-        background: #f6c445;
-        border-radius: 10px;
-        animation: load 1.3s ease-in-out infinite;
+        border-radius: 999px;
+        background: linear-gradient(90deg, #3b82f6, #60a5fa 50%, #f59e0b 100%);
+        box-shadow:
+          0 0 16px rgba(59, 130, 246, 0.9),
+          0 0 10px rgba(245, 158, 11, 0.7);
+        animation: splashLoad 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
       }
-      @keyframes ripple {
+      @keyframes splashRipple {
         0% {
-          transform: scale(0.65);
-          opacity: 0.8;
+          transform: scale(0.65) rotate(0deg);
+          opacity: 0.85;
+        }
+        50% {
+          opacity: 0.45;
         }
         100% {
-          transform: scale(1.35);
+          transform: scale(1.45) rotate(180deg);
           opacity: 0;
         }
       }
-      @keyframes float {
-        50% {
-          transform: translateY(-9px) rotate(2deg);
+      @keyframes splashFloat {
+        0% {
+          transform: translateY(0) scale(1);
+          filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.75))
+            drop-shadow(0 0 25px rgba(59, 130, 246, 0.4));
+        }
+        100% {
+          transform: translateY(-10px) scale(1.03);
+          filter: drop-shadow(0 28px 50px rgba(0, 0, 0, 0.85))
+            drop-shadow(0 0 40px rgba(59, 130, 246, 0.65))
+            drop-shadow(0 0 15px rgba(245, 158, 11, 0.35));
         }
       }
-      @keyframes rise {
+      @keyframes splashRise {
         from {
           opacity: 0;
-          transform: translateY(22px);
+          transform: translateY(28px) scale(0.92);
         }
         to {
           opacity: 1;
-          transform: none;
+          transform: translateY(0) scale(1);
         }
       }
-      @keyframes load {
+      @keyframes splashAuroraMove {
+        0% {
+          transform: scale(1) rotate(0deg);
+        }
+        100% {
+          transform: scale(1.1) rotate(6deg);
+        }
+      }
+      @keyframes splashLoad {
         0% {
           transform: translateX(-120%);
         }
@@ -1383,14 +1483,23 @@
         width: 32px;
         height: 32px;
         padding: 0;
+        display: grid;
+        place-items: center;
         border-radius: 9px;
-        background: #e5f4eb;
-        color: #14583f;
-        font-size: 1.15rem;
+        background: rgba(255, 255, 255, 0.08) !important;
+        border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        color: var(--ai-muted) !important;
+        font-size: 1rem;
         line-height: 1;
+        transition:
+          background 0.15s ease,
+          color 0.15s ease,
+          border-color 0.15s ease;
       }
       .card-edit-top:hover {
-        background: #ccebd9;
+        background: rgba(59, 130, 246, 0.22) !important;
+        border-color: rgba(59, 130, 246, 0.4) !important;
+        color: #93c5fd !important;
       }
     </style>
     <style>
@@ -1539,14 +1648,22 @@
         border-radius: 12px;
         white-space: pre-wrap;
         overflow-wrap: anywhere;
-        animation: translator-message-float .32s ease-out both;
+        animation: translator-message-float 0.32s ease-out both;
       }
       @keyframes translator-message-float {
-        from { opacity: 0; transform: translateY(10px) scale(.98); }
-        to { opacity: 1; transform: translateY(0) scale(1); }
+        from {
+          opacity: 0;
+          transform: translateY(10px) scale(0.98);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
       }
       @media (prefers-reduced-motion: reduce) {
-        .translator-message { animation: none; }
+        .translator-message {
+          animation: none;
+        }
       }
       .translator-message.user {
         background: #dff4e8;
@@ -1619,7 +1736,7 @@
         padding: 7px 9px 0;
         border-top: 1px solid #d8e7e2;
         color: #6d7f82;
-        font-size: .76rem;
+        font-size: 0.76rem;
         font-style: italic;
       }
       .translation-feedback-actions {
@@ -1632,7 +1749,7 @@
         border-radius: 999px;
         color: #52736d;
         background: #f4faf8;
-        font-size: .72rem;
+        font-size: 0.72rem;
         font-style: normal;
       }
       .translation-feedback textarea {
@@ -1663,54 +1780,81 @@
         border-color: var(--g);
       }
       .ai-user-card {
-        margin-top: 9px;
+        margin-top: 10px;
         overflow: hidden;
-        border: 1px solid var(--l);
-        border-radius: 14px;
-        background: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.09);
+        border-radius: 16px;
+        background: rgba(19, 31, 50, 0.7);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
       }
       .ai-user-summary {
         display: grid;
         width: 100%;
         grid-template-columns: 42px minmax(0, 1fr) auto;
         align-items: center;
-        gap: 10px;
-        padding: 12px;
+        gap: 12px;
+        padding: 13px 16px;
         border: 0;
-        background: linear-gradient(145deg, #fff, #f1f8f4);
+        background: linear-gradient(
+          145deg,
+          rgba(25, 40, 65, 0.65),
+          rgba(16, 26, 44, 0.75)
+        );
+        color: #f8fafc;
         text-align: left;
         cursor: pointer;
+        transition: background 0.15s ease;
+      }
+      .ai-user-summary:hover {
+        background: linear-gradient(
+          145deg,
+          rgba(32, 50, 80, 0.8),
+          rgba(20, 32, 54, 0.85)
+        );
       }
       .ai-user-summary img {
         width: 42px;
         height: 42px;
         border-radius: 50%;
         object-fit: cover;
-        background: #e5f4eb;
+        background: rgba(59, 130, 246, 0.18);
+        border: 1px solid rgba(255, 255, 255, 0.1);
       }
       .ai-user-summary strong,
       .ai-user-summary small {
         display: block;
         overflow-wrap: anywhere;
       }
+      .ai-user-summary strong {
+        color: #f8fafc;
+        font-size: 0.98rem;
+        font-weight: 600;
+      }
       .ai-user-summary small {
         margin-top: 3px;
-        color: var(--m);
+        color: #94a3b8;
+        font-size: 0.8rem;
       }
       .ai-user-tier {
-        padding: 4px 8px;
+        padding: 4px 9px;
         border-radius: 999px;
-        color: #fff;
-        background: var(--g);
+        color: #60a5fa;
+        background: rgba(59, 130, 246, 0.18);
+        border: 1px solid rgba(59, 130, 246, 0.35);
         font-size: 0.72rem;
         font-weight: 800;
       }
       .ai-user-tier.pro {
-        background: #7b55b8;
+        color: #c084fc;
+        background: rgba(168, 85, 247, 0.2);
+        border: 1px solid rgba(168, 85, 247, 0.4);
       }
       .ai-user-details {
-        padding: 12px;
-        border-top: 1px solid var(--l);
+        padding: 14px 16px;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(12, 20, 34, 0.65);
       }
       .ai-user-actions {
         display: flex;
@@ -1719,11 +1863,24 @@
         margin-top: 10px;
       }
       .ai-summary-card {
-        border: 1px solid var(--l);
-        border-radius: 12px;
-        background: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.09);
+        border-radius: 14px;
+        background: rgba(19, 31, 50, 0.7);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+        padding: 14px 16px;
+        color: #f8fafc;
         cursor: pointer;
         text-align: left;
+        transition:
+          transform 0.18s,
+          border-color 0.18s;
+      }
+      .ai-summary-card:hover {
+        transform: translateY(-2px);
+        border-color: rgba(59, 130, 246, 0.45);
+        background: rgba(26, 42, 68, 0.8);
       }
       .profile-badge-list {
         display: flex;
@@ -1734,21 +1891,30 @@
       .profile-badge-list .achievement {
         display: inline-flex;
         align-items: center;
-        padding: 5px 9px;
-        border: 1px solid #b9dfc9;
+        padding: 5px 10px;
+        border: 1px solid rgba(245, 158, 11, 0.4);
         border-radius: 999px;
-        color: var(--g);
-        background: #eef8f2;
-        font-size: .78rem;
-        font-weight: 800;
+        color: #fbbf24;
+        background: rgba(245, 158, 11, 0.15);
+        font-size: 0.78rem;
+        font-weight: 700;
       }
       .share-achievement {
-        padding: 8px 13px;
-        border: 1px solid var(--g);
+        padding: 8px 14px;
+        border: 1px solid rgba(59, 130, 246, 0.4);
         border-radius: 10px;
-        color: var(--g);
-        background: #f1fbf5;
-        font-weight: 800;
+        color: #60a5fa;
+        background: rgba(59, 130, 246, 0.15);
+        font-weight: 700;
+        cursor: pointer;
+        transition:
+          background 0.15s,
+          border-color 0.15s;
+      }
+      .share-achievement:hover {
+        background: rgba(59, 130, 246, 0.28);
+        border-color: rgba(59, 130, 246, 0.6);
+        color: #93c5fd;
       }
       .ai-limit-controls {
         display: flex;
@@ -1761,7 +1927,7 @@
         display: grid;
         gap: 3px;
         font-size: 0.78rem;
-        color: var(--m);
+        color: #94a3b8;
       }
       .ai-limit-controls input[type="number"] {
         width: 120px;
@@ -1769,23 +1935,52 @@
       .summary-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-        gap: 10px;
+        gap: 12px;
       }
       .summary-grid > div {
-        padding: 12px;
-        border: 1px solid var(--l);
-        border-radius: 12px;
-        background: #fffdf9;
+        padding: 14px 16px;
+        border: 1px solid rgba(255, 255, 255, 0.09);
+        border-radius: 14px;
+        background: rgba(19, 31, 50, 0.7);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+        color: #f8fafc;
       }
       .summary-grid > button {
         min-width: 0;
-        padding: 12px;
-        color: inherit;
+        padding: 14px 16px;
+        color: #f8fafc;
         font: inherit;
+        border: 1px solid rgba(255, 255, 255, 0.09);
+        border-radius: 14px;
+        background: rgba(19, 31, 50, 0.7);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+        cursor: pointer;
+        text-align: left;
+        transition:
+          transform 0.18s,
+          border-color 0.18s;
+      }
+      .summary-grid > button:hover {
+        transform: translateY(-2px);
+        border-color: rgba(59, 130, 246, 0.45);
+        background: rgba(26, 42, 68, 0.8);
+      }
+      .summary-grid b {
+        color: #60a5fa;
+        font-size: 0.95rem;
+        display: block;
+        margin-bottom: 6px;
       }
       .summary-grid p {
         margin-bottom: 0;
         overflow-wrap: anywhere;
+        color: #cbd5e1;
+        line-height: 1.5;
+        font-size: 0.88rem;
       }
       .translator-form {
         display: flex;
@@ -1809,7 +2004,7 @@
       }
       @media (max-width: 600px) {
         .citizenship-summary {
-          grid-template-columns: minmax(0, 1fr) minmax(75px, .8fr) auto;
+          grid-template-columns: minmax(0, 1fr) minmax(75px, 0.8fr) auto;
           gap: 6px;
         }
         .citizenship-summary > div {
@@ -1817,7 +2012,7 @@
         }
         .citizenship-summary .plain {
           padding: 5px 2px;
-          font-size: .8rem;
+          font-size: 0.8rem;
         }
         .summary-grid {
           grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
@@ -1843,16 +2038,67 @@
         max-width: 1080px;
         margin: auto;
       }
-      body.lai-tech-mode { overflow:hidden; }
-      body.lai-tech-mode .bar { display:none; }
-      body.lai-tech-mode main { min-height:100dvh; padding:0; }
-      body.lai-tech-mode #lai-tech.active { position:fixed; inset:0; z-index:30; padding:0; }
-      .lai-tech-page { display:flex; width:100%; max-width:none; height:100dvh; flex-direction:column; margin:0; }
-      .ai-app-header { display:flex; align-items:center; gap:10px; min-height:54px; padding:4px 14px; border-bottom:1px solid #d7e6e1; background:#f8fcfa; }
-      .ai-app-header h1 { margin:1px 0 0; font-size:1.08rem; letter-spacing:-.02em; }
-      .ai-app-header .eyebrow { color:#158a78; font-weight:800; }
-      .ai-menu-toggle { border:0; background:transparent; color:#146f66; font-size:1.5rem; cursor:pointer; padding:8px 10px; }
-      .ai-home-button { margin-left:auto; border:1px solid #b8d8cf; border-radius:999px; background:#fff; color:#146f66; font-size:.78rem; font-weight:800; cursor:pointer; padding:7px 11px; }
+      body.lai-tech-mode {
+        overflow: hidden;
+      }
+      body.lai-tech-mode .bar {
+        display: none;
+      }
+      body.lai-tech-mode main {
+        min-height: 100dvh;
+        padding: 0;
+      }
+      body.lai-tech-mode #lai-tech.active {
+        position: fixed;
+        inset: 0;
+        z-index: 30;
+        padding: 0;
+      }
+      .lai-tech-page {
+        display: flex;
+        width: 100%;
+        max-width: none;
+        height: 100dvh;
+        flex-direction: column;
+        margin: 0;
+      }
+      .ai-app-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-height: 54px;
+        padding: 4px 14px;
+        border-bottom: 1px solid #d7e6e1;
+        background: #f8fcfa;
+      }
+      .ai-app-header h1 {
+        margin: 1px 0 0;
+        font-size: 1.08rem;
+        letter-spacing: -0.02em;
+      }
+      .ai-app-header .eyebrow {
+        color: #158a78;
+        font-weight: 800;
+      }
+      .ai-menu-toggle {
+        border: 0;
+        background: transparent;
+        color: #146f66;
+        font-size: 1.5rem;
+        cursor: pointer;
+        padding: 8px 10px;
+      }
+      .ai-home-button {
+        margin-left: auto;
+        border: 1px solid #b8d8cf;
+        border-radius: 999px;
+        background: #fff;
+        color: #146f66;
+        font-size: 0.78rem;
+        font-weight: 800;
+        cursor: pointer;
+        padding: 7px 11px;
+      }
       .lai-tech-hero {
         position: relative;
         overflow: hidden;
@@ -1889,92 +2135,424 @@
         margin-top: 0;
       }
       #lai-tech-chat {
-        min-height:0; flex:1; margin:0; color:#eef8f6; border:0; border-radius:0; background:radial-gradient(circle at 80% 0%,#254b68 0,transparent 35%),linear-gradient(145deg,#101827,#172f42 48%,#26394e); box-shadow:none; overflow:hidden;
+        min-height: 0;
+        flex: 1;
+        margin: 0;
+        color: #eef8f6;
+        border: 0;
+        border-radius: 0;
+        background:
+          radial-gradient(circle at 80% 0%, #254b68 0, transparent 35%),
+          linear-gradient(145deg, #101827, #172f42 48%, #26394e);
+        box-shadow: none;
+        overflow: hidden;
       }
-      .ai-chat-toolbar { display:flex; justify-content:space-between; gap:16px; align-items:center; padding-bottom:14px; border-bottom:1px solid #ffffff1c; }
-      .ai-chat-toolbar small { display:block; margin-top:3px; }
-      .ai-chat-actions { display:flex; gap:8px; flex-wrap:wrap; }
-      .ai-chat-actions .plain { color:#c9f5eb; }
-      #ai-chat-layout { display:block; height:100%; padding:0; }
-      #ai-conversation-list { position:fixed; inset:0 auto 0 0; z-index:52; display:flex; width:min(340px,88vw); max-height:none; flex-direction:column; gap:6px; overflow-y:auto; padding:24px 16px; background:#132b38; box-shadow:18px 0 45px #07111b66; transform:translateX(-105%); transition:transform .22s ease; }
-      #ai-conversation-list.open { transform:translateX(0); }
-      #ai-conversation-backdrop { position:fixed; inset:0; z-index:51; border:0; background:#07111b99; opacity:0; pointer-events:none; transition:opacity .22s ease; }
-      #ai-conversation-backdrop.open { opacity:1; pointer-events:auto; }
-      .ai-side-heading { color:#9bc9c5; font-size:.78rem; text-transform:uppercase; letter-spacing:.12em; font-weight:800; padding:4px 11px 8px; }
-      .ai-side-action { display:block; width:100%; text-align:left; border:0; border-radius:12px; background:#ffffff0d; color:#e8faf6; padding:12px; margin-bottom:5px; cursor:pointer; font:inherit; }
-      .ai-side-action:hover { background:#ffffff1b; }
-      .ai-history-label { margin-top:18px; border-top:1px solid #ffffff1c; padding-top:18px; }
-      .ai-conversation { position:relative; display:flex; align-items:center; gap:8px; text-align:left; border:1px solid transparent; background:transparent; border-radius:12px; padding:11px; cursor:pointer; color:inherit; width:100%; }
-      .ai-conversation.active { border-color:#52c7b1; background:#205064; }
-      .ai-conversation.active small { color:#b6ddd6; }
-      .ai-conversation-main { min-width:0; flex:1; }
-      .ai-conversation strong,.ai-conversation small { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-      .ai-conversation small { color:#82647f; margin-top:3px; }
-      .ai-conversation-menu { border:0; background:transparent; color:#82647f; font-size:1.2rem; padding:2px 5px; cursor:pointer; }
-      .ai-conversation-popover { position:absolute; right:10px; z-index:3; display:grid; min-width:150px; padding:5px; border:1px solid #47717a; border-radius:10px; background:#183d4c; box-shadow:0 12px 28px #07111b66; }
-      .ai-conversation-popover input { width:230px; margin:2px; padding:8px 9px; border:1px solid #47717a; border-radius:7px; color:#e8faf6; background:#102d3b; }
-      .ai-conversation-popover button { border:0; border-radius:7px; padding:8px 10px; color:#e8faf6; background:transparent; text-align:left; cursor:pointer; }
-      .ai-conversation-popover button:hover { background:#ffffff1b; }
-      .ai-chat-thread { min-width:0; }
+      .ai-chat-toolbar {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        align-items: center;
+        padding-bottom: 14px;
+        border-bottom: 1px solid #ffffff1c;
+      }
+      .ai-chat-toolbar small {
+        display: block;
+        margin-top: 3px;
+      }
+      .ai-chat-actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .ai-chat-actions .plain {
+        color: #c9f5eb;
+      }
+      #ai-chat-layout {
+        display: block;
+        height: 100%;
+        padding: 0;
+      }
+      #ai-conversation-list {
+        position: fixed;
+        inset: 0 auto 0 0;
+        z-index: 52;
+        display: flex;
+        width: min(340px, 88vw);
+        max-height: none;
+        flex-direction: column;
+        gap: 6px;
+        overflow-y: auto;
+        padding: 24px 16px;
+        background: #132b38;
+        box-shadow: 18px 0 45px #07111b66;
+        transform: translateX(-105%);
+        transition: transform 0.22s ease;
+      }
+      #ai-conversation-list.open {
+        transform: translateX(0);
+      }
+      #ai-conversation-backdrop {
+        position: fixed;
+        inset: 0;
+        z-index: 51;
+        border: 0;
+        background: #07111b99;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.22s ease;
+      }
+      #ai-conversation-backdrop.open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .ai-side-heading {
+        color: #9bc9c5;
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        font-weight: 800;
+        padding: 4px 11px 8px;
+      }
+      .ai-side-action {
+        display: block;
+        width: 100%;
+        text-align: left;
+        border: 0;
+        border-radius: 12px;
+        background: #ffffff0d;
+        color: #e8faf6;
+        padding: 12px;
+        margin-bottom: 5px;
+        cursor: pointer;
+        font: inherit;
+      }
+      .ai-side-action:hover {
+        background: #ffffff1b;
+      }
+      .ai-history-label {
+        margin-top: 18px;
+        border-top: 1px solid #ffffff1c;
+        padding-top: 18px;
+      }
+      .ai-conversation {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        text-align: left;
+        border: 1px solid transparent;
+        background: transparent;
+        border-radius: 12px;
+        padding: 11px;
+        cursor: pointer;
+        color: inherit;
+        width: 100%;
+      }
+      .ai-conversation.active {
+        border-color: #52c7b1;
+        background: #205064;
+      }
+      .ai-conversation.active small {
+        color: #b6ddd6;
+      }
+      .ai-conversation-main {
+        min-width: 0;
+        flex: 1;
+      }
+      .ai-conversation strong,
+      .ai-conversation small {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .ai-conversation small {
+        color: #82647f;
+        margin-top: 3px;
+      }
+      .ai-conversation-menu {
+        border: 0;
+        background: transparent;
+        color: #82647f;
+        font-size: 1.2rem;
+        padding: 2px 5px;
+        cursor: pointer;
+      }
+      .ai-conversation-popover {
+        position: absolute;
+        right: 10px;
+        z-index: 3;
+        display: grid;
+        min-width: 150px;
+        padding: 5px;
+        border: 1px solid #47717a;
+        border-radius: 10px;
+        background: #183d4c;
+        box-shadow: 0 12px 28px #07111b66;
+      }
+      .ai-conversation-popover input {
+        width: 230px;
+        margin: 2px;
+        padding: 8px 9px;
+        border: 1px solid #47717a;
+        border-radius: 7px;
+        color: #e8faf6;
+        background: #102d3b;
+      }
+      .ai-conversation-popover button {
+        border: 0;
+        border-radius: 7px;
+        padding: 8px 10px;
+        color: #e8faf6;
+        background: transparent;
+        text-align: left;
+        cursor: pointer;
+      }
+      .ai-conversation-popover button:hover {
+        background: #ffffff1b;
+      }
+      .ai-chat-thread {
+        min-width: 0;
+      }
       #lai-tech-chat .translator-messages {
-        display:flex; flex:1; min-height:0;
-        max-height:none;
-        width:100%;
-        flex-direction:column;
-        margin:0 auto;
+        display: flex;
+        flex: 1;
+        min-height: 0;
+        max-height: none;
+        width: 100%;
+        flex-direction: column;
+        margin: 0 auto;
         padding: 12px 2px;
       }
-      #lai-tech-chat .translator-message { max-width:78%; border-radius:20px; padding:13px 16px; margin:12px 0; box-shadow:0 8px 18px #07111b33; }
-      #lai-tech-chat .translator-message.user { margin-left:auto; background:linear-gradient(135deg,#35b99d,#227c91); color:white; }
-      #lai-tech-chat .translator-message.assistant { background:#f5faf9; color:#18343c; border:1px solid #c7e4df; }
-      #lai-tech-chat .translator-avatar { width:34px; height:34px; display:grid; place-items:center; border-radius:50% !important; background:#d4b277; flex:0 0 34px; }
-      #lai-tech-chat .translator-content { line-height:1.5;         overflow: hidden;
+      #lai-tech-chat .translator-message {
+        max-width: 78%;
+        border-radius: 20px;
+        padding: 13px 16px;
+        margin: 12px 0;
+        box-shadow: 0 8px 18px #07111b33;
+      }
+      #lai-tech-chat .translator-message.user {
+        margin-left: auto;
+        background: linear-gradient(135deg, #35b99d, #227c91);
+        color: white;
+      }
+      #lai-tech-chat .translator-message.assistant {
+        background: #f5faf9;
+        color: #18343c;
+        border: 1px solid #c7e4df;
+      }
+      #lai-tech-chat .translator-avatar {
+        width: 34px;
+        height: 34px;
+        display: grid;
+        place-items: center;
+        border-radius: 50% !important;
+        background: #d4b277;
+        flex: 0 0 34px;
+      }
+      #lai-tech-chat .translator-content {
+        line-height: 1.5;
+        overflow: hidden;
       }
       .translator-avatar img {
         width: 100%;
         height: 100%;
         object-fit: cover;
       }
-      #lai-tech-chat .translator-form { border:1px solid #ffffff33; background:#0d1b2a; border-radius:18px; padding:7px; align-items:end; }
-      #lai-tech-chat .ai-chat-thread { display:flex; height:100%; flex-direction:column; padding:18px 4px; }
-      #lai-tech-chat .translator-form { width:min(900px,100%); margin:12px auto 0; }
-      #lai-tech-chat .translator-form textarea { background:transparent; color:#eef8f6; border:0; outline:0; }
-      #lai-tech-chat .translator-form textarea::placeholder { color:#96afb5; }
-      #lai-tech-chat .translator-form .btn { border-radius:13px; background:#32b692; }
-      #lai-tech-chat .status { color:#a9ccc8; }
+      #lai-tech-chat .translator-form {
+        border: 1px solid #ffffff33;
+        background: #0d1b2a;
+        border-radius: 18px;
+        padding: 7px;
+        align-items: end;
+      }
+      #lai-tech-chat .ai-chat-thread {
+        display: flex;
+        height: 100%;
+        flex-direction: column;
+        padding: 18px 4px;
+      }
+      #lai-tech-chat .translator-form {
+        width: min(900px, 100%);
+        margin: 12px auto 0;
+      }
+      #lai-tech-chat .translator-form textarea {
+        background: transparent;
+        color: #eef8f6;
+        border: 0;
+        outline: 0;
+      }
+      #lai-tech-chat .translator-form textarea::placeholder {
+        color: #96afb5;
+      }
+      #lai-tech-chat .translator-form .btn {
+        border-radius: 13px;
+        background: #32b692;
+      }
+      #lai-tech-chat .status {
+        color: #a9ccc8;
+      }
       /* Locked AI header: page is sized to the visual viewport so the header never scrolls away (incl. mobile keyboard) */
-      body.lai-tech-mode #lai-tech.active { top:var(--ai-top,0); bottom:auto; height:var(--ai-vh,100dvh); overflow:hidden; }
-      .lai-tech-page { height:var(--ai-vh,100dvh); overflow:hidden; }
-      .ai-app-header { position:sticky; top:0; z-index:40; flex:0 0 auto; }
+      body.lai-tech-mode #lai-tech.active {
+        top: var(--ai-top, 0);
+        bottom: auto;
+        height: var(--ai-vh, 100dvh);
+        overflow: hidden;
+      }
+      .lai-tech-page {
+        height: var(--ai-vh, 100dvh);
+        overflow: hidden;
+      }
+      .ai-app-header {
+        position: sticky;
+        top: 0;
+        z-index: 40;
+        flex: 0 0 auto;
+      }
       /* Side menu user card */
-      .ai-side-user { display:flex; align-items:center; gap:12px; margin-bottom:16px; padding:14px 12px; border:1px solid #ffffff1a; border-radius:16px; background:linear-gradient(135deg,#ffffff14,#ffffff05); }
-      .ai-side-user > div { min-width:0; }
-      .ai-side-avatar { display:grid; place-items:center; flex:0 0 44px; width:44px; height:44px; overflow:hidden; border-radius:50%; color:#fff; background:linear-gradient(135deg,#35b99d,#227c91); font-weight:800; font-size:1.1rem; box-shadow:0 0 0 2px #52c7b155; }
-      .ai-side-avatar img { width:100%; height:100%; object-fit:cover; }
-      .ai-side-user small { display:block; color:#9bc9c5; font-size:.75rem; }
-      .ai-side-user strong { display:block; overflow:hidden; color:#f2fbf9; font-size:1rem; text-overflow:ellipsis; white-space:nowrap; }
+      .ai-side-user {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 16px;
+        padding: 14px 12px;
+        border: 1px solid #ffffff1a;
+        border-radius: 16px;
+        background: linear-gradient(135deg, #ffffff14, #ffffff05);
+      }
+      .ai-side-user > div {
+        min-width: 0;
+      }
+      .ai-side-avatar {
+        display: grid;
+        place-items: center;
+        flex: 0 0 44px;
+        width: 44px;
+        height: 44px;
+        overflow: hidden;
+        border-radius: 50%;
+        color: #fff;
+        background: linear-gradient(135deg, #35b99d, #227c91);
+        font-weight: 800;
+        font-size: 1.1rem;
+        box-shadow: 0 0 0 2px #52c7b155;
+      }
+      .ai-side-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .ai-side-user small {
+        display: block;
+        color: #9bc9c5;
+        font-size: 0.75rem;
+      }
+      .ai-side-user strong {
+        display: block;
+        overflow: hidden;
+        color: #f2fbf9;
+        font-size: 1rem;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
       /* Landing (empty conversation) */
-      .ai-welcome, .ai-suggestions { display:none; }
-      #lai-tech-chat.ai-empty .ai-chat-thread { justify-content:center; }
-      #lai-tech-chat.ai-empty .translator-messages, #lai-tech-chat.ai-empty #translator-status { display:none; }
-      #lai-tech-chat.ai-empty .ai-welcome { display:block; width:min(760px,calc(100% - 32px)); margin:0 auto; animation:ai-welcome-in .5s ease both; }
-      .ai-welcome h2 { margin:0; font-size:clamp(2rem,6vw,3.2rem); font-weight:700; line-height:1.1; letter-spacing:-.03em; color:transparent; background:linear-gradient(90deg,#5fe0c3,#7fb8ff 55%,#e7b84b); -webkit-background-clip:text; background-clip:text; }
-      .ai-welcome p { margin:8px 0 0; color:#7f9aa6; font-size:clamp(1.25rem,4vw,1.9rem); font-weight:600; letter-spacing:-.02em; }
-      #lai-tech-chat.ai-empty .translator-form { width:min(760px,calc(100% - 32px)); margin-top:28px; padding:10px; border-radius:24px; box-shadow:0 18px 40px #07111b55; animation:ai-welcome-in .5s .08s ease both; }
-      #lai-tech-chat.ai-empty .ai-suggestions { display:flex; flex-wrap:wrap; gap:10px; width:min(760px,calc(100% - 32px)); margin:16px auto 0; animation:ai-welcome-in .5s .16s ease both; }
-      .ai-suggestion { padding:9px 14px; border:1px solid #ffffff22; border-radius:999px; color:#d7efea; background:#ffffff0d; font:inherit; font-size:.88rem; cursor:pointer; transition:background .15s ease, transform .15s ease; }
-      .ai-suggestion:hover { background:#ffffff1f; transform:translateY(-1px); }
-      @keyframes ai-welcome-in { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:none; } }
+      .ai-welcome,
+      .ai-suggestions {
+        display: none;
+      }
+      #lai-tech-chat.ai-empty .ai-chat-thread {
+        justify-content: center;
+      }
+      #lai-tech-chat.ai-empty .translator-messages,
+      #lai-tech-chat.ai-empty #translator-status {
+        display: none;
+      }
+      #lai-tech-chat.ai-empty .ai-welcome {
+        display: block;
+        width: min(760px, calc(100% - 32px));
+        margin: 0 auto;
+        animation: ai-welcome-in 0.5s ease both;
+      }
+      .ai-welcome h2 {
+        margin: 0;
+        font-size: clamp(2rem, 6vw, 3.2rem);
+        font-weight: 700;
+        line-height: 1.1;
+        letter-spacing: -0.03em;
+        color: transparent;
+        background: linear-gradient(90deg, #5fe0c3, #7fb8ff 55%, #e7b84b);
+        -webkit-background-clip: text;
+        background-clip: text;
+      }
+      .ai-welcome p {
+        margin: 8px 0 0;
+        color: #7f9aa6;
+        font-size: clamp(1.25rem, 4vw, 1.9rem);
+        font-weight: 600;
+        letter-spacing: -0.02em;
+      }
+      #lai-tech-chat.ai-empty .translator-form {
+        width: min(760px, calc(100% - 32px));
+        margin-top: 28px;
+        padding: 10px;
+        border-radius: 24px;
+        box-shadow: 0 18px 40px #07111b55;
+        animation: ai-welcome-in 0.5s 0.08s ease both;
+      }
+      #lai-tech-chat.ai-empty .ai-suggestions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        width: min(760px, calc(100% - 32px));
+        margin: 16px auto 0;
+        animation: ai-welcome-in 0.5s 0.16s ease both;
+      }
+      .ai-suggestion {
+        padding: 9px 14px;
+        border: 1px solid #ffffff22;
+        border-radius: 999px;
+        color: #d7efea;
+        background: #ffffff0d;
+        font: inherit;
+        font-size: 0.88rem;
+        cursor: pointer;
+        transition:
+          background 0.15s ease,
+          transform 0.15s ease;
+      }
+      .ai-suggestion:hover {
+        background: #ffffff1f;
+        transform: translateY(-1px);
+      }
+      @keyframes ai-welcome-in {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
       @media (prefers-reduced-motion: reduce) {
-        #lai-tech-chat.ai-empty .ai-welcome, #lai-tech-chat.ai-empty .translator-form, #lai-tech-chat.ai-empty .ai-suggestions { animation:none; }
+        #lai-tech-chat.ai-empty .ai-welcome,
+        #lai-tech-chat.ai-empty .translator-form,
+        #lai-tech-chat.ai-empty .ai-suggestions {
+          animation: none;
+        }
       }
       .lai-tech-thinking {
         color: #82647f;
         font-style: italic;
       }
       @media (max-width: 600px) {
-        .ai-chat-toolbar { align-items:flex-start; flex-direction:column; }
-        #ai-conversation-list { width:min(320px,90vw); }
+        .ai-chat-toolbar {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+        #ai-conversation-list {
+          width: min(320px, 90vw);
+        }
         .translator-form {
           display: grid;
           grid-template-columns: 1fr auto;
@@ -1982,7 +2560,9 @@
         .lai-tech-hero {
           padding: 22px 18px;
         }
-        .ai-app-header { padding-inline:10px; }
+        .ai-app-header {
+          padding-inline: 10px;
+        }
       }
       .hero h2 {
         max-width: 650px;
@@ -2135,17 +2715,17 @@
         min-height: 44px;
         text-align: left;
         padding: 11px 42px 11px 12px;
-        border: 1px solid #c9ddd2;
-        border-radius: 10px;
-        background: #fff;
-        color: var(--i);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 12px;
+        background: #111a27;
+        color: #f8fafc;
         font-weight: 600;
       }
       .custom-select button::after {
         content: "⌄";
         position: absolute;
         right: 14px;
-        color: var(--g);
+        color: var(--ai-accent);
         font-size: 1.25rem;
       }
       .custom-select ul {
@@ -2159,21 +2739,21 @@
         padding: 6px;
         overflow: auto;
         list-style: none;
-        background: white;
-        border: 1px solid var(--l);
+        background: #111a27;
+        border: 1px solid rgba(255, 255, 255, 0.14);
         border-radius: 12px;
-        box-shadow: 0 14px 30px #17342b2e;
+        box-shadow: 0 16px 36px rgba(0, 0, 0, 0.65);
       }
       .custom-select li {
         padding: 10px;
         border-radius: 8px;
-        color: var(--i);
+        color: #e2e8f0;
         cursor: pointer;
       }
       .custom-select li:hover,
       .custom-select li.selected {
-        background: #e5f4eb;
-        color: #14583f;
+        background: rgba(59, 130, 246, 0.22);
+        color: #93c5fd;
       }
       .custom-select ul.hidden {
         display: none;
@@ -2774,164 +3354,1718 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
     />
     <style>
-      /* ===== LaiTech AI — "Midnight Jade" theme ===== */
-      #lai-tech {
-        --ai-bg: #0a1013;
-        --ai-surface: #10191d;
-        --ai-surface-2: #162328;
-        --ai-surface-3: #1d2d33;
-        --ai-border: #ffffff12;
-        --ai-border-strong: #ffffff24;
-        --ai-text: #e8f1ef;
-        --ai-muted: #8aa29d;
-        --ai-faint: #5f7772;
-        --ai-accent: #34d1a5;
-        --ai-accent-deep: #176b4d;
-        --ai-gold: #e7b84b;
-        --ai-radius: 22px;
-        font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+      /* ===== Modern Electric Azure & Midnight Slate Theme ===== */
+      :root {
+        --ai-bg: #0a0e17;
+        --ai-surface: #101726;
+        --ai-surface-2: #162035;
+        --ai-surface-3: #1e2942;
+        --ai-surface-card: linear-gradient(145deg, #131d2e, #0d1524);
+        --ai-surface-card-hover: linear-gradient(145deg, #18263d, #111a2c);
+        --ai-border: rgba(255, 255, 255, 0.08);
+        --ai-border-strong: rgba(255, 255, 255, 0.16);
+        --ai-text: #f8fafc;
+        --ai-muted: #94a3b8;
+        --ai-faint: #64748b;
+        --ai-accent: #3b82f6;
+        --ai-accent-hover: #60a5fa;
+        --ai-accent-deep: #1d4ed8;
+        --ai-gold: #f59e0b;
+        --ai-radius: 18px;
+        --ai-mesh:
+          radial-gradient(
+            1000px 520px at 50% -12%,
+            rgba(59, 130, 246, 0.15),
+            transparent 70%
+          ),
+          radial-gradient(
+            800px 600px at 100% 100%,
+            rgba(99, 102, 241, 0.09),
+            transparent 65%
+          ),
+          #0a0e17;
+        --g: #3b82f6;
+        --i: #f8fafc;
+        --m: #94a3b8;
+        --l: rgba(255, 255, 255, 0.08);
+        font-family:
+          "Inter",
+          system-ui,
+          -apple-system,
+          "Segoe UI",
+          sans-serif;
         color: var(--ai-text);
         -webkit-font-smoothing: antialiased;
       }
-      #lai-tech button, #lai-tech textarea, #lai-tech input { font-family: inherit; }
-      .lai-tech-page {
-        background:
-          radial-gradient(900px 480px at 50% -12%, #34d1a51c, transparent 65%),
-          radial-gradient(600px 400px at 100% 100%, #e7b84b0d, transparent 60%),
-          var(--ai-bg);
+
+      html,
+      body {
+        background: var(--ai-mesh) fixed !important;
+        background-color: var(--ai-bg) !important;
+        color: var(--ai-text) !important;
+        font-family:
+          "Inter",
+          system-ui,
+          -apple-system,
+          sans-serif !important;
+        -webkit-font-smoothing: antialiased;
       }
-      /* Icons */
-      .ai-ico { width: 20px; height: 20px; flex: 0 0 auto; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-      .ai-logo-mark { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 10px; background: linear-gradient(135deg, #34d1a522, #e7b84b22); box-shadow: inset 0 0 0 1px #ffffff14; }
-      .ai-logo-mark svg { width: 18px; height: 18px; }
-      /* Header */
-      .ai-app-header { gap: 8px; min-height: 60px; padding: 8px 12px; padding-top: max(8px, env(safe-area-inset-top)); border-bottom: 1px solid var(--ai-border); background: #0a1013b8; backdrop-filter: blur(16px) saturate(1.4); -webkit-backdrop-filter: blur(16px) saturate(1.4); }
-      .ai-brand { display: flex; min-width: 0; align-items: center; gap: 10px; }
-      .ai-app-header h1 { margin: 0; overflow: hidden; color: var(--ai-text); font-size: 1.02rem; font-weight: 600; letter-spacing: -.01em; text-overflow: ellipsis; white-space: nowrap; }
-      .ai-beta { flex: 0 0 auto; padding: 3px 8px; border: 1px solid #e7b84b40; border-radius: 999px; color: var(--ai-gold); background: #e7b84b12; font-size: .66rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
-      .ai-icon-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-width: 40px; height: 40px; padding: 0 10px; border: 0; border-radius: 12px; color: var(--ai-muted); background: transparent; cursor: pointer; transition: background .15s ease, color .15s ease; }
-      .ai-icon-btn:hover { color: var(--ai-text); background: #ffffff0f; }
-      .ai-menu-toggle { padding: 0; font-size: 1rem; }
-      .ai-home-button { margin-left: auto; border: 1px solid var(--ai-border); border-radius: 999px; color: var(--ai-muted); background: transparent; font-size: .84rem; font-weight: 500; }
-      .ai-home-button .ai-ico { width: 17px; height: 17px; }
-      /* Consent card */
-      #lai-tech-consent { width: min(520px, calc(100% - 32px)); margin: auto; padding: 28px; border: 1px solid var(--ai-border); border-radius: var(--ai-radius); color: var(--ai-text); background: var(--ai-surface); box-shadow: 0 30px 60px #0000004d; }
-      #lai-tech-consent h2 { font-size: 1.35rem; font-weight: 600; letter-spacing: -.02em; }
-      #lai-tech-consent p { color: #c3d3cf; line-height: 1.6; }
-      #lai-tech-consent .status { color: var(--ai-muted); font-size: .88rem; }
-      #lai-tech-consent .btn { width: 100%; margin-top: 8px; padding: 13px 18px; border-radius: 14px; color: #062019; background: var(--ai-accent); box-shadow: 0 10px 30px #34d1a533; font-weight: 600; }
-      /* Chat surface */
-      #lai-tech-chat { color: var(--ai-text); background: transparent; }
-      #lai-tech-chat .ai-chat-thread { padding: 0 0 max(10px, env(safe-area-inset-bottom)); }
-      #lai-tech-chat .translator-messages { padding: 20px 16px 12px; scroll-behavior: smooth; }
-      #lai-tech-chat .translator-message-row { width: min(760px, 100%); margin: 0 auto; gap: 12px; align-items: flex-start; }
-      #lai-tech-chat .translator-message-row + .translator-message-row { margin-top: 18px; }
-      #lai-tech-chat .translator-message { margin: 0; padding: 0; border: 0; border-radius: 0; box-shadow: none; animation: ai-msg-in .35s cubic-bezier(.2,.7,.2,1) both; }
-      #lai-tech-chat .translator-message::after { display: none; }
-      #lai-tech-chat .translator-message.assistant { max-width: calc(100% - 44px); flex: 1; padding-top: 4px; color: var(--ai-text); background: transparent; }
-      #lai-tech-chat .translator-message.user { max-width: min(80%, 560px); padding: 11px 16px; border-radius: 20px 20px 6px 20px; color: var(--ai-text); background: var(--ai-surface-3); }
-      #lai-tech-chat .translator-message-row.user .translator-avatar { display: none; }
-      #lai-tech-chat .translator-avatar { width: 32px; height: 32px; flex: 0 0 32px; color: var(--ai-text); background: linear-gradient(135deg, #34d1a522, #e7b84b22); box-shadow: inset 0 0 0 1px #ffffff1a; }
-      #lai-tech-chat .translator-avatar svg { width: 17px; height: 17px; }
-      #lai-tech-chat .translator-content { font-size: .98rem; line-height: 1.65; }
-      #lai-tech-chat .translator-content p { margin: 4px 0 0; }
-      #lai-tech-chat .translation-label { display: inline-block; padding: 2px 9px; border-radius: 999px; color: var(--ai-accent); background: #34d1a514; font-size: .68rem; font-weight: 600; letter-spacing: .06em; }
-      @keyframes ai-msg-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-      /* Typing indicator */
-      .ai-typing { display: inline-flex; gap: 5px; align-items: center; height: 24px; }
-      .ai-typing i { width: 7px; height: 7px; border-radius: 50%; background: var(--ai-accent); animation: ai-dot 1.2s infinite ease-in-out; }
-      .ai-typing i:nth-child(2) { animation-delay: .15s; }
-      .ai-typing i:nth-child(3) { animation-delay: .3s; }
-      @keyframes ai-dot { 0%, 80%, 100% { opacity: .25; transform: translateY(0); } 40% { opacity: 1; transform: translateY(-4px); } }
-      #lai-tech-chat .lai-tech-thinking { font-style: normal; }
-      /* Action row under AI replies */
-      .ai-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 2px; margin: 8px 0 0 -8px; }
-      .ai-action { display: inline-flex; align-items: center; gap: 6px; height: 32px; min-width: 32px; justify-content: center; padding: 0 8px; border: 0; border-radius: 9px; color: var(--ai-faint); background: transparent; font-size: .8rem; cursor: pointer; transition: color .15s ease, background .15s ease; }
-      .ai-action .ai-ico { width: 16px; height: 16px; }
-      .ai-action:hover:not(:disabled) { color: var(--ai-text); background: #ffffff0d; }
-      .ai-action.selected { color: var(--ai-accent); }
-      .ai-action:disabled { cursor: default; }
-      .ai-action:disabled:not(.selected) { opacity: .45; }
-      .ai-feedback-note { margin-top: 8px; color: var(--ai-muted); font-size: .82rem; }
-      .ai-feedback-note.ai-correction { display: grid; gap: 8px; padding: 12px; border: 1px solid var(--ai-border); border-radius: 14px; background: var(--ai-surface); }
-      .ai-feedback-note textarea { width: 100%; min-height: 70px; padding: 10px 12px; border: 1px solid var(--ai-border-strong); border-radius: 10px; color: var(--ai-text); background: var(--ai-bg); resize: vertical; outline: 0; }
-      .ai-feedback-note textarea:focus { border-color: #34d1a580; }
-      .ai-feedback-buttons { display: flex; justify-content: flex-end; gap: 8px; }
-      .ai-feedback-buttons button { padding: 8px 14px; border: 0; border-radius: 10px; font-size: .84rem; font-weight: 600; cursor: pointer; }
-      .ai-feedback-buttons .ai-primary { color: #062019; background: var(--ai-accent); }
-      .ai-feedback-buttons .ai-secondary { color: var(--ai-muted); background: transparent; }
-      /* Composer */
-      #lai-tech-chat .translator-form { display: flex; width: min(760px, calc(100% - 24px)); margin: 6px auto 0; padding: 8px 8px 8px 18px; align-items: flex-end; gap: 8px; border: 1px solid var(--ai-border-strong); border-radius: 26px; background: #162328cc; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: 0 12px 34px #00000040; transition: border-color .2s ease, box-shadow .2s ease; }
-      #lai-tech-chat .translator-form:focus-within { border-color: #34d1a566; box-shadow: 0 12px 34px #00000040, 0 0 0 4px #34d1a514; }
-      #lai-tech-chat .translator-form textarea { min-height: 40px; padding: 9px 0; color: var(--ai-text); font-size: 1rem; line-height: 1.45; }
-      #lai-tech-chat .translator-form textarea::placeholder { color: var(--ai-faint); }
-      #lai-tech-chat .translator-form .ai-send { display: grid; place-items: center; width: 40px; height: 40px; padding: 0; border-radius: 50%; color: #062019; background: var(--ai-accent); box-shadow: none; transition: transform .15s ease, opacity .15s ease, background .15s ease; }
-      #lai-tech-chat .translator-form .ai-send:hover { transform: scale(1.05); }
-      #lai-tech-chat .translator-form .ai-send:disabled { color: var(--ai-faint); background: #ffffff10; transform: none; cursor: default; }
-      .ai-disclaimer { margin: 8px auto 0; color: var(--ai-faint); font-size: .72rem; text-align: center; }
-      #lai-tech-chat #translator-status { display: none; }
-      #lai-tech-chat.ai-empty .translator-form { padding: 10px 10px 10px 20px; border-radius: 28px; }
-      #lai-tech-chat.ai-empty .ai-disclaimer { display: none; }
-      /* Landing tweaks */
-      .ai-welcome h2 { font-weight: 600; background: linear-gradient(90deg, #34d1a5, #8fe3c9 45%, #e7b84b); -webkit-background-clip: text; background-clip: text; }
-      .ai-welcome p { color: var(--ai-faint); font-weight: 500; }
-      .ai-suggestion { border-color: var(--ai-border-strong); color: #c3d3cf; background: var(--ai-surface); font-size: .86rem; }
-      .ai-suggestion:hover { border-color: #34d1a555; background: var(--ai-surface-2); }
-      /* Side menu */
-      #ai-conversation-list { padding: max(18px, env(safe-area-inset-top)) 12px 18px; border-right: 1px solid var(--ai-border); background: var(--ai-surface); box-shadow: 24px 0 60px #00000066; }
-      #ai-conversation-backdrop { background: #000000a6; backdrop-filter: blur(2px); }
-      .ai-side-user { border-color: var(--ai-border); background: var(--ai-surface-2); }
-      .ai-side-avatar { color: #062019; background: linear-gradient(135deg, var(--ai-accent), var(--ai-gold)); box-shadow: none; }
-      .ai-side-user small { color: var(--ai-muted); }
-      .ai-side-heading { color: var(--ai-faint); font-size: .7rem; font-weight: 600; letter-spacing: .1em; }
-      .ai-side-action { display: flex; align-items: center; gap: 10px; padding: 11px 12px; border-radius: 12px; color: #c3d3cf; background: transparent; font-size: .92rem; }
-      .ai-side-action:hover { color: var(--ai-text); background: #ffffff0b; }
-      .ai-side-action.ai-side-primary { border: 1px solid var(--ai-border-strong); color: var(--ai-text); background: var(--ai-surface-2); }
-      .ai-side-action .ai-ico { width: 18px; height: 18px; }
-      .ai-history-label { border-top-color: var(--ai-border); }
-      .ai-conversation { padding: 9px 10px; border-radius: 10px; color: #c3d3cf; font-size: .9rem; }
-      .ai-conversation:hover { background: #ffffff09; }
-      .ai-conversation.active { border-color: transparent; color: var(--ai-text); background: var(--ai-surface-3); }
-      .ai-conversation strong { font-weight: 500; }
-      .ai-conversation small, .ai-conversation.active small { color: var(--ai-faint); font-size: .74rem; }
-      .ai-conversation-menu { color: var(--ai-faint); }
-      .ai-conversation-popover { border-color: var(--ai-border-strong); background: var(--ai-surface-2); }
-      .ai-conversation-popover input { border-color: var(--ai-border-strong); background: var(--ai-bg); }
-      #ai-sync-status { padding: 0 10px; color: var(--ai-faint); font-size: .74rem; }
-      /* Thin scrollbars inside the chat */
-      #lai-tech .translator-messages, #ai-conversation-list { scrollbar-width: thin; scrollbar-color: #ffffff1f transparent; }
-      #lai-tech .translator-messages::-webkit-scrollbar, #ai-conversation-list::-webkit-scrollbar { display: block; width: 8px; }
-      #lai-tech .translator-messages::-webkit-scrollbar-thumb, #ai-conversation-list::-webkit-scrollbar-thumb { border-radius: 8px; background: #ffffff1f; }
+      body::before,
+      body::after {
+        display: none !important;
+      }
+
+      /* Locked frosted-glass header */
+      header.bar {
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 60 !important;
+        background: rgba(10, 14, 23, 0.88) !important;
+        backdrop-filter: blur(20px) saturate(1.4) !important;
+        -webkit-backdrop-filter: blur(20px) saturate(1.4) !important;
+        border-bottom: 1px solid var(--ai-border) !important;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.45) !important;
+      }
+      .brand {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 9px !important;
+        color: var(--ai-text) !important;
+        font-weight: 600 !important;
+        font-size: 1.05rem !important;
+        letter-spacing: -0.01em !important;
+      }
+      header.bar .plain {
+        color: var(--ai-muted) !important;
+        border-radius: 10px !important;
+        padding: 6px 10px !important;
+        transition:
+          color 0.15s ease,
+          background 0.15s ease !important;
+      }
+      header.bar .plain:hover {
+        color: var(--ai-text) !important;
+        background: rgba(255, 255, 255, 0.08) !important;
+      }
+      #notifications.notification-button,
+      #notifications.notification-button .ai-ico {
+        color: #f59e0b !important;
+        stroke: #f59e0b !important;
+      }
+      .notification-badge {
+        background: #ef4444 !important;
+        color: #ffffff !important;
+        font-weight: 800 !important;
+        box-shadow: 0 0 0 2px #0a0e17 !important;
+      }
+      .notification-panel {
+        position: fixed !important;
+        right: 12px !important;
+        top: 64px !important;
+        z-index: 50 !important;
+        width: min(380px, calc(100vw - 24px)) !important;
+        max-height: min(540px, calc(100vh - 80px)) !important;
+        overflow-y: auto !important;
+        padding: 16px !important;
+        background: #101726 !important;
+        border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        border-radius: 18px !important;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75) !important;
+        color: #f8fafc !important;
+      }
+      .notification-panel .head {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        margin-bottom: 12px !important;
+        padding-bottom: 10px !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+      }
+      .notification-panel .head b {
+        font-size: 1.05rem !important;
+        color: #f8fafc !important;
+      }
+      .notification-panel .head .plain {
+        color: #3b82f6 !important;
+        font-weight: 600 !important;
+      }
+      .notification-item {
+        width: 100% !important;
+        margin-bottom: 8px !important;
+        padding: 12px 14px !important;
+        text-align: left !important;
+        background: linear-gradient(145deg, #162032, #0d1522) !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        border-radius: 12px !important;
+        color: #f8fafc !important;
+        cursor: pointer !important;
+        transition:
+          transform 0.15s ease,
+          border-color 0.15s ease !important;
+      }
+      .notification-item:hover {
+        border-color: rgba(59, 130, 246, 0.4) !important;
+        transform: translateY(-1px) !important;
+      }
+      .notification-item b {
+        color: #f8fafc !important;
+        font-size: 0.94rem !important;
+      }
+      .notification-item small {
+        color: #94a3b8 !important;
+        font-size: 0.82rem !important;
+        line-height: 1.4 !important;
+        display: block !important;
+        margin-top: 4px !important;
+      }
+
+      /* Drawer / Side menu */
+      .drawer {
+        background: #101726 !important;
+        border: 1px solid var(--ai-border-strong) !important;
+        border-radius: 20px !important;
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7) !important;
+        color: var(--ai-text) !important;
+      }
+      .drawer .user-email {
+        color: var(--ai-text) !important;
+        font-weight: 600 !important;
+        font-size: 0.98rem !important;
+      }
+      .drawer .user-role {
+        background: rgba(59, 130, 246, 0.15) !important;
+        color: #60a5fa !important;
+        border: 1px solid rgba(59, 130, 246, 0.28) !important;
+        font-weight: 600 !important;
+      }
+      .drawer .btn {
+        margin-top: 6px !important;
+        background: var(--ai-surface-2) !important;
+        border: 1px solid var(--ai-border) !important;
+        color: var(--ai-text) !important;
+        font-weight: 500 !important;
+        box-shadow: none !important;
+        transition:
+          background 0.15s,
+          border-color 0.15s,
+          color 0.15s !important;
+      }
+      .drawer .btn:hover {
+        background: var(--ai-surface-3) !important;
+        border-color: var(--ai-border-strong) !important;
+        color: var(--ai-accent-hover) !important;
+        transform: none !important;
+      }
+      .drawer select {
+        background: #0a0e17 !important;
+        color: var(--ai-text) !important;
+        border: 1px solid var(--ai-border-strong) !important;
+        border-radius: 10px !important;
+        padding: 8px 10px !important;
+      }
+      .drawer label {
+        color: var(--ai-muted) !important;
+        font-size: 0.82rem !important;
+      }
+
+      /* Hero section */
+      .hero {
+        background:
+          radial-gradient(
+            circle at 85% 18%,
+            rgba(59, 130, 246, 0.22) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 15% 85%,
+            rgba(99, 102, 241, 0.15) 0%,
+            transparent 45%
+          ),
+          linear-gradient(135deg, #111a2e 0%, #0c1322 100%) !important;
+        border: 1px solid rgba(59, 130, 246, 0.25) !important;
+        box-shadow: 0 24px 50px rgba(0, 0, 0, 0.5) !important;
+        color: var(--ai-text) !important;
+      }
+      .hero::before,
+      .hero::after {
+        display: none !important;
+      }
+      .hero h1,
+      .hero h2 {
+        background: linear-gradient(
+          90deg,
+          #60a5fa,
+          #93c5fd 50%,
+          #f59e0b
+        ) !important;
+        -webkit-background-clip: text !important;
+        background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
+        color: var(--ai-text) !important;
+        font-weight: 700 !important;
+      }
+      .hero p {
+        color: #94a3b8 !important;
+        line-height: 1.6 !important;
+      }
+      .hero .start-learning {
+        background: linear-gradient(135deg, #3b82f6, #2563eb) !important;
+        color: #ffffff !important;
+        font-weight: 600 !important;
+        box-shadow: 0 10px 24px rgba(37, 99, 235, 0.4) !important;
+      }
+      .hero .take-quiz,
+      .hero .practice-action {
+        background: rgba(255, 255, 255, 0.08) !important;
+        border: 1px solid var(--ai-border-strong) !important;
+        color: var(--ai-text) !important;
+        font-weight: 500 !important;
+        box-shadow: none !important;
+      }
+      .hero .take-quiz:hover,
+      .hero .practice-action:hover {
+        background: rgba(255, 255, 255, 0.14) !important;
+        color: var(--ai-accent-hover) !important;
+      }
+
+      /* Glassmorphism Across All Panels, Cards, Grids & Sections */
+      .panel,
+      .card,
+      .cards .card,
+      .home-section,
+      .track-choice-card,
+      .category,
+      .quiz-insight,
+      .top-learners .panel,
+      .top-learners .head,
+      .community-hero,
+      .citizenship-question,
+      .citizenship-setup .panel,
+      .review-section,
+      .learning-dashboard,
+      #usersview .panel,
+      #adminview .panel,
+      #profileview .panel,
+      #auditview .panel,
+      #summary.panel,
+      #qcard.panel,
+      #quiz-lobby.panel,
+      .profile-subpanel,
+      .profile-metric,
+      .profile-activity-item,
+      .profile-achievement,
+      .summary-grid > div,
+      .summary-grid > button,
+      .ai-summary-card,
+      .ai-user-card,
+      .review-row,
+      .card-inline-edit.review-row,
+      .community-row,
+      .community-contributor-row,
+      .top-learners-row,
+      .user-list .user-row,
+      #auditlist .user-row,
+      .practice-face {
+        backdrop-filter: blur(16px) saturate(1.35) !important;
+        -webkit-backdrop-filter: blur(16px) saturate(1.35) !important;
+        background: linear-gradient(
+          145deg,
+          rgba(20, 32, 53, 0.72),
+          rgba(12, 20, 35, 0.82)
+        ) !important;
+        border: 1px solid rgba(255, 255, 255, 0.09) !important;
+        border-radius: var(--ai-radius) !important;
+        color: var(--ai-text) !important;
+        box-shadow:
+          0 16px 40px rgba(0, 0, 0, 0.45),
+          inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+      }
+
+      .card:hover,
+      .cards .card:hover,
+      .category:hover,
+      .track-choice-card:hover,
+      .profile-metric:hover,
+      .ai-summary-card:hover,
+      .summary-grid > button:hover,
+      .ai-user-card:hover {
+        border-color: rgba(59, 130, 246, 0.45) !important;
+        box-shadow:
+          0 20px 48px rgba(0, 0, 0, 0.55),
+          0 0 24px rgba(59, 130, 246, 0.15),
+          inset 0 1px 0 rgba(255, 255, 255, 0.14) !important;
+      }
+
+      /* Specific Profile Glassmorphic Components */
+      .profile-avatar-button {
+        background: rgba(59, 130, 246, 0.18) !important;
+        border: 2px solid rgba(59, 130, 246, 0.4) !important;
+        backdrop-filter: blur(12px) !important;
+        -webkit-backdrop-filter: blur(12px) !important;
+      }
+      .profile-avatar-button span {
+        background: #2563eb !important;
+        border-color: #0b1120 !important;
+        color: #ffffff !important;
+      }
+      .profile-name {
+        color: #f8fafc !important;
+      }
+      .profile-badge-list .achievement {
+        background: rgba(245, 158, 11, 0.18) !important;
+        border: 1px solid rgba(245, 158, 11, 0.4) !important;
+        color: #fbbf24 !important;
+        font-weight: 700 !important;
+      }
+      .share-achievement {
+        background: rgba(59, 130, 246, 0.16) !important;
+        border: 1px solid rgba(59, 130, 246, 0.4) !important;
+        color: #60a5fa !important;
+        font-weight: 700 !important;
+      }
+      .profile-metric {
+        border-radius: 14px !important;
+        padding: 14px 12px !important;
+      }
+      .profile-metric b {
+        color: #60a5fa !important;
+        font-size: 1.35rem !important;
+        font-weight: 700 !important;
+      }
+      .profile-metric span {
+        color: #94a3b8 !important;
+        font-size: 0.74rem !important;
+      }
+      .profile-subpanel {
+        border-radius: 16px !important;
+        padding: 16px !important;
+      }
+      .profile-activity-item,
+      .profile-achievement {
+        border-radius: 12px !important;
+        padding: 10px 12px !important;
+        background: rgba(24, 38, 62, 0.7) !important;
+        border: 1px solid rgba(255, 255, 255, 0.07) !important;
+      }
+      .profile-activity-item b,
+      .profile-achievement b {
+        color: #f8fafc !important;
+      }
+      .profile-activity-item small,
+      .profile-achievement small {
+        color: #94a3b8 !important;
+      }
+      .profile-achievement.locked {
+        background: rgba(14, 21, 35, 0.5) !important;
+        border-color: rgba(255, 255, 255, 0.04) !important;
+        opacity: 0.55 !important;
+      }
+
+      /* AI User & Summary Verification Glassmorphic Components */
+      .ai-user-card {
+        border-radius: 16px !important;
+        overflow: hidden !important;
+        margin-top: 10px !important;
+      }
+      .ai-user-summary {
+        background: linear-gradient(
+          145deg,
+          rgba(24, 38, 62, 0.75),
+          rgba(16, 26, 44, 0.85)
+        ) !important;
+        color: #f8fafc !important;
+        padding: 14px 16px !important;
+        border: none !important;
+      }
+      .ai-user-summary:hover {
+        background: linear-gradient(
+          145deg,
+          rgba(32, 50, 80, 0.9),
+          rgba(22, 34, 56, 0.95)
+        ) !important;
+      }
+      .ai-user-summary img {
+        background: rgba(59, 130, 246, 0.18) !important;
+        border: 1px solid rgba(255, 255, 255, 0.12) !important;
+      }
+      .ai-user-summary strong {
+        color: #f8fafc !important;
+        font-size: 1rem !important;
+      }
+      .ai-user-summary small {
+        color: #94a3b8 !important;
+        font-size: 0.82rem !important;
+      }
+      .ai-user-details {
+        background: rgba(12, 19, 32, 0.7) !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+        padding: 14px 16px !important;
+        color: #cbd5e1 !important;
+      }
+      .ai-limit-controls label {
+        color: #94a3b8 !important;
+      }
+      .ai-summary-card,
+      .summary-grid > div,
+      .summary-grid > button {
+        border-radius: 14px !important;
+        padding: 14px 16px !important;
+      }
+      .summary-grid b,
+      .ai-summary-card b {
+        color: #60a5fa !important;
+        font-size: 0.95rem !important;
+        font-weight: 700 !important;
+        display: block !important;
+        margin-bottom: 6px !important;
+      }
+      .summary-grid p,
+      .ai-summary-card p {
+        color: #cbd5e1 !important;
+        font-size: 0.88rem !important;
+        line-height: 1.5 !important;
+        margin: 0 !important;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      strong,
+      b {
+        color: #f8fafc;
+      }
+      .eyebrow {
+        color: var(--ai-accent) !important;
+        font-weight: 600 !important;
+        letter-spacing: 0.08em !important;
+      }
+      p,
+      small,
+      .status,
+      .label {
+        color: var(--ai-muted);
+      }
+
+      /* Stats & Metrics (fixes white boxes and text overflow on mobile) */
+      .stats .stat,
+      .learning-metrics div {
+        background: #141e30 !important;
+        border: 1px solid var(--ai-border) !important;
+        border-radius: 14px !important;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3) !important;
+        color: var(--ai-muted) !important;
+        min-width: 0 !important;
+        overflow: hidden !important;
+      }
+      .stats .stat b,
+      .learning-metrics b {
+        color: var(--ai-accent-hover) !important;
+        font-size: clamp(1.1rem, 3.8vw, 1.45rem) !important;
+        font-weight: 700 !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+      }
+      .stats .stat b#mode,
+      .stats .stat b#lobby-mode {
+        font-size: clamp(0.88rem, 3.1vw, 1.15rem) !important;
+        letter-spacing: -0.02em !important;
+      }
+      .stats .stat::after {
+        display: none !important;
+      }
       @media (max-width: 600px) {
-        .ai-home-button span { display: none; }
-        .ai-home-button { width: 40px; padding: 0; }
-        #lai-tech-chat .translator-form { display: flex; }
-        #lai-tech-chat .translator-message.user { max-width: 85%; }
+        .stats .stat {
+          padding: 10px 6px !important;
+        }
+        .stats .stat b {
+          font-size: 1.15rem !important;
+        }
+        .stats .stat b#mode,
+        .stats .stat b#lobby-mode {
+          font-size: 0.92rem !important;
+        }
+      }
+
+      /* High-End Track Choice Cards (Cawnnak Menu) */
+      .track-choice {
+        max-width: 680px;
+        margin: 0 auto;
+        padding: 8px 4px;
+      }
+      .track-choice-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 16px !important;
+        margin-top: 22px !important;
+      }
+      .track-choice-card {
+        display: grid !important;
+        grid-template-columns: auto 1fr auto !important;
+        align-items: center !important;
+        gap: 18px !important;
+        padding: 18px 20px !important;
+        border-radius: 20px !important;
+        background: linear-gradient(145deg, #131f33, #0b1322) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45) !important;
+        text-align: left !important;
+        cursor: pointer !important;
+        position: relative !important;
+        overflow: hidden !important;
+        transition:
+          transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1),
+          border-color 0.22s ease,
+          box-shadow 0.22s ease !important;
+      }
+      .track-choice-card:active {
+        transform: scale(0.98) !important;
+      }
+      .track-card-holh:hover {
+        transform: translateY(-3px) !important;
+        border-color: rgba(59, 130, 246, 0.55) !important;
+        box-shadow:
+          0 18px 40px rgba(0, 0, 0, 0.55),
+          0 0 24px rgba(59, 130, 246, 0.2) !important;
+      }
+      .track-card-citizenship:hover {
+        transform: translateY(-3px) !important;
+        border-color: rgba(245, 158, 11, 0.55) !important;
+        box-shadow:
+          0 18px 40px rgba(0, 0, 0, 0.55),
+          0 0 24px rgba(245, 158, 11, 0.2) !important;
+      }
+      .track-card-ai:hover {
+        transform: translateY(-3px) !important;
+        border-color: rgba(56, 189, 248, 0.55) !important;
+        box-shadow:
+          0 18px 40px rgba(0, 0, 0, 0.55),
+          0 0 24px rgba(56, 189, 248, 0.2) !important;
+      }
+      .track-icon-badge {
+        width: 56px !important;
+        height: 56px !important;
+        border-radius: 16px !important;
+        display: grid !important;
+        place-items: center !important;
+        flex-shrink: 0 !important;
+        background: transparent !important;
+        border: none !important;
+      }
+      .track-icon-badge .track-svg {
+        width: 56px;
+        height: 56px;
+        display: block;
+      }
+      .track-card-content {
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 3px;
+      }
+      .track-pill {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 999px;
+        font-size: 0.65rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 2px;
+      }
+      .pill-blue {
+        color: #60a5fa;
+        background: rgba(59, 130, 246, 0.15);
+        border: 1px solid rgba(59, 130, 246, 0.3);
+      }
+      .pill-gold {
+        color: #f59e0b;
+        background: rgba(245, 158, 11, 0.15);
+        border: 1px solid rgba(245, 158, 11, 0.3);
+      }
+      .pill-cyan {
+        color: #38bdf8;
+        background: rgba(56, 189, 248, 0.15);
+        border: 1px solid rgba(56, 189, 248, 0.3);
+      }
+      .track-choice-card strong {
+        font-size: 1.18rem !important;
+        font-weight: 700 !important;
+        color: #ffffff !important;
+        margin: 0 !important;
+        letter-spacing: -0.01em;
+      }
+      .track-choice-card small {
+        color: #94a3b8 !important;
+        font-size: 0.88rem !important;
+        line-height: 1.45 !important;
+        margin: 0 !important;
+      }
+      .track-card-arrow {
+        display: grid;
+        place-items: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        color: var(--ai-muted);
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        flex-shrink: 0;
+        transition:
+          transform 0.2s ease,
+          color 0.2s ease,
+          background 0.2s ease;
+      }
+      .track-card-arrow .ai-ico {
+        width: 17px;
+        height: 17px;
+      }
+      .track-choice-card:hover .track-card-arrow {
+        color: #ffffff;
+        background: rgba(59, 130, 246, 0.25);
+        border-color: rgba(59, 130, 246, 0.4);
+        transform: translateX(4px);
+      }
+      @media (max-width: 600px) {
+        .track-choice-card {
+          padding: 16px 14px !important;
+          gap: 13px !important;
+        }
+        .track-icon-badge {
+          width: 48px !important;
+          height: 48px !important;
+        }
+        .track-icon-badge .track-svg {
+          width: 48px;
+          height: 48px;
+        }
+        .track-choice-card strong {
+          font-size: 1.05rem !important;
+        }
+        .track-choice-card small {
+          font-size: 0.82rem !important;
+        }
+        .track-card-arrow {
+          width: 30px;
+          height: 30px;
+        }
+        .track-card-arrow .ai-ico {
+          width: 14px;
+          height: 14px;
+        }
+      }
+
+      /* Category Tiles */
+      .category {
+        background: var(--ai-surface-card) !important;
+        border: 1px solid var(--ai-border) !important;
+        color: var(--ai-text) !important;
+        border-radius: 16px !important;
+        transition:
+          transform 0.2s ease,
+          border-color 0.2s ease,
+          box-shadow 0.2s ease !important;
+      }
+      .category:hover {
+        transform: translateY(-3px) !important;
+        border-color: rgba(59, 130, 246, 0.45) !important;
+        box-shadow: 0 16px 32px rgba(0, 0, 0, 0.45) !important;
+      }
+      .category b {
+        color: #f8fafc !important;
+        font-size: 1.05rem !important;
+      }
+      .category small {
+        color: var(--ai-muted) !important;
+      }
+      .category-tile .category-delete {
+        background: rgba(239, 68, 68, 0.18) !important;
+        color: #fca5a5 !important;
+        border: 1px solid rgba(239, 68, 68, 0.3) !important;
+      }
+      .category-tile .category-delete:hover {
+        background: rgba(239, 68, 68, 0.32) !important;
+      }
+
+      /* Flashcards & Learn View */
+      .cards .card,
+      .card {
+        background: linear-gradient(145deg, #142033, #0e1726) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        border-radius: 16px !important;
+        color: #f8fafc !important;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45) !important;
+        transition:
+          transform 0.2s ease,
+          border-color 0.2s ease,
+          box-shadow 0.2s ease !important;
+      }
+      .cards .card:hover,
+      .card:hover {
+        border-color: rgba(59, 130, 246, 0.35) !important;
+        box-shadow:
+          0 16px 36px rgba(0, 0, 0, 0.55),
+          0 0 16px rgba(59, 130, 246, 0.12) !important;
+      }
+      .card footer {
+        border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+        padding-top: 10px !important;
+      }
+
+      /* Practice Flip Cards — distinctly elevated and styled */
+      .practice-card {
+        margin: 22px 0 16px;
+      }
+      .practice-face {
+        border-radius: 20px !important;
+        box-shadow:
+          0 24px 50px rgba(0, 0, 0, 0.65),
+          0 0 0 1px rgba(255, 255, 255, 0.08) !important;
+      }
+      .practice-face.practice-front {
+        background: linear-gradient(145deg, #18273d, #0f1929) !important;
+        border: 1.5px solid rgba(96, 165, 250, 0.35) !important;
+        color: #f8fafc !important;
+      }
+      .practice-face.practice-front small {
+        color: #60a5fa !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.12em !important;
+      }
+      .practice-face.practice-front h2 {
+        color: #ffffff !important;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+      }
+      .practice-face.practice-front p {
+        color: #94a3b8 !important;
+      }
+      .practice-face.practice-back {
+        transform: rotateY(180deg);
+        background: linear-gradient(145deg, #222f44, #141d2d) !important;
+        border: 1.5px solid rgba(245, 158, 11, 0.5) !important;
+        color: #f8fafc !important;
+        box-shadow:
+          0 24px 50px rgba(0, 0, 0, 0.65),
+          0 0 20px rgba(245, 158, 11, 0.12) !important;
+      }
+      .practice-face.practice-back small {
+        color: #f59e0b !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.12em !important;
+      }
+      .practice-face.practice-back h2 {
+        color: #fde047 !important;
+        text-shadow: 0 2px 12px rgba(245, 158, 11, 0.25);
+      }
+      .practice-face.practice-back p {
+        color: #cbd5e1 !important;
+      }
+
+      /* Quiz */
+      .quiz-insight {
+        background: var(--ai-surface-card) !important;
+        border: 1px solid var(--ai-border) !important;
+      }
+      .quiz-insight-title {
+        color: #f8fafc !important;
+      }
+      .quiz-history-item,
+      .quiz-rank-item {
+        background: #101726 !important;
+        border: 1px solid var(--ai-border) !important;
+        color: var(--ai-text) !important;
+      }
+      .quiz-history-item b,
+      .quiz-rank-item b {
+        color: var(--ai-accent-hover) !important;
+      }
+      .quiz-rank-item strong {
+        color: #f8fafc !important;
+      }
+      .options button,
+      .option {
+        background: #131c2e !important;
+        border: 1px solid var(--ai-border-strong) !important;
+        border-radius: 12px !important;
+        color: var(--ai-text) !important;
+        padding: 13px 16px !important;
+        font-size: 0.98rem !important;
+        transition:
+          background 0.15s,
+          border-color 0.15s !important;
+      }
+      .options button:hover:not(:disabled) {
+        background: #1a263d !important;
+        border-color: rgba(59, 130, 246, 0.5) !important;
+      }
+      .options button.correct {
+        background: rgba(34, 197, 94, 0.2) !important;
+        border-color: #22c55e !important;
+        color: #86efac !important;
+      }
+      .options button.wrong {
+        background: rgba(239, 68, 68, 0.2) !important;
+        border-color: #ef4444 !important;
+        color: #fca5a5 !important;
+      }
+      #line {
+        background: linear-gradient(
+          90deg,
+          var(--ai-accent),
+          var(--ai-gold)
+        ) !important;
+      }
+      #quiz-progress-wrap {
+        background: #141e30 !important;
+      }
+
+      /* Community */
+      .community-tabs {
+        background: #101726 !important;
+        border: 1px solid var(--ai-border) !important;
+      }
+      .community-tab {
+        color: var(--ai-muted) !important;
+      }
+      .community-tab.active {
+        background: linear-gradient(135deg, #3b82f6, #2563eb) !important;
+        color: #ffffff !important;
+        font-weight: 700 !important;
+      }
+      .community-hero {
+        background: linear-gradient(145deg, #131d2e, #0c1322) !important;
+        border: 1px solid var(--ai-border) !important;
+      }
+      .community-hero.contributors {
+        background: linear-gradient(145deg, #181f33, #0c1322) !important;
+        border: 1px solid var(--ai-border) !important;
+      }
+      .community-trophy {
+        background: linear-gradient(
+          135deg,
+          rgba(245, 158, 11, 0.2),
+          rgba(59, 130, 246, 0.15)
+        ) !important;
+        border: 2px solid var(--ai-gold) !important;
+        color: var(--ai-gold) !important;
+        box-shadow: 0 4px 18px rgba(245, 158, 11, 0.2) !important;
+      }
+      .community-hero h1 {
+        color: #f8fafc !important;
+      }
+      .community-contributor-meta {
+        color: var(--ai-muted) !important;
+      }
+      .community-row,
+      .community-contributor-row,
+      .top-learners-row {
+        background: #101726 !important;
+        border: 1px solid var(--ai-border) !important;
+        border-radius: 12px !important;
+        color: var(--ai-text) !important;
+      }
+
+      /* Inputs, Textareas & Selects (fixes white dropdowns from Image 2) */
+      input:not(#translator-input),
+      select,
+      textarea:not(#translator-input),
+      .search,
+      .custom-select button,
+      .custom-select ul {
+        background: #101726 !important;
+        border: 1px solid var(--ai-border-strong) !important;
+        border-radius: 10px !important;
+        color: var(--ai-text) !important;
+        font-family: inherit !important;
+      }
+      input:not(#translator-input):focus,
+      select:focus,
+      textarea:not(#translator-input):focus,
+      .search:focus,
+      .custom-select button:focus {
+        border-color: var(--ai-accent) !important;
+        outline: 0 !important;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25) !important;
+      }
+      input::placeholder,
+      textarea::placeholder {
+        color: var(--ai-faint) !important;
+      }
+      select option,
+      .custom-select li {
+        background: #101726 !important;
+        color: var(--ai-text) !important;
+      }
+
+      /* Buttons & Actions */
+      .btn {
+        background: linear-gradient(135deg, #3b82f6, #2563eb) !important;
+        color: #ffffff !important;
+        font-weight: 600 !important;
+        border-radius: 12px !important;
+        box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35) !important;
+        transition:
+          transform 0.15s ease,
+          box-shadow 0.15s ease,
+          filter 0.15s ease !important;
+      }
+      .btn:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 10px 26px rgba(59, 130, 246, 0.45) !important;
+        filter: brightness(1.08) !important;
+      }
+      .plain {
+        color: var(--ai-accent-hover) !important;
+        font-weight: 600 !important;
+        cursor: pointer !important;
+        transition: color 0.15s ease !important;
+      }
+      .plain:hover {
+        color: #93c5fd !important;
+      }
+      .install-note {
+        background: rgba(59, 130, 246, 0.15) !important;
+        border: 1px solid rgba(59, 130, 246, 0.3) !important;
+        color: #bfdbfe !important;
+        border-radius: 12px !important;
+      }
+      .splash {
+        color: var(--ai-text) !important;
+      }
+
+      /* ===== AI Chat Section — Clean Layout (restored to previous commit) ===== */
+      .lai-tech-page {
+        display: flex;
+        flex-direction: column;
+        height: calc(100vh - 60px);
+        min-height: 0;
+        background: var(--ai-bg);
+      }
+      .ai-ico {
+        width: 20px;
+        height: 20px;
+        flex: 0 0 auto;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .ai-logo-mark {
+        display: grid;
+        place-items: center;
+        width: 32px;
+        height: 32px;
+        border-radius: 10px;
+        background: linear-gradient(
+          135deg,
+          rgba(59, 130, 246, 0.2),
+          rgba(99, 102, 241, 0.2)
+        );
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+      }
+      .ai-app-header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 60px;
+        padding: 8px 14px;
+        border-bottom: 1px solid var(--ai-border);
+        background: rgba(10, 14, 23, 0.9);
+        backdrop-filter: blur(16px);
+      }
+      .ai-brand {
+        display: flex;
+        min-width: 0;
+        align-items: center;
+        gap: 10px;
+      }
+      .ai-app-header h1 {
+        margin: 0;
+        overflow: hidden;
+        color: var(--ai-text);
+        font-size: 1.05rem;
+        font-weight: 600;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .ai-beta {
+        flex: 0 0 auto;
+        padding: 3px 8px;
+        border: 1px solid rgba(245, 158, 11, 0.4);
+        border-radius: 999px;
+        color: var(--ai-gold);
+        background: rgba(245, 158, 11, 0.12);
+        font-size: 0.66rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      .ai-icon-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        min-width: 40px;
+        height: 40px;
+        padding: 0 10px;
+        border: 0;
+        border-radius: 12px;
+        color: var(--ai-muted);
+        background: transparent;
+        cursor: pointer;
+        transition:
+          background 0.15s ease,
+          color 0.15s ease;
+      }
+      .ai-icon-btn:hover {
+        color: var(--ai-text);
+        background: rgba(255, 255, 255, 0.08);
+      }
+      .ai-home-button {
+        margin-left: auto;
+        border: 1px solid var(--ai-border);
+        border-radius: 999px;
+        color: var(--ai-muted);
+        background: transparent;
+        font-size: 0.84rem;
+        font-weight: 500;
+      }
+      .ai-home-button .ai-ico {
+        width: 17px;
+        height: 17px;
+      }
+
+      /* Consent card */
+      #lai-tech-consent {
+        width: min(520px, calc(100% - 32px));
+        margin: auto;
+        padding: 28px;
+        border: 1px solid var(--ai-border);
+        border-radius: var(--ai-radius);
+        color: var(--ai-text);
+        background: var(--ai-surface);
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+      }
+      #lai-tech-consent h2 {
+        font-size: 1.35rem;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+      }
+      #lai-tech-consent p {
+        color: #cbd5e1;
+        line-height: 1.6;
+      }
+      #lai-tech-consent .status {
+        color: var(--ai-muted);
+        font-size: 0.88rem;
+      }
+      #lai-tech-consent .btn {
+        width: 100%;
+        margin-top: 8px;
+        padding: 13px 18px;
+        border-radius: 14px;
+        font-weight: 600;
+      }
+
+      /* Chat surface (restored from commit 9ead328 "Updated AI chat to look more professional") */
+      #lai-tech-chat {
+        color: var(--ai-text);
+        background: transparent;
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+      }
+      #lai-tech-chat #ai-chat-layout {
+        display: flex;
+        flex: 1;
+        min-height: 0;
+        height: 100%;
+        position: relative;
+      }
+      #lai-tech-chat .ai-chat-thread {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        min-height: 0;
+        height: 100%;
+        padding: 0 0 max(10px, env(safe-area-inset-bottom));
+        overflow: hidden;
+      }
+
+      /* AI Landing / Empty Conversation State */
+      .ai-welcome,
+      .ai-suggestions {
+        display: none;
+      }
+      #lai-tech-chat.ai-empty .ai-chat-thread {
+        justify-content: center;
+      }
+      #lai-tech-chat.ai-empty .translator-messages,
+      #lai-tech-chat.ai-empty #translator-status {
+        display: none;
+      }
+      #lai-tech-chat.ai-empty .ai-welcome {
+        display: block;
+        width: min(760px, calc(100% - 32px));
+        margin: 0 auto;
+        animation: ai-welcome-in 0.5s ease both;
+      }
+      .ai-welcome h2 {
+        margin: 0;
+        font-size: clamp(2rem, 6vw, 3.2rem);
+        font-weight: 700;
+        line-height: 1.1;
+        letter-spacing: -0.03em;
+        color: transparent;
+        background: linear-gradient(90deg, #60a5fa, #93c5fd 45%, #f59e0b);
+        -webkit-background-clip: text;
+        background-clip: text;
+      }
+      .ai-welcome p {
+        margin: 8px 0 0;
+        color: var(--ai-muted);
+        font-size: clamp(1.1rem, 3.5vw, 1.4rem);
+        font-weight: 500;
+      }
+      #lai-tech-chat.ai-empty .translator-form {
+        width: min(760px, calc(100% - 32px));
+        margin-top: 28px;
+        padding: 10px 10px 10px 20px;
+        border-radius: 28px;
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5);
+        animation: ai-welcome-in 0.5s 0.08s ease both;
+      }
+      #lai-tech-chat.ai-empty .ai-suggestions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        width: min(760px, calc(100% - 32px));
+        margin: 16px auto 0;
+        animation: ai-welcome-in 0.5s 0.16s ease both;
+      }
+      .ai-suggestion {
+        padding: 9px 16px;
+        border: 1px solid var(--ai-border-strong);
+        border-radius: 999px;
+        color: #cbd5e1;
+        background: var(--ai-surface);
+        font: inherit;
+        font-size: 0.88rem;
+        cursor: pointer;
+        transition:
+          background 0.15s ease,
+          border-color 0.15s ease,
+          transform 0.15s ease;
+      }
+      .ai-suggestion:hover {
+        border-color: rgba(59, 130, 246, 0.45);
+        background: var(--ai-surface-2);
+        transform: translateY(-1px);
+        color: #ffffff;
+      }
+      @keyframes ai-welcome-in {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+
+      /* Conversation Thread & Bubbles */
+      #lai-tech-chat .translator-messages {
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+        padding: 20px 16px 12px;
+        display: flex;
+        flex-direction: column;
+        scroll-behavior: smooth;
+      }
+      #lai-tech-chat .translator-message-row {
+        width: min(760px, 100%);
+        margin: 0 auto;
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+      }
+      #lai-tech-chat .translator-message-row + .translator-message-row {
+        margin-top: 18px;
+      }
+      #lai-tech-chat .translator-message {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+        animation: ai-msg-in 0.35s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+      }
+      #lai-tech-chat .translator-message::after {
+        display: none;
+      }
+      #lai-tech-chat .translator-message.assistant {
+        max-width: min(85%, 600px) !important;
+        padding: 13px 18px !important;
+        border-radius: 6px 20px 20px 20px !important;
+        color: #f8fafc !important;
+        background: linear-gradient(145deg, #152238, #0e1726) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35) !important;
+      }
+      #lai-tech-chat .translator-message.user {
+        max-width: min(80%, 560px);
+        margin-left: auto;
+        padding: 12px 18px;
+        border-radius: 20px 20px 6px 20px;
+        color: #ffffff;
+        background: linear-gradient(135deg, #3b82f6, #2563eb);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0 4px 16px rgba(37, 99, 235, 0.25);
+      }
+      #lai-tech-chat .translator-message-row.user .translator-avatar {
+        display: none;
+      }
+      #lai-tech-chat .translator-avatar {
+        width: 34px;
+        height: 34px;
+        flex: 0 0 34px;
+        border-radius: 50% !important;
+        overflow: hidden;
+        display: grid;
+        place-items: center;
+        background: transparent;
+      }
+      #lai-tech-chat .translator-avatar img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+        display: block;
+      }
+      #lai-tech-chat .translator-content {
+        font-size: 0.98rem;
+        line-height: 1.65;
+      }
+      #lai-tech-chat .translator-content p {
+        margin: 4px 0 0;
+      }
+      #lai-tech-chat .translation-label {
+        display: inline-block;
+        padding: 2px 10px;
+        border-radius: 999px;
+        color: #60a5fa;
+        background: rgba(59, 130, 246, 0.15);
+        border: 1px solid rgba(59, 130, 246, 0.25);
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+      }
+      @keyframes ai-msg-in {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+
+      /* Composer & Input Reset (no inner border) */
+      #lai-tech-chat .translator-form {
+        display: flex;
+        width: min(760px, calc(100% - 24px));
+        margin: 6px auto 0;
+        padding: 8px 8px 8px 18px;
+        align-items: flex-end;
+        gap: 8px;
+        border: 1px solid var(--ai-border-strong);
+        border-radius: 26px;
+        background: rgba(22, 35, 54, 0.85);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        box-shadow: 0 12px 34px rgba(0, 0, 0, 0.4);
+        transition:
+          border-color 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+      #lai-tech-chat .translator-form:focus-within {
+        border-color: rgba(59, 130, 246, 0.55);
+        box-shadow:
+          0 12px 34px rgba(0, 0, 0, 0.4),
+          0 0 0 4px rgba(59, 130, 246, 0.15);
+      }
+      #lai-tech-chat .translator-form textarea,
+      #translator-input,
+      #translator-input:focus {
+        min-height: 40px !important;
+        padding: 9px 0 !important;
+        color: var(--ai-text) !important;
+        font-size: 1rem !important;
+        line-height: 1.45 !important;
+        background: transparent !important;
+        border: none !important;
+        outline: none !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        width: 100% !important;
+        resize: none !important;
+      }
+      #lai-tech-chat .translator-form textarea::placeholder,
+      #translator-input::placeholder {
+        color: var(--ai-faint);
+      }
+      #lai-tech-chat .translator-form .ai-send {
+        display: grid;
+        place-items: center;
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        border-radius: 50%;
+        color: #ffffff;
+        background: linear-gradient(135deg, #3b82f6, #2563eb);
+        border: 0;
+        box-shadow: none;
+        cursor: pointer;
+        transition:
+          transform 0.15s ease,
+          opacity 0.15s ease,
+          background 0.15s ease;
+        flex-shrink: 0;
+      }
+      #lai-tech-chat .translator-form .ai-send:hover {
+        transform: scale(1.05);
+      }
+      #lai-tech-chat .translator-form .ai-send:disabled {
+        color: var(--ai-faint);
+        background: rgba(255, 255, 255, 0.1);
+        transform: none;
+        cursor: default;
+      }
+      .ai-disclaimer {
+        margin: 8px auto 0;
+        color: var(--ai-faint);
+        font-size: 0.72rem;
+        text-align: center;
+      }
+      #lai-tech-chat #translator-status {
+        display: none;
+      }
+      #lai-tech-chat.ai-empty .ai-disclaimer {
+        display: none;
+      }
+
+      /* Action row inside AI reply bubble */
+      .ai-actions {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px;
+        margin: 10px 0 0 0;
+        padding-top: 8px;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .ai-action {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        height: 28px;
+        min-width: 28px;
+        justify-content: center;
+        padding: 0 10px;
+        border: 0;
+        border-radius: 8px;
+        color: var(--ai-muted);
+        background: rgba(255, 255, 255, 0.06);
+        font-size: 0.8rem;
+        cursor: pointer;
+        transition:
+          color 0.15s ease,
+          background 0.15s ease;
+      }
+      .ai-action .ai-ico {
+        width: 15px;
+        height: 15px;
+      }
+      .ai-action:hover:not(:disabled) {
+        color: #ffffff;
+        background: rgba(255, 255, 255, 0.14);
+      }
+      .ai-action.selected {
+        color: #60a5fa;
+        background: rgba(59, 130, 246, 0.2);
+      }
+      .ai-feedback-note {
+        margin-top: 8px;
+        color: var(--ai-muted);
+        font-size: 0.82rem;
+      }
+      .ai-feedback-note.ai-correction {
+        display: grid;
+        gap: 8px;
+        padding: 12px;
+        border: 1px solid var(--ai-border);
+        border-radius: 14px;
+        background: var(--ai-surface);
+      }
+      .ai-feedback-note textarea {
+        width: 100%;
+        min-height: 70px;
+        padding: 10px 12px;
+        border: 1px solid var(--ai-border-strong);
+        border-radius: 10px;
+        color: var(--ai-text);
+        background: var(--ai-bg);
+        resize: vertical;
+        outline: 0;
+      }
+      .ai-feedback-buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+      }
+      .ai-feedback-buttons button {
+        padding: 8px 14px;
+        border: 0;
+        border-radius: 10px;
+        font-size: 0.84rem;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .ai-feedback-buttons .ai-primary {
+        color: #ffffff;
+        background: var(--ai-accent);
+      }
+      .ai-feedback-buttons .ai-secondary {
+        color: var(--ai-muted);
+        background: transparent;
+      }
+
+      /* Side drawer */
+      #ai-conversation-list {
+        padding: max(18px, env(safe-area-inset-top)) 12px 18px;
+        border-right: 1px solid var(--ai-border);
+        background: var(--ai-surface);
+        box-shadow: 24px 0 60px rgba(0, 0, 0, 0.65);
+      }
+      #ai-conversation-backdrop {
+        background: rgba(0, 0, 0, 0.65);
+        backdrop-filter: blur(2px);
+      }
+      .ai-side-user {
+        border-color: var(--ai-border);
+        background: var(--ai-surface-2);
+        border-radius: 14px;
+        padding: 10px 12px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 12px;
+      }
+      .ai-side-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        color: #ffffff;
+        background: linear-gradient(135deg, var(--ai-accent), #6366f1);
+        display: grid;
+        place-items: center;
+        font-weight: 700;
+      }
+      .ai-side-heading {
+        color: var(--ai-faint);
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        margin: 12px 0 6px;
+      }
+      .ai-side-action {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 11px 12px;
+        border-radius: 12px;
+        color: #cbd5e1;
+        background: transparent;
+        font-size: 0.92rem;
+        border: 0;
+        width: 100%;
+        cursor: pointer;
+      }
+      .ai-side-action:hover {
+        color: var(--ai-text);
+        background: rgba(255, 255, 255, 0.08);
+      }
+      .ai-side-action.ai-side-primary {
+        border: 1px solid var(--ai-border-strong);
+        color: var(--ai-text);
+        background: var(--ai-surface-2);
+      }
+      .ai-conversation {
+        padding: 9px 10px;
+        border-radius: 10px;
+        color: #cbd5e1;
+        font-size: 0.9rem;
+      }
+      .ai-conversation:hover {
+        background: rgba(255, 255, 255, 0.08);
+      }
+      .ai-conversation.active {
+        border-color: transparent;
+        color: var(--ai-text);
+        background: var(--ai-surface-3);
+      }
+
+      /* Thin scrollbars inside the chat */
+      #lai-tech .translator-messages,
+      #ai-conversation-list {
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+      }
+      #lai-tech .translator-messages::-webkit-scrollbar,
+      #ai-conversation-list::-webkit-scrollbar {
+        display: block;
+        width: 8px;
+      }
+      #lai-tech .translator-messages::-webkit-scrollbar-thumb,
+      #ai-conversation-list::-webkit-scrollbar-thumb {
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.15);
+      }
+      @media (max-width: 600px) {
+        .ai-home-button span {
+          display: none;
+        }
+        .ai-home-button {
+          width: 40px;
+          padding: 0;
+        }
+        #lai-tech-chat .translator-message.user {
+          max-width: 85%;
+        }
       }
       @media (prefers-reduced-motion: reduce) {
-        #lai-tech-chat .translator-message, .ai-typing i { animation: none; }
+        #lai-tech-chat .translator-message,
+        .ai-typing i {
+          animation: none;
+        }
       }
     </style>
   </head>
   <body>
-    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <svg
+      width="0"
+      height="0"
+      style="position: absolute"
+      aria-hidden="true"
+      focusable="false"
+    >
       <defs>
         <linearGradient id="ai-grad" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0" stop-color="#34d1a5" />
           <stop offset="1" stop-color="#e7b84b" />
         </linearGradient>
-        <symbol id="i-spark" viewBox="0 0 24 24"><path fill="url(#ai-grad)" stroke="none" d="M12 2C12.8 7.6 16.4 11.2 22 12C16.4 12.8 12.8 16.4 12 22C11.2 16.4 7.6 12.8 2 12C7.6 11.2 11.2 7.6 12 2Z" /></symbol>
-        <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10" /></symbol>
-        <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z" /></symbol>
-        <symbol id="i-edit" viewBox="0 0 24 24"><path d="M12 20h9" /><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" /></symbol>
-        <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M5 21h14" /></symbol>
-        <symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7" /></symbol>
-        <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2" /><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1" /></symbol>
-        <symbol id="i-volume" viewBox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4z" /><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13" /></symbol>
-        <symbol id="i-thumbs-up" viewBox="0 0 24 24"><path d="M7 10v11" /><path d="M15 5.9 14 10h5.8a2 2 0 0 1 1.9 2.6l-2.3 7A2 2 0 0 1 17.5 21H4a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h2.8a2 2 0 0 0 1.8-1.1L12 2a3.1 3.1 0 0 1 3 3.9Z" /></symbol>
-        <symbol id="i-thumbs-down" viewBox="0 0 24 24"><g transform="rotate(180 12 12)"><path d="M7 10v11" /><path d="M15 5.9 14 10h5.8a2 2 0 0 1 1.9 2.6l-2.3 7A2 2 0 0 1 17.5 21H4a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h2.8a2 2 0 0 0 1.8-1.1L12 2a3.1 3.1 0 0 1 3 3.9Z" /></g></symbol>
-        <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" /></symbol>
-        <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /><path d="m9 12 2 2 4-4" /></symbol>
+        <symbol id="i-spark" viewBox="0 0 24 24">
+          <path
+            fill="url(#ai-grad)"
+            stroke="none"
+            d="M12 2C12.8 7.6 16.4 11.2 22 12C16.4 12.8 12.8 16.4 12 22C11.2 16.4 7.6 12.8 2 12C7.6 11.2 11.2 7.6 12 2Z"
+          />
+        </symbol>
+        <symbol id="i-menu" viewBox="0 0 24 24">
+          <path d="M4 7h16M4 12h16M4 17h10" />
+        </symbol>
+        <symbol id="i-home" viewBox="0 0 24 24">
+          <path
+            d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"
+          />
+        </symbol>
+        <symbol id="i-edit" viewBox="0 0 24 24">
+          <path d="M12 20h9" />
+          <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" />
+        </symbol>
+        <symbol id="i-download" viewBox="0 0 24 24">
+          <path d="M12 3v12M7 10l5 5 5-5M5 21h14" />
+        </symbol>
+        <symbol id="i-arrow-up" viewBox="0 0 24 24">
+          <path d="M12 19V5M5 12l7-7 7 7" />
+        </symbol>
+        <symbol id="i-copy" viewBox="0 0 24 24">
+          <rect x="9" y="9" width="12" height="12" rx="2" />
+          <path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1" />
+        </symbol>
+        <symbol id="i-volume" viewBox="0 0 24 24">
+          <path d="M11 5 6 9H3v6h3l5 4z" />
+          <path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13" />
+        </symbol>
+        <symbol id="i-thumbs-up" viewBox="0 0 24 24">
+          <path d="M7 10v11" />
+          <path
+            d="M15 5.9 14 10h5.8a2 2 0 0 1 1.9 2.6l-2.3 7A2 2 0 0 1 17.5 21H4a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h2.8a2 2 0 0 0 1.8-1.1L12 2a3.1 3.1 0 0 1 3 3.9Z"
+          />
+        </symbol>
+        <symbol id="i-thumbs-down" viewBox="0 0 24 24">
+          <g transform="rotate(180 12 12)">
+            <path d="M7 10v11" />
+            <path
+              d="M15 5.9 14 10h5.8a2 2 0 0 1 1.9 2.6l-2.3 7A2 2 0 0 1 17.5 21H4a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h2.8a2 2 0 0 0 1.8-1.1L12 2a3.1 3.1 0 0 1 3 3.9Z"
+            />
+          </g>
+        </symbol>
+        <symbol id="i-check" viewBox="0 0 24 24">
+          <path d="M20 6 9 17l-5-5" />
+        </symbol>
+        <symbol id="i-shield" viewBox="0 0 24 24">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          <path d="m9 12 2 2 4-4" />
+        </symbol>
+        <symbol id="i-bell" viewBox="0 0 24 24">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+          <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+        </symbol>
+        <symbol id="i-sun" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="4" />
+          <path
+            d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"
+          />
+        </symbol>
+        <symbol id="i-trophy" viewBox="0 0 24 24">
+          <path
+            d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.45 1-1 1H8c-.55 0-1 .45-1 1v1c0 .55.45 1 1 1h8c.55 0 1-.45 1-1v-1c0-.55-.45-1-1-1h-1c-.55 0-1-.45-1-1v-2.34M18 2H6v7a6 6 0 0 0 12 0V2z"
+          />
+        </symbol>
+        <symbol id="i-clock" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="10" />
+          <polyline points="12 6 12 12 16 14" />
+        </symbol>
+        <symbol id="i-chat" viewBox="0 0 24 24">
+          <path
+            d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+          />
+        </symbol>
+        <symbol id="i-flag" viewBox="0 0 24 24">
+          <path
+            d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1zM4 22v-7"
+          />
+        </symbol>
+        <symbol id="i-folder" viewBox="0 0 24 24">
+          <path
+            d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"
+          />
+        </symbol>
+        <symbol id="i-arrow-right" viewBox="0 0 24 24">
+          <path d="M5 12h14M12 5l7 7-7 7" />
+        </symbol>
+        <symbol id="i-user" viewBox="0 0 24 24">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+          <circle cx="12" cy="7" r="4" />
+        </symbol>
       </defs>
     </svg>
     <div
@@ -2940,8 +5074,13 @@
       role="status"
       aria-label="Loading Mirang Holh Cawnnak"
     >
+      <div class="splash-aurora"></div>
       <div class="splash-inner">
-        <img class="splash-icon" src="./icons/icon.svg" alt="" />
+        <img
+          class="splash-icon"
+          src="./icons/icon.svg"
+          alt="Mirang Holh Cawnnak"
+        />
         <h1>Mirang Holh Cawnnak</h1>
         <p>Learn. Practice. Connect.</p>
         <div class="splash-loader"><i></i></div>
@@ -2949,17 +5088,35 @@
     </div>
     <header class="bar">
       <button class="brand" data-v="home" aria-label="Go to home">
-        <span class="brand-icon">🌐</span>Mirang Holh Cawnnak
+        <span class="brand-icon"
+          ><img
+            src="./icons/icon.svg"
+            alt=""
+            style="
+              width: 18px;
+              height: 18px;
+              border-radius: 4px;
+              display: block;
+            " /></span
+        >Mirang Holh Cawnnak
       </button>
       <div class="header-actions">
-        <button id="lai-tech-home" class="plain hidden" aria-label="Back to home" title="Back to home">⌂</button>
+        <button
+          id="lai-tech-home"
+          class="plain hidden"
+          aria-label="Back to home"
+          title="Back to home"
+        >
+          <svg class="ai-ico"><use href="#i-home" /></svg>
+        </button>
         <button
           id="notifications"
           class="plain notification-button hidden"
           aria-label="New user registrations"
           title="New user registrations"
         >
-          🔔<span id="notification-badge" class="notification-badge hidden"
+          <svg class="ai-ico"><use href="#i-bell" /></svg
+          ><span id="notification-badge" class="notification-badge hidden"
             >0</span
           ></button
         ><button
@@ -2968,7 +5125,7 @@
           aria-label="Open menu"
           aria-expanded="false"
         >
-          ☰
+          <svg class="ai-ico"><use href="#i-menu" /></svg>
         </button>
       </div>
     </header>
@@ -3043,11 +5200,15 @@
               <small class="eyebrow">DAILY PHRASE</small>
               <h2>Learn one useful phrase</h2>
             </div>
-            <span aria-hidden="true">☀️</span>
+            <span aria-hidden="true"
+              ><svg class="ai-ico"><use href="#i-sun" /></svg
+            ></span>
           </div>
           <p id="daily-english" class="daily-english"></p>
           <p id="daily-chin" class="daily-chin"></p>
-          <button id="daily-listen" class="plain">🔊 Listen in English</button>
+          <button id="daily-listen" class="plain">
+            <svg class="ai-ico"><use href="#i-volume" /></svg> Listen in English
+          </button>
         </section>
         <section class="home-section continue-learning">
           <div class="section-heading">
@@ -3055,7 +5216,9 @@
               <small class="eyebrow">KEEP GOING</small>
               <h2>Continue learning</h2>
             </div>
-            <span aria-hidden="true">→</span>
+            <span aria-hidden="true"
+              ><svg class="ai-ico"><use href="#i-arrow-right" /></svg
+            ></span>
           </div>
           <p id="continue-copy" class="status"></p>
           <button id="continue-learning" class="btn">Continue</button>
@@ -3066,7 +5229,15 @@
               <small class="eyebrow">COMMUNITY</small>
               <h2>Top learners</h2>
             </div>
-            <button id="view-leaderboard" class="plain">View more →</button>
+            <button id="view-leaderboard" class="plain">
+              View more
+              <svg
+                class="ai-ico"
+                style="width: 14px; height: 14px; vertical-align: middle"
+              >
+                <use href="#i-arrow-right" />
+              </svg>
+            </button>
           </div>
           <div id="home-leaderboard" class="status">Loading leaderboard…</div>
         </section>
@@ -3080,40 +5251,364 @@
             <p class="status">Choose a course to continue.</p>
           </div>
           <div class="track-choice-grid">
-            <button class="track-choice-card" id="choose-holh" type="button">
-              <span aria-hidden="true">💬</span>
-              <strong>Holh Cawnnak</strong>
-              <small
-                >Learn Chin language phrases and everyday conversation.</small
-              >
-            </button>
             <button
-              class="track-choice-card"
-              id="choose-citizenship"
+              class="track-choice-card track-card-holh"
+              id="choose-holh"
               type="button"
             >
               <span
-                class="us-flag"
-                aria-label="American flag"
-                role="img"
-              ></span>
-              <strong>US Citizenship Cawnnak</strong>
-              <small
-                >Study the 100 civics questions and answers for your
-                state.</small
+                class="track-icon-badge track-badge-holh"
+                aria-hidden="true"
               >
+                <svg
+                  class="track-svg"
+                  viewBox="0 0 56 56"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <defs>
+                    <linearGradient
+                      id="holhBg"
+                      x1="0"
+                      y1="0"
+                      x2="56"
+                      y2="56"
+                      gradientUnits="userSpaceOnUse"
+                    >
+                      <stop stop-color="#1d4ed8" />
+                      <stop offset="1" stop-color="#0284c7" />
+                    </linearGradient>
+                    <linearGradient
+                      id="holhGold"
+                      x1="0"
+                      y1="0"
+                      x2="30"
+                      y2="30"
+                      gradientUnits="userSpaceOnUse"
+                    >
+                      <stop stop-color="#fde047" />
+                      <stop offset="1" stop-color="#f59e0b" />
+                    </linearGradient>
+                    <filter
+                      id="holhShadow"
+                      x="-10%"
+                      y="-10%"
+                      width="120%"
+                      height="130%"
+                    >
+                      <feDropShadow
+                        dx="0"
+                        dy="2"
+                        stdDeviation="2.5"
+                        flood-color="#000"
+                        flood-opacity="0.35"
+                      />
+                    </filter>
+                  </defs>
+                  <rect width="56" height="56" rx="16" fill="url(#holhBg)" />
+                  <rect
+                    x="1"
+                    y="1"
+                    width="54"
+                    height="54"
+                    rx="15"
+                    stroke="rgba(255,255,255,0.2)"
+                    stroke-width="1.5"
+                  />
+                  <g filter="url(#holhShadow)">
+                    <path
+                      d="M12 18C12 14.6863 14.6863 12 18 12H34C37.3137 12 40 14.6863 40 18V28C40 31.3137 37.3137 34 34 34H22L15 39V34H18C14.6863 34 12 31.3137 12 28V18Z"
+                      fill="#ffffff"
+                      fill-opacity="0.95"
+                    />
+                    <path
+                      d="M18 19H34M18 24H28"
+                      stroke="#1d4ed8"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                    />
+                  </g>
+                  <g filter="url(#holhShadow)">
+                    <path
+                      d="M26 26C26 23.7909 27.7909 22 30 22H42C44.2091 22 46 23.7909 46 26V34C46 36.2091 44.2091 38 42 38H40V43L35 38H30C27.7909 38 26 36.2091 26 34V26Z"
+                      fill="url(#holhGold)"
+                    />
+                    <path
+                      d="M31 29H41M31 33H37"
+                      stroke="#78350f"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                    />
+                  </g>
+                </svg>
+              </span>
+              <div class="track-card-content">
+                <span class="track-pill pill-blue">BILINGUAL COURSE</span>
+                <strong>Holh Cawnnak</strong>
+                <small
+                  >Learn Chin language phrases and everyday conversation.</small
+                >
+              </div>
+              <span class="track-card-arrow" aria-hidden="true">
+                <svg class="ai-ico"><use href="#i-arrow-right" /></svg>
+              </span>
             </button>
+
             <button
-              class="track-choice-card"
+              class="track-choice-card track-card-citizenship"
+              id="choose-citizenship"
+              type="button"
+            >
+              <span class="track-icon-badge track-badge-cit" aria-hidden="true">
+                <svg
+                  class="track-svg"
+                  viewBox="0 0 56 56"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <defs>
+                    <linearGradient
+                      id="citBg"
+                      x1="0"
+                      y1="0"
+                      x2="56"
+                      y2="56"
+                      gradientUnits="userSpaceOnUse"
+                    >
+                      <stop stop-color="#1e1b4b" />
+                      <stop offset="0.5" stop-color="#1e3a8a" />
+                      <stop offset="1" stop-color="#0f172a" />
+                    </linearGradient>
+                    <linearGradient
+                      id="citGold"
+                      x1="0"
+                      y1="0"
+                      x2="56"
+                      y2="56"
+                      gradientUnits="userSpaceOnUse"
+                    >
+                      <stop stop-color="#fef08a" />
+                      <stop offset="0.5" stop-color="#f59e0b" />
+                      <stop offset="1" stop-color="#b45309" />
+                    </linearGradient>
+                    <linearGradient
+                      id="citTorch"
+                      x1="0"
+                      y1="0"
+                      x2="0"
+                      y2="24"
+                      gradientUnits="userSpaceOnUse"
+                    >
+                      <stop stop-color="#fef08a" />
+                      <stop offset="0.5" stop-color="#f59e0b" />
+                      <stop offset="1" stop-color="#ef4444" />
+                    </linearGradient>
+                    <filter
+                      id="citShadow"
+                      x="-10%"
+                      y="-10%"
+                      width="120%"
+                      height="130%"
+                    >
+                      <feDropShadow
+                        dx="0"
+                        dy="2.5"
+                        stdDeviation="2.5"
+                        flood-color="#000"
+                        flood-opacity="0.45"
+                      />
+                    </filter>
+                  </defs>
+                  <rect width="56" height="56" rx="16" fill="url(#citBg)" />
+                  <rect
+                    x="1"
+                    y="1"
+                    width="54"
+                    height="54"
+                    rx="15"
+                    stroke="url(#citGold)"
+                    stroke-width="1.5"
+                    stroke-opacity="0.6"
+                  />
+                  <g filter="url(#citShadow)">
+                    <path
+                      d="M14 14C14 14 28 11 28 11C28 11 42 14 42 14C42 27 38 38 28 44C18 38 14 27 14 14Z"
+                      fill="#1e293b"
+                      stroke="url(#citGold)"
+                      stroke-width="2"
+                    />
+                    <path
+                      d="M19 25C19 32 23 38 28 42C33 38 37 32 37 25H19Z"
+                      fill="#ffffff"
+                    />
+                    <path
+                      d="M22 25V39.5M28 25V42M34 25V39.5"
+                      stroke="#dc2626"
+                      stroke-width="2.5"
+                    />
+                    <path
+                      d="M15.5 15C19 14.2 24.5 13 28 13C31.5 13 37 14.2 40.5 15V25H15.5V15Z"
+                      fill="#1d4ed8"
+                    />
+                    <path
+                      d="M28 15.5L29.2 18.5H32.4L29.8 20.3L30.7 23.3L28 21.6L25.3 23.3L26.2 20.3L23.6 18.5H26.8L28 15.5Z"
+                      fill="url(#citGold)"
+                    />
+                    <path
+                      d="M28 24V34M26 34H30"
+                      stroke="url(#citGold)"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                    />
+                    <circle cx="28" cy="23" r="3" fill="url(#citTorch)" />
+                  </g>
+                </svg>
+              </span>
+              <div class="track-card-content">
+                <span class="track-pill pill-gold">100 CIVICS QUESTIONS</span>
+                <strong>US Citizenship Cawnnak</strong>
+                <small
+                  >Study the 100 civics questions and answers for your
+                  state.</small
+                >
+              </div>
+              <span class="track-card-arrow" aria-hidden="true">
+                <svg class="ai-ico"><use href="#i-arrow-right" /></svg>
+              </span>
+            </button>
+
+            <button
+              class="track-choice-card track-card-ai"
               id="choose-lai-tech"
               type="button"
             >
-              <span aria-hidden="true">🤖</span>
-              <strong>Learn from LaiTech AI</strong>
-              <small
-                >Explore Hakha Chin phrases with your friendly AI learning
-                companion.</small
-              >
+              <span class="track-icon-badge track-badge-ai" aria-hidden="true">
+                <svg
+                  class="track-svg"
+                  viewBox="0 0 56 56"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <defs>
+                    <linearGradient
+                      id="aiCardBg"
+                      x1="0"
+                      y1="0"
+                      x2="56"
+                      y2="56"
+                      gradientUnits="userSpaceOnUse"
+                    >
+                      <stop stop-color="#312e81" />
+                      <stop offset="0.6" stop-color="#0f172a" />
+                      <stop offset="1" stop-color="#0e7490" />
+                    </linearGradient>
+                    <linearGradient
+                      id="aiCyanGlow"
+                      x1="0"
+                      y1="0"
+                      x2="56"
+                      y2="56"
+                      gradientUnits="userSpaceOnUse"
+                    >
+                      <stop stop-color="#38bdf8" />
+                      <stop offset="1" stop-color="#818cf8" />
+                    </linearGradient>
+                    <filter
+                      id="aiGlow"
+                      x="-15%"
+                      y="-15%"
+                      width="130%"
+                      height="130%"
+                    >
+                      <feDropShadow
+                        dx="0"
+                        dy="2"
+                        stdDeviation="2.5"
+                        flood-color="#38bdf8"
+                        flood-opacity="0.4"
+                      />
+                    </filter>
+                  </defs>
+                  <rect width="56" height="56" rx="16" fill="url(#aiCardBg)" />
+                  <rect
+                    x="1"
+                    y="1"
+                    width="54"
+                    height="54"
+                    rx="15"
+                    stroke="url(#aiCyanGlow)"
+                    stroke-width="1.5"
+                    stroke-opacity="0.65"
+                  />
+                  <g filter="url(#aiGlow)">
+                    <circle cx="28" cy="13" r="2.5" fill="#38bdf8" />
+                    <line
+                      x1="28"
+                      y1="15.5"
+                      x2="28"
+                      y2="19"
+                      stroke="#38bdf8"
+                      stroke-width="2"
+                    />
+                    <rect
+                      x="14"
+                      y="19"
+                      width="28"
+                      height="23"
+                      rx="8"
+                      fill="#0f172a"
+                      stroke="url(#aiCyanGlow)"
+                      stroke-width="1.8"
+                    />
+                    <rect
+                      x="11"
+                      y="26"
+                      width="3.5"
+                      height="9"
+                      rx="1.5"
+                      fill="#38bdf8"
+                    />
+                    <rect
+                      x="41.5"
+                      y="26"
+                      width="3.5"
+                      height="9"
+                      rx="1.5"
+                      fill="#38bdf8"
+                    />
+                    <rect
+                      x="17.5"
+                      y="23"
+                      width="21"
+                      height="11"
+                      rx="4.5"
+                      fill="#020617"
+                      stroke="#1e293b"
+                      stroke-width="1"
+                    />
+                    <circle cx="22.5" cy="28.5" r="2.5" fill="#38bdf8" />
+                    <circle cx="33.5" cy="28.5" r="2.5" fill="#38bdf8" />
+                    <path
+                      d="M23 37 Q28 40 33 37"
+                      fill="none"
+                      stroke="url(#aiCyanGlow)"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                    />
+                  </g>
+                </svg>
+              </span>
+              <div class="track-card-content">
+                <span class="track-pill pill-cyan">INTERACTIVE AI • BETA</span>
+                <strong>Learn from LaiTech AI</strong>
+                <small
+                  >Explore Hakha Chin phrases with your friendly AI learning
+                  companion.</small
+                >
+              </div>
+              <span class="track-card-arrow" aria-hidden="true">
+                <svg class="ai-ico"><use href="#i-arrow-right" /></svg>
+              </span>
             </button>
           </div>
         </div>
@@ -3121,9 +5616,37 @@
       <section id="lai-tech" class="view">
         <div class="lai-tech-page">
           <div class="ai-app-header">
-            <button id="ai-menu-toggle" class="ai-icon-btn ai-menu-toggle" type="button" aria-label="Open LaiTech AI menu" aria-expanded="false"><svg class="ai-ico" aria-hidden="true"><use href="#i-menu" /></svg></button>
-            <div class="ai-brand"><span class="ai-logo-mark" aria-hidden="true"><svg><use href="#i-spark" /></svg></span><h1 id="lai-tech-title">LaiTech AI</h1><span class="ai-beta">Beta</span><p id="lai-tech-intro" class="hidden"></p></div>
-            <button id="ai-inline-home" class="ai-icon-btn ai-home-button" type="button" aria-label="Back to home" title="Back to home"><svg class="ai-ico" aria-hidden="true"><use href="#i-home" /></svg><span>Home</span></button>
+            <button
+              id="ai-menu-toggle"
+              class="ai-icon-btn ai-menu-toggle"
+              type="button"
+              aria-label="Open LaiTech AI menu"
+              aria-expanded="false"
+            >
+              <svg class="ai-ico" aria-hidden="true">
+                <use href="#i-menu" />
+              </svg>
+            </button>
+            <div class="ai-brand">
+              <span class="ai-logo-mark" aria-hidden="true"
+                ><img
+                  src="./icons/ai-bot.svg"
+                  style="width: 20px; height: 20px; display: block"
+              /></span>
+              <h1 id="lai-tech-title">LaiTech AI</h1>
+              <span class="ai-beta">Beta</span>
+              <p id="lai-tech-intro" class="hidden"></p>
+            </div>
+            <button
+              id="ai-inline-home"
+              class="ai-icon-btn ai-home-button"
+              type="button"
+              aria-label="Back to home"
+              title="Back to home"
+            >
+              <svg class="ai-ico" aria-hidden="true"><use href="#i-home" /></svg
+              ><span>Home</span>
+            </button>
           </div>
           <section id="lai-tech-consent" class="panel">
             <h2>Before you begin</h2>
@@ -3141,47 +5664,106 @@
           </section>
           <section id="lai-tech-chat" class="panel hidden">
             <div id="ai-chat-layout">
-              <aside id="ai-conversation-list" aria-label="Conversation history">
+              <aside
+                id="ai-conversation-list"
+                aria-label="Conversation history"
+              >
                 <div id="ai-side-user" class="ai-side-user">
-                  <span id="ai-side-avatar" class="ai-side-avatar" aria-hidden="true">👤</span>
-                  <div><small>Welcome back,</small><strong id="ai-side-name">Learner</strong></div>
+                  <span
+                    id="ai-side-avatar"
+                    class="ai-side-avatar"
+                    aria-hidden="true"
+                    ><svg class="ai-ico" style="width: 20px; height: 20px">
+                      <use href="#i-user" /></svg
+                  ></span>
+                  <div>
+                    <small>Welcome back,</small
+                    ><strong id="ai-side-name">Learner</strong>
+                  </div>
                 </div>
                 <div class="ai-side-heading">LaiTech AI</div>
-                <button id="ai-new-chat" class="ai-side-action ai-side-primary" type="button"><svg class="ai-ico" aria-hidden="true"><use href="#i-edit" /></svg>New chat</button>
-                <button id="ai-backup-chat" class="ai-side-action" type="button"><svg class="ai-ico" aria-hidden="true"><use href="#i-download" /></svg>Back up chats</button>
+                <button
+                  id="ai-new-chat"
+                  class="ai-side-action ai-side-primary"
+                  type="button"
+                >
+                  <svg class="ai-ico" aria-hidden="true">
+                    <use href="#i-edit" /></svg
+                  >New chat
+                </button>
+                <button
+                  id="ai-backup-chat"
+                  class="ai-side-action"
+                  type="button"
+                >
+                  <svg class="ai-ico" aria-hidden="true">
+                    <use href="#i-download" /></svg
+                  >Back up chats
+                </button>
                 <div class="ai-side-heading ai-history-label">Chat history</div>
-                <small id="ai-sync-status" class="status">Saved on this device</small>
+                <small id="ai-sync-status" class="status"
+                  >Saved on this device</small
+                >
               </aside>
-              <button id="ai-conversation-backdrop" type="button" aria-label="Close chat menu"></button>
+              <button
+                id="ai-conversation-backdrop"
+                type="button"
+                aria-label="Close chat menu"
+              ></button>
               <div class="ai-chat-thread">
-            <div id="ai-welcome" class="ai-welcome">
-              <h2 id="ai-welcome-greeting">Hello there</h2>
-              <p>What would you like to translate today?</p>
-            </div>
-            <div
-              id="translator-messages"
-              class="translator-messages"
-              aria-live="polite"
-            ></div>
-            <form id="translator-form" class="translator-form">
-              <textarea
-                id="translator-input"
-                rows="1"
-                maxlength="10000"
-                placeholder="Type in Hakha Chin or English…"
-                aria-label="Hakha Chin or English phrase"
-                required
-              ></textarea>
-              <button class="btn ai-send" type="submit" aria-label="Send" title="Send" disabled><svg class="ai-ico" aria-hidden="true"><use href="#i-arrow-up" /></svg></button>
-            </form>
-            <p class="ai-disclaimer">LaiTech AI can make mistakes. Please double-check important translations.</p>
-            <div id="ai-suggestions" class="ai-suggestions" aria-label="Suggested phrases">
-              <button type="button" class="ai-suggestion">Good morning, how are you?</button>
-              <button type="button" class="ai-suggestion">Thank you for your help</button>
-              <button type="button" class="ai-suggestion">Where is the nearest hospital?</button>
-              <button type="button" class="ai-suggestion">I am learning English</button>
-            </div>
-            <p id="translator-status" class="status"></p>
+                <div id="ai-welcome" class="ai-welcome">
+                  <h2 id="ai-welcome-greeting">Hello there</h2>
+                  <p>What would you like to translate today?</p>
+                </div>
+                <div
+                  id="translator-messages"
+                  class="translator-messages"
+                  aria-live="polite"
+                ></div>
+                <form id="translator-form" class="translator-form">
+                  <textarea
+                    id="translator-input"
+                    rows="1"
+                    maxlength="10000"
+                    placeholder="Type in Hakha Chin or English…"
+                    aria-label="Hakha Chin or English phrase"
+                    required
+                  ></textarea>
+                  <button
+                    class="btn ai-send"
+                    type="submit"
+                    aria-label="Send"
+                    title="Send"
+                    disabled
+                  >
+                    <svg class="ai-ico" aria-hidden="true">
+                      <use href="#i-arrow-up" />
+                    </svg>
+                  </button>
+                </form>
+                <p class="ai-disclaimer">
+                  LaiTech AI can make mistakes. Please double-check important
+                  translations.
+                </p>
+                <div
+                  id="ai-suggestions"
+                  class="ai-suggestions"
+                  aria-label="Suggested phrases"
+                >
+                  <button type="button" class="ai-suggestion">
+                    Good morning, how are you?
+                  </button>
+                  <button type="button" class="ai-suggestion">
+                    Thank you for your help
+                  </button>
+                  <button type="button" class="ai-suggestion">
+                    Where is the nearest hospital?
+                  </button>
+                  <button type="button" class="ai-suggestion">
+                    I am learning English
+                  </button>
+                </div>
+                <p id="translator-status" class="status"></p>
               </div>
             </div>
           </section>
@@ -3274,7 +5856,9 @@
           </div>
           <section id="community-learners-panel" class="community-panel">
             <div class="community-hero">
-              <span class="community-trophy" aria-hidden="true">🏆</span>
+              <span class="community-trophy" aria-hidden="true"
+                ><svg class="ai-ico"><use href="#i-trophy" /></svg
+              ></span>
               <div>
                 <small class="eyebrow">CURRENT LEADERS</small>
                 <h1>Top learners</h1>
@@ -3293,7 +5877,9 @@
             class="community-panel hidden"
           >
             <div class="community-hero contributors">
-              <span class="community-trophy" aria-hidden="true">🏆</span>
+              <span class="community-trophy" aria-hidden="true"
+                ><svg class="ai-ico"><use href="#i-trophy" /></svg
+              ></span>
               <div>
                 <small class="eyebrow">AI COMMUNITY</small>
                 <h1>Top AI contributors</h1>
@@ -3357,13 +5943,17 @@
             <div class="quiz-insights">
               <section class="quiz-insight">
                 <div class="quiz-insight-title">
-                  <span>🕘</span><b>Recent runs</b>
+                  <span
+                    ><svg class="ai-ico"><use href="#i-clock" /></svg></span
+                  ><b>Recent runs</b>
                 </div>
                 <div id="quiz-history" class="quiz-history">No tests yet.</div>
               </section>
               <section class="quiz-insight">
                 <div class="quiz-insight-title">
-                  <span>🏆</span><b>Top performers</b>
+                  <span
+                    ><svg class="ai-ico"><use href="#i-trophy" /></svg></span
+                  ><b>Top performers</b>
                 </div>
                 <div id="leaderboard" class="quiz-leaderboard">
                   Loading leaderboard…
@@ -3378,8 +5968,14 @@
           <article id="qcard" class="panel hidden">
             <h2 id="question"></h2>
             <p id="quiz-question-translation" class="status"></p>
-            <button id="speak" class="plain">🔊 Listen in English</button>
-            <button id="speak-answer" class="plain">🔊 Listen to answer</button>
+            <button id="speak" class="plain">
+              <svg class="ai-ico"><use href="#i-volume" /></svg> Listen in
+              English
+            </button>
+            <button id="speak-answer" class="plain">
+              <svg class="ai-ico"><use href="#i-volume" /></svg> Listen to
+              answer
+            </button>
             <div id="options" class="options"></div>
             <p id="feedback"></p>
             <button id="next" class="btn" disabled>Next question</button>
@@ -3469,57 +6065,112 @@
               <p class="status">Choose a learning course to edit.</p>
             </div>
             <div class="track-choice-grid">
-              <button id="manage-holh" class="track-choice-card" type="button">
-                <span aria-hidden="true">💬</span>
-                <strong>Holh Cawnnak</strong>
-                <small
-                  >Manage Chin language phrases, translations, and
-                  categories.</small
-                >
-              </button>
               <button
-                id="manage-citizenship"
-                class="track-choice-card"
+                id="manage-holh"
+                class="track-choice-card track-card-holh"
                 type="button"
               >
                 <span
-                  class="us-flag"
-                  aria-label="American flag"
-                  role="img"
+                  class="track-icon-badge track-badge-holh"
+                  aria-hidden="true"
+                  ><svg class="ai-ico"><use href="#i-chat" /></svg
                 ></span>
-                <strong>US Citizenship Cawnnak</strong>
-                <small
-                  >Manage civics questions, answers, and Chin
-                  translations.</small
-                >
+                <div class="track-card-content">
+                  <span class="track-pill pill-blue">PHRASES & TOPICS</span>
+                  <strong>Holh Cawnnak</strong>
+                  <small
+                    >Manage Chin language phrases, translations, and
+                    categories.</small
+                  >
+                </div>
+                <span class="track-card-arrow" aria-hidden="true"
+                  ><svg class="ai-ico"><use href="#i-arrow-right" /></svg
+                ></span>
+              </button>
+              <button
+                id="manage-citizenship"
+                class="track-choice-card track-card-citizenship"
+                type="button"
+              >
+                <span
+                  class="track-icon-badge track-badge-cit"
+                  aria-hidden="true"
+                  ><svg class="ai-ico"><use href="#i-flag" /></svg
+                ></span>
+                <div class="track-card-content">
+                  <span class="track-pill pill-gold">CIVICS & OFFICIALS</span>
+                  <strong>US Citizenship Cawnnak</strong>
+                  <small
+                    >Manage civics questions, answers, and Chin
+                    translations.</small
+                  >
+                </div>
+                <span class="track-card-arrow" aria-hidden="true"
+                  ><svg class="ai-ico"><use href="#i-arrow-right" /></svg
+                ></span>
               </button>
               <button
                 id="manage-ai-users"
-                class="track-choice-card"
+                class="track-choice-card track-card-ai"
                 type="button"
               >
-                <span aria-hidden="true">🤖</span>
-                <strong>LaiTech AI users</strong>
-                <small
-                  >Review registered learners using the AI translator.</small
-                >
+                <span class="track-icon-badge track-badge-ai" aria-hidden="true"
+                  ><img
+                    src="./icons/ai-bot.svg"
+                    alt=""
+                    style="
+                      width: 28px;
+                      height: 28px;
+                      border-radius: 6px;
+                      display: block;
+                    "
+                /></span>
+                <div class="track-card-content">
+                  <span class="track-pill pill-cyan">USER DIRECTORY</span>
+                  <strong>LaiTech AI users</strong>
+                  <small
+                    >Review registered learners using the AI translator.</small
+                  >
+                </div>
+                <span class="track-card-arrow" aria-hidden="true"
+                  ><svg class="ai-ico"><use href="#i-arrow-right" /></svg
+                ></span>
               </button>
               <button
                 id="manage-ai-history"
-                class="track-choice-card"
+                class="track-choice-card track-card-ai"
                 type="button"
               >
-                <span aria-hidden="true">🗂️</span>
-                <strong>LaiTech AI chat history</strong>
-                <small
-                  >Review Yes, No, and unanswered translation feedback.</small
-                >
+                <span class="track-icon-badge track-badge-ai" aria-hidden="true"
+                  ><svg class="ai-ico"><use href="#i-folder" /></svg
+                ></span>
+                <div class="track-card-content">
+                  <span class="track-pill pill-cyan">FEEDBACK AUDIT</span>
+                  <strong>LaiTech AI chat history</strong>
+                  <small
+                    >Review Yes, No, and unanswered translation feedback.</small
+                  >
+                </div>
+                <span class="track-card-arrow" aria-hidden="true"
+                  ><svg class="ai-ico"><use href="#i-arrow-right" /></svg
+                ></span>
               </button>
             </div>
           </div>
           <div id="language-admin" class="hidden">
             <button id="admin-track-back" class="plain" type="button">
-              ← Choose another course
+              <svg
+                class="ai-ico"
+                style="
+                  width: 14px;
+                  height: 14px;
+                  vertical-align: middle;
+                  margin-right: 4px;
+                  transform: rotate(180deg);
+                "
+              >
+                <use href="#i-arrow-right" /></svg
+              >Choose another course
             </button>
             <button id="admin-new-category" class="btn" type="button">
               + New category
@@ -5055,6 +7706,7 @@
           : '<option value="">At least 4 quiz phrases required</option>';
         if (lengths.includes(current)) select.value = String(current);
         else if (lengths.length) select.value = String(Math.min(10, total));
+        buildSelect(select);
       }
       function dash() {
         let email = user ? user.email : "Guest learner",
@@ -5112,16 +7764,16 @@
         let s = $("voice-select");
         s.innerHTML = voices.length
           ? voices
-              .map(
-                (v, i) =>
+              .map((v, i) => {
+                let shortName = (v.name || "").split("-")[0].trim();
+                return (
                   '<option value="' +
                   i +
                   '">' +
-                  esc(v.name) +
-                  " (" +
-                  v.lang +
-                  ")</option>",
-              )
+                  esc(shortName || v.name) +
+                  "</option>"
+                );
+              })
               .join("")
           : "<option>No English voice available</option>";
         selectedVoice = voices[0];
@@ -5205,7 +7857,7 @@
               (user?.admin
                 ? '<button class="plain card-edit-top" data-id="' +
                   c.id +
-                  '" aria-label="Edit phrase">✎</button>'
+                  '" aria-label="Edit phrase"><svg class="ai-ico" style="width:15px;height:15px;"><use href="#i-edit"/></svg></button>'
                 : "") +
               "<h3>" +
               esc(c.english) +
@@ -5624,7 +8276,10 @@
           const profileAvatars = new Map(
             profileSnapshot.docs.map((item) => [
               item.id,
-              item.data().avatar || item.data().avatarURL || item.data().photoURL || "",
+              item.data().avatar ||
+                item.data().avatarURL ||
+                item.data().photoURL ||
+                "",
             ]),
           );
           users.forEach((item) => {
@@ -6458,7 +9113,7 @@
         });
       document.head.insertAdjacentHTML(
         "beforeend",
-        "<style>.notification-panel{position:fixed;right:12px;top:64px;z-index:40;width:min(360px,calc(100vw - 24px));padding:16px;background:#fff;border:1px solid var(--l);border-radius:16px;box-shadow:0 16px 42px #0003}.notification-item{width:100%;padding:12px;text-align:left;background:#f0faf4;border:1px solid #ccebd9;border-radius:10px;color:var(--i)}.profile-top{display:flex;align-items:center;gap:18px}.profile-avatar{width:100px;height:100px;border-radius:50%;object-fit:cover;background:#e5f4eb}.achievement{display:inline-flex;align-items:center;gap:8px;padding:7px 11px 7px 7px;border:1px solid #f0d98b;border-radius:14px;background:linear-gradient(135deg,#fff7d8,#ffefb0);color:#5b4300;font-weight:800}.achievement::before{display:grid;width:28px;height:28px;place-items:center;border-radius:50%;background:#f3c94f;box-shadow:inset 0 0 0 2px #ffe89a;content:'🏆';font-size:1rem}</style>",
+        "<style>.notification-panel{position:fixed;right:12px;top:64px;z-index:50;width:min(380px,calc(100vw - 24px));max-height:min(540px,calc(100vh - 80px));overflow-y:auto;padding:16px;background:#101726;border:1px solid rgba(255,255,255,0.12);border-radius:18px;box-shadow:0 20px 50px rgba(0,0,0,0.75);color:#f8fafc}.notification-item{width:100%;margin-bottom:8px;padding:12px 14px;text-align:left;background:linear-gradient(145deg,#162032,#0d1522);border:1px solid rgba(255,255,255,0.08);border-radius:12px;color:#f8fafc}.notification-item b{color:#f8fafc}.notification-item small{color:#94a3b8}.profile-top{display:flex;align-items:center;gap:18px}.profile-avatar{width:100px;height:100px;border-radius:50%;object-fit:cover;background:#162032}.achievement{display:inline-flex;align-items:center;gap:8px;padding:7px 11px 7px 7px;border:1px solid rgba(245,158,11,0.3);border-radius:14px;background:linear-gradient(135deg,#1f293d,#141d2d);color:#f59e0b;font-weight:800}.achievement::before{display:grid;width:28px;height:28px;place-items:center;border-radius:50%;background:#f59e0b;box-shadow:inset 0 0 0 2px #fde047;content:'🏆';font-size:1rem}</style>",
       );
       document
         .querySelector("main")
@@ -6474,7 +9129,7 @@
         );
       document.head.insertAdjacentHTML(
         "beforeend",
-        "<style>.profile-top{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:14px;padding:4px 0 18px;border-bottom:1px solid var(--l)}.profile-avatar-button{position:relative;width:100px;height:100px;padding:0;border:0;border-radius:50%;background:#e5f4eb;cursor:pointer}.profile-avatar-button span{position:absolute;right:-2px;bottom:2px;display:grid;width:31px;height:31px;place-items:center;border:2px solid #fff;border-radius:50%;background:var(--g);font-size:1rem;line-height:1}.profile-avatar-button:hover .profile-avatar{filter:brightness(.86)}.profile-top>div{min-width:0}.profile-identity{min-width:0}.profile-name-row{display:flex;align-items:center;gap:5px;min-width:0}.profile-name{overflow-wrap:anywhere;margin:0}.profile-name-editing{min-width:0;padding:4px 7px;border:1px solid var(--l);border-radius:9px;background:#fff;outline:2px solid #b9dfc9}.profile-edit-name{padding:4px 6px;font-size:1.05rem}.profile-name-editor{display:flex;align-items:center;gap:6px}.profile-name-editor input{min-width:0;width:100%;padding:7px 9px}.profile-name-editor .btn{padding:7px 9px;white-space:nowrap}.profile-top>#profile-message{grid-column:2;margin:0}.profile-top>#share-badge{grid-column:2;justify-self:start}.profile-joined{margin:0 0 16px;color:var(--m);font-size:.86rem}.profile-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:0 0 18px}.profile-metric{padding:13px 10px;border:1px solid var(--l);border-radius:13px;background:linear-gradient(145deg,#fff,#f4fbf7)}.profile-metric b,.profile-metric span{display:block}.profile-metric b{font-size:1.3rem;color:var(--g)}.profile-metric span{margin-top:3px;color:var(--m);font-size:.72rem}.profile-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:18px}.profile-subpanel{padding:14px;border:1px solid var(--l);border-radius:14px;background:#fbfffc}.profile-section-heading{display:flex;align-items:baseline;justify-content:space-between;gap:8px}.profile-section-heading h3{margin:0;font-size:1rem}.profile-section-heading span{color:var(--m);font-size:.72rem}.profile-activity,.profile-achievements{display:grid;gap:8px;margin-top:12px}.profile-activity-item,.profile-achievement{padding:9px 10px;border-radius:10px;background:#eef8f1}.profile-activity-item b,.profile-activity-item small,.profile-achievement b,.profile-achievement small{display:block}.profile-activity-item small,.profile-achievement small{margin-top:2px;color:var(--m);font-size:.74rem}.profile-achievement.locked{background:#f2f4f3;opacity:.72}.profile-edit{margin-top:4px;padding-top:18px;border-top:1px solid var(--l)}.profile-edit-title{margin:0 0 10px;font-size:1rem}@media(max-width:600px){.profile-top{grid-template-columns:72px minmax(0,1fr);gap:10px}.profile-avatar-button{width:72px;height:72px}.profile-avatar{width:72px;height:72px}.profile-avatar-button span{width:27px;height:27px;font-size:.9rem}.profile-metrics{grid-template-columns:repeat(2,1fr)}.profile-columns{grid-template-columns:1fr}.profile-subpanel{padding:12px}.profile-metric{padding:11px 9px}.profile-metric b{font-size:1.15rem}}</style>",
+        "<style>.profile-top{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:14px;padding:4px 0 18px;border-bottom:1px solid rgba(255,255,255,0.08)}.profile-avatar-button{position:relative;width:100px;height:100px;padding:0;border:2px solid rgba(59,130,246,0.3);border-radius:50%;background:rgba(59,130,246,0.15);cursor:pointer}.profile-avatar-button span{position:absolute;right:-2px;bottom:2px;display:grid;width:31px;height:31px;place-items:center;border:2px solid #0a0e17;border-radius:50%;background:#2563eb;color:#fff;font-size:1rem;line-height:1}.profile-avatar-button:hover .profile-avatar{filter:brightness(.86)}.profile-top>div{min-width:0}.profile-identity{min-width:0}.profile-name-row{display:flex;align-items:center;gap:5px;min-width:0}.profile-name{overflow-wrap:anywhere;margin:0;color:#f8fafc}.profile-name-editing{min-width:0;padding:4px 7px;border:1px solid rgba(59,130,246,0.4);border-radius:9px;background:#101726;color:#f8fafc;outline:2px solid rgba(59,130,246,0.5)}.profile-edit-name{padding:4px 6px;font-size:1.05rem;color:#60a5fa}.profile-name-editor{display:flex;align-items:center;gap:6px}.profile-name-editor input{min-width:0;width:100%;padding:7px 9px;background:#101726;color:#f8fafc;border:1px solid rgba(255,255,255,0.14)}.profile-name-editor .btn{padding:7px 9px;white-space:nowrap}.profile-top>#profile-message{grid-column:2;margin:0}.profile-top>#share-badge{grid-column:2;justify-self:start}.profile-joined{margin:0 0 16px;color:#94a3b8;font-size:.86rem}.profile-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:0 0 18px}.profile-metric{padding:14px 12px;border:1px solid rgba(255,255,255,0.08);border-radius:14px;background:rgba(19,31,50,0.65);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 8px 24px rgba(0,0,0,0.35);transition:transform .18s,border-color .18s}.profile-metric:hover{transform:translateY(-2px);border-color:rgba(59,130,246,0.35)}.profile-metric b,.profile-metric span{display:block}.profile-metric b{font-size:1.35rem;color:#60a5fa;font-weight:700}.profile-metric span{margin-top:4px;color:#94a3b8;font-size:.74rem}.profile-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:18px}.profile-subpanel{padding:16px;border:1px solid rgba(255,255,255,0.08);border-radius:16px;background:rgba(19,31,50,0.6);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 10px 28px rgba(0,0,0,0.35)}.profile-section-heading{display:flex;align-items:baseline;justify-content:space-between;gap:8px}.profile-section-heading h3{margin:0;font-size:1.02rem;color:#f8fafc}.profile-section-heading span{color:#94a3b8;font-size:.74rem}.profile-activity,.profile-achievements{display:grid;gap:8px;margin-top:12px}.profile-activity-item,.profile-achievement{padding:10px 12px;border-radius:12px;background:rgba(23,36,58,0.7);border:1px solid rgba(255,255,255,0.06);color:#f8fafc}.profile-activity-item b,.profile-activity-item small,.profile-achievement b,.profile-achievement small{display:block}.profile-activity-item b,.profile-achievement b{color:#f8fafc}.profile-activity-item small,.profile-achievement small{margin-top:2px;color:#94a3b8;font-size:.74rem}.profile-achievement.locked{background:rgba(15,22,35,0.45);border-color:rgba(255,255,255,0.04);opacity:.6}.profile-achievement.locked b{color:#64748b}.profile-edit{margin-top:4px;padding-top:18px;border-top:1px solid rgba(255,255,255,0.08)}.profile-edit-title{margin:0 0 10px;font-size:1rem;color:#f8fafc}@media(max-width:600px){.profile-top{grid-template-columns:72px minmax(0,1fr);gap:10px}.profile-avatar-button{width:72px;height:72px}.profile-avatar{width:72px;height:72px}.profile-avatar-button span{width:27px;height:27px;font-size:.9rem}.profile-metrics{grid-template-columns:repeat(2,1fr)}.profile-columns{grid-template-columns:1fr}.profile-subpanel{padding:12px}.profile-metric{padding:11px 9px}.profile-metric b{font-size:1.15rem}}</style>",
       );
       document.body.insertAdjacentHTML(
         "beforeend",
@@ -6487,7 +9142,8 @@
       $("share-badge").onclick = async (event) => {
         event.preventDefault();
         try {
-          const achievements = await import("./achievements.js?v=20261005-preview");
+          const achievements =
+            await import("./achievements.js?v=20261005-preview");
           achievements.showAchievements();
         } catch (error) {
           $("profile-message").textContent =
@@ -7212,7 +9868,7 @@
         });
       document.head.insertAdjacentHTML(
         "beforeend",
-        "<style>.user-list .user-row{display:grid;grid-template-columns:42px minmax(0,1fr) auto;align-items:center;gap:12px;padding:12px 0}.user-list .avatar{width:42px;height:42px;border-radius:50%;object-fit:cover;background:#e5f4eb}.user-list .user-meta{min-width:0}.user-list .user-meta b{font-size:.94rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.user-list .user-meta small{margin-top:3px;font-size:.78rem}.user-list .role-pill{margin-top:6px}.user-list .user-row>.btn,.user-list .user-row>.status{justify-self:end}@media(max-width:600px){.user-list .user-row{grid-template-columns:38px minmax(0,1fr);gap:5px 9px;align-items:start}.user-list .avatar{width:38px;height:38px}.user-list .avatar+.user-meta{grid-column:2}.user-list .user-meta{display:flex;flex-wrap:wrap;align-items:center;column-gap:5px}.user-list .user-meta b,.user-list .user-meta small{flex-basis:100%}.user-list .role-pill,.user-list .user-actions .btn{margin-top:6px;padding:3px 8px;border-radius:99px;font-size:.78rem;font-weight:700;line-height:1.2}.user-list .user-row>.status{grid-column:2;font-size:.7rem;justify-self:end}.user-list .user-actions{justify-self:start;align-items:center}}</style>",
+        "<style>.user-list .user-row{display:grid;grid-template-columns:42px minmax(0,1fr) auto;align-items:center;gap:12px;padding:12px 14px;background:rgba(19,31,50,0.65);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,0.08);border-radius:14px;margin-bottom:8px}.user-list .avatar{width:42px;height:42px;border-radius:50%;object-fit:cover;background:rgba(59,130,246,0.18);border:1px solid rgba(255,255,255,0.1)}.user-list .user-meta{min-width:0}.user-list .user-meta b{font-size:.94rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#f8fafc}.user-list .user-meta small{margin-top:3px;font-size:.78rem;color:#94a3b8}.user-list .role-pill{margin-top:6px;background:rgba(59,130,246,0.15);border:1px solid rgba(59,130,246,0.3);color:#93c5fd}.user-list .user-row>.btn,.user-list .user-row>.status{justify-self:end}@media(max-width:600px){.user-list .user-row{grid-template-columns:38px minmax(0,1fr);gap:5px 9px;align-items:start}.user-list .avatar{width:38px;height:38px}.user-list .avatar+.user-meta{grid-column:2}.user-list .user-meta{display:flex;flex-wrap:wrap;align-items:center;column-gap:5px}.user-list .user-meta b,.user-list .user-meta small{flex-basis:100%}.user-list .role-pill,.user-list .user-actions .btn{margin-top:6px;padding:3px 8px;border-radius:99px;font-size:.78rem;font-weight:700;line-height:1.2}.user-list .user-row>.status{grid-column:2;font-size:.7rem;justify-self:end}.user-list .user-actions{justify-self:start;align-items:center}}</style>",
       );
       document.addEventListener("pointerdown", (event) => {
         let menu = $("menu-drawer"),
@@ -7417,7 +10073,13 @@
         }
       };
       function chatAvatarUrl() {
-        return profileV2.avatar || profileV2.avatarURL || profileV2.photoURL || user?.photoURL || "";
+        return (
+          profileV2.avatar ||
+          profileV2.avatarURL ||
+          profileV2.photoURL ||
+          user?.photoURL ||
+          ""
+        );
       }
       function addTranslatorBubble(kind, text, avatar) {
         const row = document.createElement("div");
@@ -7433,25 +10095,37 @@
           image.alt = "Your profile picture";
           image.onerror = () => {
             image.remove();
-            icon.textContent = avatar;
+            icon.innerHTML =
+              '<svg class="ai-ico" style="width:18px;height:18px;"><use href="#i-user"/></svg>';
           };
           icon.append(image);
         } else {
-          icon.textContent = avatar;
+          icon.innerHTML =
+            '<svg class="ai-ico" style="width:18px;height:18px;"><use href="#i-user"/></svg>';
         }
         const content = document.createElement("div");
         content.className = "translator-content";
         content.textContent = text;
         bubble.append(content);
-        if (kind === "assistant") icon.innerHTML = aiIcon("spark", "");
+        if (kind === "assistant")
+          icon.innerHTML =
+            '<img src="./icons/ai-bot.svg" alt="LaiTech AI" style="width:100%;height:100%;border-radius:50%;object-fit:cover;display:block;">';
         row.append(icon, bubble);
         const list = $("translator-messages");
         list.append(row);
-        requestAnimationFrame(() => list.scrollTo({ top: list.scrollHeight, behavior: "smooth" }));
+        requestAnimationFrame(() =>
+          list.scrollTo({ top: list.scrollHeight, behavior: "smooth" }),
+        );
         return { row, bubble, content };
       }
       function aiIcon(name, className = "ai-ico") {
-        return '<svg class="' + className + '" aria-hidden="true"><use href="#i-' + name + '"/></svg>';
+        return (
+          '<svg class="' +
+          className +
+          '" aria-hidden="true"><use href="#i-' +
+          name +
+          '"/></svg>'
+        );
       }
       function aiActionButton(icon, label, text = "") {
         const button = document.createElement("button");
@@ -7472,8 +10146,13 @@
             await navigator.clipboard.writeText(text);
             copy.innerHTML = aiIcon("check");
             copy.classList.add("selected");
-            setTimeout(() => { copy.innerHTML = aiIcon("copy"); copy.classList.remove("selected"); }, 1600);
-          } catch { copy.title = "Copy failed"; }
+            setTimeout(() => {
+              copy.innerHTML = aiIcon("copy");
+              copy.classList.remove("selected");
+            }, 1600);
+          } catch {
+            copy.title = "Copy failed";
+          }
         };
         const listen = aiActionButton("volume", "Listen");
         listen.onclick = () => speak(text);
@@ -7482,11 +10161,26 @@
         return actions;
       }
       const AI_LOCAL_KEY = "cawnnak-lai-tech-chats-v1";
-      let aiChats = [], activeAiChatId = "";
-      function aiStoreKey() { return user ? AI_LOCAL_KEY + ":" + user.uid : AI_LOCAL_KEY + ":guest"; }
-      function loadAiChats() { try { aiChats = JSON.parse(localStorage.getItem(aiStoreKey()) || "[]").filter(c => c && Array.isArray(c.messages) && c.messages.length); } catch { aiChats = []; } }
-      function saveAiChats() { localStorage.setItem(aiStoreKey(), JSON.stringify(aiChats.slice(-30))); }
-      function currentAiChat() { return aiChats.find(c => c.id === activeAiChatId); }
+      let aiChats = [],
+        activeAiChatId = "";
+      function aiStoreKey() {
+        return user ? AI_LOCAL_KEY + ":" + user.uid : AI_LOCAL_KEY + ":guest";
+      }
+      function loadAiChats() {
+        try {
+          aiChats = JSON.parse(
+            localStorage.getItem(aiStoreKey()) || "[]",
+          ).filter((c) => c && Array.isArray(c.messages) && c.messages.length);
+        } catch {
+          aiChats = [];
+        }
+      }
+      function saveAiChats() {
+        localStorage.setItem(aiStoreKey(), JSON.stringify(aiChats.slice(-30)));
+      }
+      function currentAiChat() {
+        return aiChats.find((c) => c.id === activeAiChatId);
+      }
       function closeAiMenu() {
         $("ai-conversation-list")?.classList.remove("open");
         $("ai-conversation-backdrop")?.classList.remove("open");
@@ -7530,24 +10224,29 @@
         remove.textContent = "Delete";
         remove.onclick = () => {
           if (!confirm("Delete this chat from this device?")) return;
-          aiChats = aiChats.filter(item => item.id !== chat.id);
+          aiChats = aiChats.filter((item) => item.id !== chat.id);
           if (activeAiChatId === chat.id) {
             activeAiChatId = aiChats[aiChats.length - 1]?.id || "";
             if (activeAiChatId) openAiChat(activeAiChatId);
-            else { $("translator-messages").innerHTML = ""; updateAiEmptyState(); }
+            else {
+              $("translator-messages").innerHTML = "";
+              updateAiEmptyState();
+            }
           }
           saveAiChats();
           renderAiConversations();
         };
         menu.append(rename, remove);
-        menu.onclick = event => event.stopPropagation();
+        menu.onclick = (event) => event.stopPropagation();
         row.append(menu);
       }
       function renderAiConversations() {
         const list = $("ai-conversation-list");
         if (!list) return;
-        list.querySelectorAll(".ai-conversation, .ai-history-empty").forEach(item => item.remove());
-        const savedChats = aiChats.filter(chat => chat.messages.length);
+        list
+          .querySelectorAll(".ai-conversation, .ai-history-empty")
+          .forEach((item) => item.remove());
+        const savedChats = aiChats.filter((chat) => chat.messages.length);
         if (!savedChats.length) {
           const empty = document.createElement("p");
           empty.className = "status ai-history-empty";
@@ -7555,26 +10254,43 @@
           list.append(empty);
           return;
         }
-        savedChats.slice().reverse().forEach(chat => {
-          const row = document.createElement("div");
-          row.className = "ai-conversation" + (chat.id === activeAiChatId ? " active" : "");
-          row.innerHTML = "<span class=\"ai-conversation-main\"><strong></strong><small></small></span><button class=\"ai-conversation-menu\" type=\"button\" aria-label=\"Chat options\">⋮</button>";
-          row.querySelector("strong").textContent = chat.title || "New conversation";
-          row.querySelector("small").textContent = new Date(chat.updatedAt).toLocaleDateString();
-          row.onclick = () => { openAiChat(chat.id); closeAiMenu(); };
-          row.querySelector(".ai-conversation-menu").onclick = event => showAiChatMenu(event, chat, row);
-          list.append(row);
-        });
+        savedChats
+          .slice()
+          .reverse()
+          .forEach((chat) => {
+            const row = document.createElement("div");
+            row.className =
+              "ai-conversation" + (chat.id === activeAiChatId ? " active" : "");
+            row.innerHTML =
+              '<span class="ai-conversation-main"><strong></strong><small></small></span><button class="ai-conversation-menu" type="button" aria-label="Chat options">⋮</button>';
+            row.querySelector("strong").textContent =
+              chat.title || "New conversation";
+            row.querySelector("small").textContent = new Date(
+              chat.updatedAt,
+            ).toLocaleDateString();
+            row.onclick = () => {
+              openAiChat(chat.id);
+              closeAiMenu();
+            };
+            row.querySelector(".ai-conversation-menu").onclick = (event) =>
+              showAiChatMenu(event, chat, row);
+            list.append(row);
+          });
       }
       function newAiChat() {
-        const existingEmpty = aiChats.find(c => !c.messages.length);
+        const existingEmpty = aiChats.find((c) => !c.messages.length);
         if (existingEmpty) {
           openAiChat(existingEmpty.id);
           closeAiMenu();
           $("translator-input")?.focus();
           return;
         }
-        const chat = { id: crypto.randomUUID(), title: "New conversation", updatedAt: Date.now(), messages: [] };
+        const chat = {
+          id: crypto.randomUUID(),
+          title: "New conversation",
+          updatedAt: Date.now(),
+          messages: [],
+        };
         aiChats.push(chat);
         activeAiChatId = chat.id;
         saveAiChats();
@@ -7587,8 +10303,8 @@
         const chat = currentAiChat();
         if (!chat) return;
         $("translator-messages").innerHTML = "";
-        chat.messages.forEach(m => {
-          const restored = addTranslatorBubble(m.role, m.text, m.role === "user" ? "👤" : "🤖");
+        chat.messages.forEach((m) => {
+          const restored = addTranslatorBubble(m.role, m.text, "");
           if (m.role === "assistant") addAiActions(restored.content, m.text);
         });
         renderAiConversations();
@@ -7600,28 +10316,91 @@
         $("lai-tech-chat")?.classList.toggle("ai-empty", empty);
         if (empty) {
           const hour = new Date().getHours();
-          const greeting = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
+          const greeting =
+            hour < 12
+              ? "Good morning"
+              : hour < 18
+                ? "Good afternoon"
+                : "Good evening";
           const firstName = aiUserName.split(/\s+/)[0];
-          $("ai-welcome-greeting").textContent = firstName ? greeting + ", " + firstName : "Hello there";
+          $("ai-welcome-greeting").textContent = firstName
+            ? greeting + ", " + firstName
+            : "Hello there";
         }
       }
       function renderAiUserCard() {
         $("ai-side-name").textContent = aiUserName || "Learner";
         const avatar = $("ai-side-avatar");
-        const initial = (aiUserName.trim()[0] || "👤").toUpperCase();
-        avatar.textContent = initial;
+        const trimmed = aiUserName.trim();
+        const initial = trimmed ? trimmed[0].toUpperCase() : "";
+        if (initial) {
+          avatar.textContent = initial;
+        } else {
+          avatar.innerHTML =
+            '<svg class="ai-ico" style="width:20px;height:20px;"><use href="#i-user"/></svg>';
+        }
         const imageUrl = chatAvatarUrl();
         if (imageUrl) {
           const image = document.createElement("img");
           image.src = imageUrl;
           image.alt = "";
-          image.onerror = () => { image.remove(); avatar.textContent = initial; };
+          image.onerror = () => {
+            image.remove();
+            if (initial) {
+              avatar.textContent = initial;
+            } else {
+              avatar.innerHTML =
+                '<svg class="ai-ico" style="width:20px;height:20px;"><use href="#i-user"/></svg>';
+            }
+          };
           avatar.textContent = "";
           avatar.append(image);
         }
       }
-      function recordAiMessage(role,text) { const chat=currentAiChat(); if (!chat) return; chat.messages.push({role,text,at:Date.now()}); chat.updatedAt=Date.now(); if (role==="user" && chat.title==="New conversation") chat.title=text.slice(0,34); saveAiChats(); renderAiConversations(); updateAiEmptyState(); if (user && db) setDoc(doc(db,"users",user.uid),{laiTechLatest:{chatId:chat.id,role,text,updatedAt:chat.updatedAt,unread:role==="assistant"}},{merge:true}).catch(()=>{}); }
-      function exportAiBackup() { const blob=new Blob([JSON.stringify({exportedAt:new Date().toISOString(),conversations:aiChats},null,2)],{type:"application/json"}); const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="laitech-ai-chat-backup.json"; a.click(); URL.revokeObjectURL(a.href); $("ai-sync-status").textContent="Backup downloaded — you can upload it to your Google Drive."; }
+      function recordAiMessage(role, text) {
+        const chat = currentAiChat();
+        if (!chat) return;
+        chat.messages.push({ role, text, at: Date.now() });
+        chat.updatedAt = Date.now();
+        if (role === "user" && chat.title === "New conversation")
+          chat.title = text.slice(0, 34);
+        saveAiChats();
+        renderAiConversations();
+        updateAiEmptyState();
+        if (user && db)
+          setDoc(
+            doc(db, "users", user.uid),
+            {
+              laiTechLatest: {
+                chatId: chat.id,
+                role,
+                text,
+                updatedAt: chat.updatedAt,
+                unread: role === "assistant",
+              },
+            },
+            { merge: true },
+          ).catch(() => {});
+      }
+      function exportAiBackup() {
+        const blob = new Blob(
+          [
+            JSON.stringify(
+              { exportedAt: new Date().toISOString(), conversations: aiChats },
+              null,
+              2,
+            ),
+          ],
+          { type: "application/json" },
+        );
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "laitech-ai-chat-backup.json";
+        a.click();
+        URL.revokeObjectURL(a.href);
+        $("ai-sync-status").textContent =
+          "Backup downloaded — you can upload it to your Google Drive.";
+      }
       async function saveAiFeedback(
         sourceText,
         translatedText,
@@ -7663,7 +10442,13 @@
           up.classList.add("selected");
           up.disabled = down.disabled = true;
           showNote("Thanks — your feedback helps LaiTech AI improve.");
-          saveAiFeedback(sourceText, translatedText, "yes", "", feedbackId).catch(syncFailed);
+          saveAiFeedback(
+            sourceText,
+            translatedText,
+            "yes",
+            "",
+            feedbackId,
+          ).catch(syncFailed);
         };
         down.onclick = () => {
           down.classList.add("selected");
@@ -7696,7 +10481,13 @@
             const correctionText = correction.value.trim();
             if (!correctionText) return;
             showNote("Thank you — your correction was saved for review.");
-            saveAiFeedback(sourceText, translatedText, "no", correctionText, feedbackId).catch(syncFailed);
+            saveAiFeedback(
+              sourceText,
+              translatedText,
+              "no",
+              correctionText,
+              feedbackId,
+            ).catch(syncFailed);
           };
         };
       }
@@ -7746,7 +10537,8 @@
           $("lai-tech-consent").classList.add("hidden");
           $("lai-tech-chat").classList.remove("hidden");
           const last = aiChats[aiChats.length - 1];
-          if (last && !last.messages.length) openAiChat(last.id); else newAiChat();
+          if (last && !last.messages.length) openAiChat(last.id);
+          else newAiChat();
         };
         $("lai-tech-continue").onclick = () => {
           localStorage.setItem(consentKey, "true");
@@ -7775,7 +10567,10 @@
       const syncAiViewport = () => {
         const viewport = window.visualViewport;
         const root = document.documentElement.style;
-        root.setProperty("--ai-vh", (viewport?.height || window.innerHeight) + "px");
+        root.setProperty(
+          "--ai-vh",
+          (viewport?.height || window.innerHeight) + "px",
+        );
         root.setProperty("--ai-top", (viewport?.offsetTop || 0) + "px");
       };
       window.visualViewport?.addEventListener("resize", syncAiViewport);
@@ -7793,17 +10588,23 @@
       };
       const updateAiSendState = () => {
         const send = $("translator-form")?.querySelector(".ai-send");
-        if (send) send.disabled = Boolean(send.dataset.busy) || !$("translator-input").value.trim();
+        if (send)
+          send.disabled =
+            Boolean(send.dataset.busy) || !$("translator-input").value.trim();
       };
       $("translator-input").oninput = () => {
         resizeTranslatorInput();
         updateAiSendState();
       };
       $("translator-input").addEventListener("keydown", (event) => {
-        if (event.key !== "Enter" || event.shiftKey || event.isComposing) return;
+        if (event.key !== "Enter" || event.shiftKey || event.isComposing)
+          return;
         if (!matchMedia("(pointer: fine)").matches) return;
         event.preventDefault();
-        if ($("translator-input").value.trim() && !$("translator-form").querySelector(".ai-send").dataset.busy)
+        if (
+          $("translator-input").value.trim() &&
+          !$("translator-form").querySelector(".ai-send").dataset.busy
+        )
           $("translator-form").requestSubmit();
       });
       $("ai-new-chat").onclick = newAiChat;
@@ -7815,11 +10616,11 @@
         const text = input.value.trim();
         if (!text) return;
         const messages = $("translator-messages");
-        addTranslatorBubble("user", text, "👤");
+        addTranslatorBubble("user", text, "");
         recordAiMessage("user", text);
         input.value = "";
         resizeTranslatorInput();
-        const thinkingBubble = addTranslatorBubble("assistant", "", "🤖");
+        const thinkingBubble = addTranslatorBubble("assistant", "", "");
         thinkingBubble.bubble.classList.add("lai-tech-thinking");
         thinkingBubble.content.innerHTML =
           '<span class="ai-typing" role="status" aria-label="LaiTech AI is thinking"><i></i><i></i><i></i></span>';
@@ -7846,8 +10647,8 @@
           if (!response.ok)
             throw new Error(payload.error || "Translation failed.");
           clearInterval(thinkingTimer);
-          thinkingBubble.bubble.remove();
-          const answer = addTranslatorBubble("assistant", "", "🤖");
+          thinkingBubble.row.remove();
+          const answer = addTranslatorBubble("assistant", "", "");
           const label = document.createElement("span");
           label.className = "translation-label";
           label.textContent =
@@ -7856,8 +10657,10 @@
           meaning.textContent = payload.translatedText;
           answer.content.append(label, meaning);
           recordAiMessage("assistant", payload.translatedText);
+          const actions = addAiActions(answer.content, payload.translatedText);
           addTranslationFeedback(
             answer.content,
+            actions,
             text,
             payload.translatedText,
             payload.feedbackId,
@@ -7894,7 +10697,7 @@
                 console.error(error);
               }
             };
-            answer.content.append(verify);
+            actions.append(verify);
           }
           answer.bubble.scrollIntoView({ block: "nearest" });
           $("translator-status").textContent = payload.cached
@@ -7902,8 +10705,8 @@
             : "Translation saved for future review.";
         } catch (error) {
           clearInterval(thinkingTimer);
-          thinkingBubble.bubble.remove();
-          addTranslatorBubble("assistant", error.message, "🤖");
+          thinkingBubble.row.remove();
+          addTranslatorBubble("assistant", error.message, "");
           $("translator-status").textContent = "";
         } finally {
           button.disabled = false;

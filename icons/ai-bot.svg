@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <linearGradient id="aiBotBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e1b4b"/>
+      <stop offset="50%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <linearGradient id="aiBotGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#6366f1"/>
+    </linearGradient>
+    <linearGradient id="aiBotEye" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#818cf8"/>
+    </linearGradient>
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+  <!-- Background base -->
+  <rect width="128" height="128" rx="28" fill="url(#aiBotBg)"/>
+  <rect width="124" height="124" x="2" y="2" rx="26" fill="none" stroke="url(#aiBotGlow)" stroke-width="1.5" opacity="0.4"/>
+
+  <!-- Antenna / Signal Node -->
+  <circle cx="64" cy="24" r="5" fill="url(#aiBotGlow)" filter="url(#softGlow)"/>
+  <line x1="64" y1="29" x2="64" y2="38" stroke="url(#aiBotGlow)" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Bot Head Base -->
+  <rect x="28" y="38" width="72" height="58" rx="20" fill="#0f172a" stroke="url(#aiBotGlow)" stroke-width="2.5"/>
+
+  <!-- Ear Nodes -->
+  <rect x="20" y="55" width="8" height="24" rx="4" fill="url(#aiBotGlow)" opacity="0.85"/>
+  <rect x="100" y="55" width="8" height="24" rx="4" fill="url(#aiBotGlow)" opacity="0.85"/>
+
+  <!-- Visor Screen -->
+  <rect x="36" y="47" width="56" height="32" rx="12" fill="#020617" stroke="#1e293b" stroke-width="1.5"/>
+
+  <!-- Glowing Digital Eyes -->
+  <circle cx="50" cy="63" r="6" fill="url(#aiBotEye)" filter="url(#softGlow)"/>
+  <circle cx="51.5" cy="61.5" r="2" fill="#ffffff"/>
+  <circle cx="78" cy="63" r="6" fill="url(#aiBotEye)" filter="url(#softGlow)"/>
+  <circle cx="79.5" cy="61.5" r="2" fill="#ffffff"/>
+
+  <!-- Subtly Smiling Voice Pulse Line -->
+  <path d="M52 87 Q64 93 76 87" fill="none" stroke="url(#aiBotGlow)" stroke-width="2.5" stroke-linecap="round"/>
+</svg>
+

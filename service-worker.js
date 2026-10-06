@@ -1,4 +1,4 @@
-const CACHE = "mirang-holh-cawnnak-v67";
+const CACHE = "mirang-holh-cawnnak-v73";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -20,6 +20,8 @@ const APP_SHELL = [
   "./achievements.js",
   "./manifest.json",
   "./icons/icon.svg",
+  "./icons/icon.png",
+  "./icons/ai-bot.svg",
 ];
 
 self.addEventListener("install", (event) => {

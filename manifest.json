@@ -1,18 +1,24 @@
 {
-    "name": "Mirang Holh Cawnnak",
-    "short_name": "Holh Cawnnak",
-    "description": "Learn Chin language phrases by topic and test your knowledge.",
-    "start_url": "./",
-    "scope": "./",
-    "display": "standalone",
-    "background_color": "#f3f7f4",
-    "theme_color": "#176b4d",
-    "icons": [
-        {
-            "src": "icons/icon.svg",
-            "sizes": "any",
-            "type": "image/svg+xml",
-            "purpose": "any maskable"
-        }
-    ]
+  "name": "Mirang Holh Cawnnak",
+  "short_name": "Holh Cawnnak",
+  "description": "Learn Chin language phrases by topic and test your knowledge.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0a0e17",
+  "theme_color": "#3b82f6",
+  "icons": [
+    {
+      "src": "icons/icon.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
 }

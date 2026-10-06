@@ -1,4 +1,4 @@
-const CACHE = "mirang-holh-cawnnak-v73";
+const CACHE = "mirang-holh-cawnnak-v75";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -21,6 +21,7 @@ const APP_SHELL = [
   "./manifest.json",
   "./icons/icon.svg",
   "./icons/icon.png",
+  "./icons/badge.png",
   "./icons/ai-bot.svg",
 ];
 

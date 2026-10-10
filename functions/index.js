@@ -287,7 +287,10 @@ async function getTranslationUser(request) {
   try {
     const token = await auth.verifyIdToken(header.slice(7));
     const profile = await db.doc(`users/${token.uid}`).get();
-    const name = String(profile.data()?.displayName || token.name || '').trim();
+    const aiUser = await db.doc(`aiUsers/${token.uid}`).get();
+    const name = String(
+      profile.data()?.displayName || aiUser.data()?.name || token.name || ''
+    ).trim();
     return { uid: token.uid, name, email: token.email || '' };
   } catch (error) {
     console.warn('Invalid LaiTech AI auth token', error.message);
@@ -829,6 +832,31 @@ exports.submitQuizResult = onCall(async request => {
     }, { merge: true });
   });
   return { score, correct, total, totalPoints };
+});
+
+exports.recordQuizResult = onCall(async request => {
+  if (!request.auth) throw new HttpsError('unauthenticated', 'Sign in is required to save a quiz result.');
+  await ensureRateLimit(request.auth.uid, 'recordQuizResult', 30, 60_000);
+  const quizType = request.data?.quizType === 'citizenship' ? 'citizenship' : 'holh';
+  const correct = Math.max(0, Math.min(20, Number(request.data?.correct) || 0));
+  const total = Math.max(1, Math.min(20, Number(request.data?.total) || 1));
+  const leaderboardRef = db.doc(`leaderboard/${request.auth.uid}`);
+  const profileRef = db.doc(`users/${request.auth.uid}`);
+  let quizPoints = 0;
+  await db.runTransaction(async transaction => {
+    const [leaderboard, profile] = await Promise.all([
+      transaction.get(leaderboardRef),
+      transaction.get(profileRef)
+    ]);
+    const currentQuizPoints = leaderboard.get('quizPoints') || {};
+    quizPoints = Math.max(0, Number(currentQuizPoints[quizType] || 0)) + correct;
+    transaction.set(leaderboardRef, {
+      name: profile.get('displayName') || request.auth.token.email?.split('@')[0] || 'Learner',
+      quizPoints: { ...currentQuizPoints, [quizType]: quizPoints },
+      updatedAt: FieldValue.serverTimestamp()
+    }, { merge: true });
+  });
+  return { quizType, correct, total, quizPoints };
 });
 
 exports.mergeLearningState = onCall(async request => {

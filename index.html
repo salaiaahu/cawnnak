@@ -5343,6 +5343,17 @@
         #menu-drawer .user-role { margin-bottom: 22px; }
         #menu-drawer .btn { min-height: 48px; margin-top: 9px; border-radius: 14px; font-size: 1rem; }
       }
+      #menu-drawer .btn { display:flex; align-items:center; justify-content:flex-start; gap:11px; } #menu-drawer .btn::before { display:none !important; content:none !important; }.menu-nav-icon { display:grid; flex:0 0 31px; width:31px; height:31px; place-items:center; border:1px solid rgba(147,197,253,.22); border-radius:10px; color:#93c5fd; background:linear-gradient(145deg,rgba(59,130,246,.22),rgba(30,64,175,.12)); box-shadow:inset 0 1px rgba(255,255,255,.14),0 3px 7px rgba(0,0,0,.2); }.menu-nav-icon .ai-ico { width:16px; height:16px; stroke:currentColor; }.menu-nav-icon.spark { color:#c4b5fd; border-color:rgba(196,181,253,.22); background:linear-gradient(145deg,rgba(139,92,246,.25),rgba(79,70,229,.12)); }.menu-nav-icon.gold { color:#fde68a; border-color:rgba(250,204,21,.24); background:linear-gradient(145deg,rgba(245,158,11,.25),rgba(180,83,9,.12)); }.menu-nav-icon.green { color:#86efac; border-color:rgba(74,222,128,.22); background:linear-gradient(145deg,rgba(34,197,94,.22),rgba(21,128,61,.12)); }
+      .grammar-badge { color: #f5e8ff; background: linear-gradient(135deg,#7c3aed,#4338ca) !important; border: 1px solid rgba(221,214,254,.5) !important; box-shadow: inset 0 1px rgba(255,255,255,.28),0 5px 12px rgba(76,29,149,.35); font-size: 1.2rem; font-weight: 800; letter-spacing: -.08em; }
+      .track-card-grammar:hover { border-color: rgba(196,181,253,.65) !important; box-shadow: 0 18px 40px rgba(0,0,0,.55),0 0 24px rgba(139,92,246,.24) !important; }
+      .pill-purple { color:#ddd6fe; background:rgba(139,92,246,.16); border:1px solid rgba(196,181,253,.3); }
+      .grammar-dialog { width:min(390px,calc(100vw - 32px)); padding:28px; border:1px solid rgba(196,181,253,.35); border-radius:22px; color:#f8fafc; background:linear-gradient(145deg,#1e1b4b,#111827); box-shadow:0 28px 70px rgba(0,0,0,.65); text-align:center; } .grammar-dialog::backdrop { background:rgba(2,6,23,.78); backdrop-filter:blur(5px); }.grammar-dialog h2 { margin:15px 0 8px; font-size:1.35rem; }.grammar-dialog p { margin:0 0 20px; color:#c7d2fe; line-height:1.5; }.grammar-dialog-icon { display:grid; width:60px; height:60px; place-items:center; margin:auto; border:2px solid #ddd6fe; border-radius:18px; background:linear-gradient(145deg,#8b5cf6,#4338ca); box-shadow:0 5px 0 #312e81; font-size:1.65rem; font-weight:800; }
+      .quiz-mode-menu { position:relative; padding:26px; overflow:hidden; border:1px solid rgba(129,140,248,.35); border-radius:24px; background:radial-gradient(circle at 88% 8%,rgba(250,204,21,.18),transparent 24%),radial-gradient(circle at 8% 98%,rgba(56,189,248,.13),transparent 36%),linear-gradient(145deg,#182653,#111a36); box-shadow:inset 0 1px rgba(255,255,255,.15),0 10px 0 #080f24,0 26px 44px rgba(0,0,0,.35); }.quiz-menu-heading { position:relative; z-index:1; margin-bottom:19px; }.quiz-menu-heading h1 { margin:5px 0; color:#f8fafc; font-size:clamp(1.65rem,5vw,2.35rem); line-height:1.05; }.quiz-menu-heading p { margin:0; color:#bfdbfe; }.quiz-mode-grid { display:grid; gap:12px; position:relative; z-index:1; }.quiz-mode-card { position:relative; display:grid; grid-template-columns:auto minmax(0,1fr) auto; align-items:center; gap:14px; width:100%; padding:16px; overflow:hidden; border:1px solid rgba(255,255,255,.12); border-radius:18px; color:#f8fafc; text-align:left; background:linear-gradient(145deg,#1f3662,#142541); box-shadow:inset 0 1px rgba(255,255,255,.16),inset -10px -11px 18px rgba(3,10,28,.3),0 6px 0 #091121,0 14px 24px rgba(0,0,0,.26); transition:transform .18s,box-shadow .18s,border-color .18s; }.quiz-mode-card::before { position:absolute; top:0; bottom:0; left:0; width:5px; background:linear-gradient(#60a5fa,#2563eb); content:''; }.quiz-mode-card:hover { transform:translateY(-4px); border-color:rgba(147,197,253,.65); box-shadow:inset 0 1px rgba(255,255,255,.22),inset -10px -11px 18px rgba(3,10,28,.22),0 10px 0 #091121,0 22px 30px rgba(0,0,0,.33); }.quiz-mode-icon { display:grid; width:48px; height:48px; place-items:center; border:1px solid rgba(255,255,255,.25); border-radius:15px; background:linear-gradient(145deg,#3b82f6,#1d4ed8); box-shadow:inset 0 1px rgba(255,255,255,.3),0 4px 0 #172554; font-size:1.35rem; font-weight:800; }.quiz-mode-copy { min-width:0; }.quiz-mode-copy b,.quiz-mode-copy small { display:block; }.quiz-mode-copy b { font-size:1.04rem; }.quiz-mode-copy small { margin-top:3px; color:#bfdbfe; font-size:.8rem; }.quiz-mode-arrow { color:#fde68a; font-size:1.4rem; }.grammar-mode { opacity:.82; background:linear-gradient(145deg,#30225c,#1a1941); }.grammar-mode::before { background:linear-gradient(#c4b5fd,#7c3aed); }.grammar-mode .quiz-mode-icon { background:linear-gradient(145deg,#8b5cf6,#4f46e5); }.citizenship-mode::before { background:linear-gradient(#fde047,#ea580c); }.citizenship-mode .quiz-mode-icon { background:linear-gradient(145deg,#f59e0b,#c2410c); }.quiz-coming-soon { padding:5px 8px; border:1px solid rgba(221,214,254,.28); border-radius:999px; color:#ddd6fe; background:rgba(139,92,246,.15); font-size:.66rem; font-weight:800; text-transform:uppercase; }.quiz-mode-back { margin:-2px 0 12px; padding:4px 0; color:#93c5fd !important; }.quiz-lobby.citizenship-quiz .custom-select { pointer-events:none; opacity:.55; }.quiz-lobby.citizenship-quiz #quiz-category { pointer-events:none; }.quiz-lobby { border:1px solid rgba(96,165,250,.28) !important; border-radius:22px !important; background:radial-gradient(circle at 92% 6%,rgba(250,204,21,.14),transparent 25%),linear-gradient(145deg,#172b4d,#10192d) !important; box-shadow:inset 0 1px rgba(255,255,255,.13),0 9px 0 #080f1e,0 22px 36px rgba(0,0,0,.3) !important; }.quiz-lobby .btn { box-shadow:inset 0 1px rgba(255,255,255,.2),0 4px 0 #1e3a8a,0 10px 16px rgba(0,0,0,.22); }.quiz-lobby .stat,.quiz-insight { border:1px solid rgba(255,255,255,.09) !important; background:rgba(9,19,40,.55) !important; box-shadow:inset 0 1px rgba(255,255,255,.08),0 5px 0 rgba(5,12,27,.5) !important; }
+      #qcard.panel,#summary.panel { border:1px solid rgba(96,165,250,.3) !important; border-radius:22px !important; background:radial-gradient(circle at 90% 10%,rgba(250,204,21,.14),transparent 24%),linear-gradient(145deg,#172b4d,#10192d) !important; box-shadow:inset 0 1px rgba(255,255,255,.14),0 9px 0 #080f1e,0 22px 36px rgba(0,0,0,.3) !important; }.options .option { border:1px solid rgba(255,255,255,.1) !important; border-radius:14px !important; color:#e0f2fe !important; background:linear-gradient(145deg,#203962,#14233e) !important; box-shadow:inset 0 1px rgba(255,255,255,.12),0 4px 0 #0a1325 !important; }.options .option:active { transform:translateY(3px); box-shadow:inset 0 1px rgba(255,255,255,.12),0 1px 0 #0a1325 !important; }.options .option.correct { background:linear-gradient(145deg,#166534,#14532d) !important; }.options .option.wrong { background:linear-gradient(145deg,#991b1b,#7f1d1d) !important; }
+      #practice-setup { border:1px solid rgba(96,165,250,.3) !important; border-radius:22px !important; background:radial-gradient(circle at 90% 8%,rgba(250,204,21,.14),transparent 24%),linear-gradient(145deg,#172b4d,#10192d) !important; box-shadow:inset 0 1px rgba(255,255,255,.14),0 9px 0 #080f1e,0 22px 36px rgba(0,0,0,.3) !important; }
+      #citizenship.citizenship-ready .citizenship-setup > .head { display:none; } #citizenship.citizenship-ready .citizenship-setup { max-width:760px; }.citizenship-setup #citizenship-study-panel { border:1px solid rgba(96,165,250,.3) !important; border-radius:22px !important; background:radial-gradient(circle at 90% 6%,rgba(250,204,21,.15),transparent 22%),linear-gradient(145deg,#172b4d,#10192d) !important; box-shadow:inset 0 1px rgba(255,255,255,.14),0 9px 0 #080f1e,0 22px 36px rgba(0,0,0,.3) !important; }.citizenship-setup #citizenship-study-panel > .head { padding-bottom:12px; border-bottom:1px solid rgba(255,255,255,.09); }.citizenship-question { border:1px solid rgba(96,165,250,.22) !important; border-radius:18px !important; background:linear-gradient(145deg,#1a3156,#101c31) !important; box-shadow:inset 0 1px rgba(255,255,255,.11),0 5px 0 #091121,0 12px 22px rgba(0,0,0,.22) !important; }.citizenship-question span { color:#93c5fd !important; font-weight:700; }.citizenship-question b { color:#f8fafc !important; }
+      .learn-card .english-indicator { margin-right:5px; color:#60a5fa; font-weight:800; }.learn-card .english-meaning { color:#bfdbfe; }
+      @media(max-width:600px) { .quiz-mode-menu { padding:18px 15px; border-radius:20px; }.quiz-menu-heading { margin-bottom:14px; }.quiz-menu-heading h1 { font-size:1.55rem; }.quiz-mode-card { gap:11px; padding:13px; border-radius:15px; }.quiz-mode-icon { width:42px; height:42px; border-radius:13px; font-size:1.15rem; }.quiz-mode-copy b { font-size:.94rem; }.quiz-mode-copy small { font-size:.73rem; }.quiz-coming-soon { font-size:.57rem; padding:4px 6px; }.quiz-lobby { padding:15px !important; } }
     </style>
   </head>
   <body>
@@ -5555,12 +5566,11 @@
           <span class="hero-kicker">TODAY'S ADVENTURE</span>
           <h2>Build your language powers.</h2>
           <p>
-            Choose a topic, study useful phrases, test yourself, and save
-            progress when you sign in. You can also learn beyond the phrase
-            library with LaiTech AI.
+            Start from the Hakha Chin you already know, unlock useful English
+            meanings, test yourself, and save your progress.
           </p>
           <div class="hero-actions">
-          <button id="choose-track" class="btn start-learning"><span aria-hidden="true">⚔</span> Start quest</button>
+          <button id="choose-track" class="btn start-learning"><span aria-hidden="true">⚔</span> Cawnnak</button>
           <button id="home-quiz" class="btn take-quiz" data-v="quiz">
             <span aria-hidden="true">✦</span> Quiz
           </button>
@@ -5635,8 +5645,8 @@
       <section id="track-choice" class="view">
         <div class="track-choice">
           <div class="head">
-            <small class="eyebrow">CHOOSE YOUR LEARNING PATH</small>
-            <h1>What would you like to learn?</h1>
+            <small class="eyebrow">CAWN DUHMI THIMNAK</small>
+            <h1>Zeidah cawn na duh?</h1>
             <p class="status">Choose a course to continue.</p>
           </div>
           <div class="track-choice-grid">
@@ -5732,11 +5742,27 @@
                 </svg>
               </span>
               <div class="track-card-content">
-                <span class="track-pill pill-blue">BILINGUAL COURSE</span>
+                <span class="track-pill pill-blue">CHIN → ENGLISH</span>
                 <strong>Holh Cawnnak</strong>
                 <small
-                  >Learn Chin language phrases and everyday conversation.</small
+                  >Start with Hakha Chin phrases and unlock their English meanings.</small
                 >
+              </div>
+              <span class="track-card-arrow" aria-hidden="true">
+                <svg class="ai-ico"><use href="#i-arrow-right" /></svg>
+              </span>
+            </button>
+
+            <button
+              class="track-choice-card track-card-grammar"
+              id="choose-grammar"
+              type="button"
+            >
+              <span class="track-icon-badge grammar-badge" aria-hidden="true">Aa</span>
+              <div class="track-card-content">
+                <span class="track-pill pill-purple">COMING SOON</span>
+                <strong>Grammar Cawnnak</strong>
+                <small>Build English grammar skills step by step.</small>
               </div>
               <span class="track-card-arrow" aria-hidden="true">
                 <svg class="ai-ico"><use href="#i-arrow-right" /></svg>
@@ -5991,8 +6017,8 @@
                 <span class="track-pill pill-cyan">INTERACTIVE AI • BETA</span>
                 <strong>Learn from LaiTech AI</strong>
                 <small
-                  >Explore Hakha Chin phrases with your friendly AI learning
-                  companion.</small
+                  >Ask in Hakha Chin and explore clear English meanings with
+                  your AI learning companion.</small
                 >
               </div>
               <span class="track-card-arrow" aria-hidden="true">
@@ -6002,6 +6028,12 @@
           </div>
         </div>
       </section>
+      <dialog id="grammar-dialog" class="grammar-dialog">
+        <span class="grammar-dialog-icon" aria-hidden="true">Aa</span>
+        <h2>Grammar Cawnnak is on its way</h2>
+        <p>We are building English grammar lessons especially for Hakha Chin speakers. Check back soon.</p>
+        <button id="close-grammar-dialog" class="btn" type="button">Got it</button>
+      </dialog>
       <section id="lai-tech" class="view">
         <div class="lai-tech-page">
           <div class="ai-app-header">
@@ -6114,8 +6146,8 @@
                     id="translator-input"
                     rows="1"
                     maxlength="10000"
-                    placeholder="Type in Hakha Chin or English…"
-                    aria-label="Hakha Chin or English phrase"
+                    placeholder="Type in Hakha Chin for English meaning…"
+                    aria-label="Hakha Chin phrase to translate into English"
                     required
                   ></textarea>
                   <button
@@ -6312,8 +6344,33 @@
       </section>
       <section id="quiz" class="view">
         <div class="quiz">
+          <section id="quiz-mode-menu" class="quiz-mode-menu">
+            <div class="quiz-menu-heading">
+              <small class="eyebrow">QUIZ ARCADE</small>
+              <h1>Choose your challenge</h1>
+              <p>Pick a quiz mode, then set up your round.</p>
+            </div>
+            <div class="quiz-mode-grid">
+              <button class="quiz-mode-card holh-mode" type="button" data-quiz-mode="holh">
+                <span class="quiz-mode-icon" aria-hidden="true">💬</span>
+                <span class="quiz-mode-copy"><b>Holh Cawnnak</b><small>Hakha Chin → English</small></span>
+                <span class="quiz-mode-arrow" aria-hidden="true">→</span>
+              </button>
+              <button class="quiz-mode-card grammar-mode" type="button" data-quiz-mode="grammar">
+                <span class="quiz-mode-icon" aria-hidden="true">Aa</span>
+                <span class="quiz-mode-copy"><b>Grammar Cawnnak</b><small>English grammar challenges</small></span>
+                <span class="quiz-coming-soon">Coming soon</span>
+              </button>
+              <button class="quiz-mode-card citizenship-mode" type="button" data-quiz-mode="citizenship">
+                <span class="quiz-mode-icon" aria-hidden="true">★</span>
+                <span class="quiz-mode-copy"><b>Citizenship</b><small>US civics question challenge</small></span>
+                <span class="quiz-mode-arrow" aria-hidden="true">→</span>
+              </button>
+            </div>
+          </section>
           <article id="quiz-lobby" class="panel">
-            <h2>Test your knowledge</h2>
+            <button id="quiz-mode-back" class="plain quiz-mode-back" type="button">← All quiz modes</button>
+            <h2 id="quiz-lobby-title">Test your knowledge</h2>
             <p class="status">
               Test tuah na duhmi category thimpiak law Start quiz kha hmet
             </p>
@@ -6379,7 +6436,32 @@
       </section>
       <section id="practice" class="view">
         <div class="practice-layout">
-          <article class="panel">
+          <section id="practice-mode-menu" class="quiz-mode-menu">
+            <div class="quiz-menu-heading">
+              <small class="eyebrow">PRACTICE ARCADE</small>
+              <h1>Choose what to practice</h1>
+              <p>Pick a mode, then flip through cards at your pace.</p>
+            </div>
+            <div class="quiz-mode-grid">
+              <button class="quiz-mode-card holh-mode" type="button" data-practice-mode="holh">
+                <span class="quiz-mode-icon" aria-hidden="true">💬</span>
+                <span class="quiz-mode-copy"><b>Holh Cawnnak</b><small>Hakha Chin → English cards</small></span>
+                <span class="quiz-mode-arrow" aria-hidden="true">→</span>
+              </button>
+              <button class="quiz-mode-card grammar-mode" type="button" data-practice-mode="grammar">
+                <span class="quiz-mode-icon" aria-hidden="true">Aa</span>
+                <span class="quiz-mode-copy"><b>Grammar Cawnnak</b><small>English grammar practice</small></span>
+                <span class="quiz-coming-soon">Coming soon</span>
+              </button>
+              <button class="quiz-mode-card citizenship-mode" type="button" data-practice-mode="citizenship">
+                <span class="quiz-mode-icon" aria-hidden="true">★</span>
+                <span class="quiz-mode-copy"><b>Citizenship</b><small>US civics flip cards</small></span>
+                <span class="quiz-mode-arrow" aria-hidden="true">→</span>
+              </button>
+            </div>
+          </section>
+          <article id="practice-setup" class="panel hidden">
+            <button id="practice-mode-back" class="plain quiz-mode-back" type="button">← All practice modes</button>
             <div class="head">
               <div>
                 <h2>Flip cards</h2>
@@ -6402,7 +6484,7 @@
             >
               <div class="practice-card-inner">
                 <div class="practice-face practice-front">
-                  <small>English</small>
+                  <small id="practice-front-label">Hakha Chin</small>
                   <h2 id="practice-english"></h2>
                   <p id="practice-question-translation"></p>
                   <p id="practice-front-prompt">
@@ -6413,7 +6495,7 @@
                   <small id="practice-answer-label">Answer</small>
                   <h2 id="practice-chin"></h2>
                   <p id="practice-answer-translation"></p>
-                  <p id="practice-back-prompt">Tap to see the English phrase</p>
+                  <p id="practice-back-prompt">Tap to see the Hakha Chin phrase</p>
                 </div>
               </div>
             </div>
@@ -7325,6 +7407,7 @@
         "📝",
       ].filter((icon, index, all) => all.indexOf(icon) === index);
       let activeCategory = "Driving",
+        activeQuizMode = "holh",
         voices = [],
         selectedVoice,
         editingId = null;
@@ -7332,6 +7415,22 @@
         let e = document.createElement("i");
         e.textContent = x;
         return e.innerHTML;
+      }
+      function renderDrawerMenuIcons() {
+        const icons = {
+          profile: ["i-user", ""], install: ["i-download", ""],
+          admin: ["i-folder", ""], users: ["i-user", ""],
+          "history-menu": ["i-clock", ""],
+          "ai-users-menu": ["i-spark", "spark"],
+          "ai-history-menu": ["i-chat", "spark"],
+          "translation-verification-menu": ["i-check", "green"],
+          "community-menu": ["i-trophy", "gold"], login: ["i-arrow-right", ""],
+        };
+        Object.entries(icons).forEach(([id, [symbol, tone]]) => {
+          const button = $(id);
+          if (!button || button.querySelector(".menu-nav-icon")) return;
+          button.insertAdjacentHTML("afterbegin", '<span class="menu-nav-icon ' + tone + '" aria-hidden="true"><svg class="ai-ico"><use href="#' + symbol + '" /></svg></span>');
+        });
       }
       async function loadCustomCategories() {
         if (!db) return;
@@ -7354,13 +7453,57 @@
           console.warn("Could not load custom categories", error);
         }
       }
-      function renderQuizLobby() {
+      const citizenshipQuizSections = [
+        { value: "citizenship:all", label: "All questions (random)" },
+        { value: "citizenship:1-12", label: "American Government (1–12)" },
+        { value: "citizenship:13-47", label: "American Government (13–47)" },
+        { value: "citizenship:48-57", label: "American Government (48–57)" },
+        { value: "citizenship:58-87", label: "American History (58–87)" },
+        { value: "citizenship:88-100", label: "Integrated Civics (88–100)" },
+      ];
+      function citizenshipQuizSource(section) {
+        const match = String(section).match(/^citizenship:(\d+)-(\d+)$/);
+        const start = Number(match?.[1] || 1);
+        const end = Number(match?.[2] || 100);
+        return (window.CITIZENSHIP_SEED || [])
+          .filter((item) => Number(item.number) >= start && Number(item.number) <= end)
+          .map((item) => ({
+            ...item,
+            english: item.question,
+            chin: item.answer,
+            category: "citizenship",
+            quiz: true,
+          }));
+      }
+      function renderQuizSetup(mode = "holh") {
+        const citizenshipMode = mode === "citizenship";
+        activeQuizMode = mode;
+        $("quiz-mode-menu").classList.add("hidden");
         $("quiz-lobby").classList.remove("hidden");
+        $("quiz-lobby").classList.toggle("citizenship-quiz", citizenshipMode);
+        $("quiz-lobby-title").textContent = citizenshipMode
+          ? "Citizenship challenge"
+          : "Holh Cawnnak challenge";
+        if (citizenshipMode) {
+          $("quiz-category").innerHTML = citizenshipQuizSections
+            .map(
+              (section) =>
+                '<option value="' + section.value + '">' + section.label + "</option>",
+            )
+            .join("");
+        } else {
+          fillCategories();
+          $("quiz-category").value = "all";
+        }
+        updateQuizLengthOptions();
+        buildSelect($("quiz-category"));
         $("qcard").classList.add("hidden");
         $("summary").classList.add("hidden");
         $("score").classList.add("hidden");
         $("quiz-progress-wrap").classList.add("hidden");
-        let h = p.history || [];
+        let h = (p.history || []).filter(
+          (item) => (item.quizType || "holh") === activeQuizMode,
+        );
         $("lobby-best").textContent =
           p.bestScore == null ? "—" : p.bestScore + "%";
         $("lobby-tests").textContent = h.length;
@@ -7384,8 +7527,9 @@
           getDocs(collection(db, "leaderboard"))
             .then((s) => {
               let top = s.docs
-                .map((d) => d.data())
-                .sort((a, b) => (b.totalPoints || 0) - (a.totalPoints || 0))
+                .map((d) => ({ ...d.data(), modePoints: Number(d.data().quizPoints?.[activeQuizMode] || 0) }))
+                .filter((item) => item.modePoints > 0)
+                .sort((a, b) => b.modePoints - a.modePoints)
                 .slice(0, 5);
               $("leaderboard").innerHTML = top.length
                 ? top
@@ -7398,7 +7542,7 @@
                         "</span><strong>" +
                         esc(x.name || "Learner") +
                         "</strong><b>" +
-                        esc((x.totalPoints || 0) + " pts") +
+                        esc(x.modePoints + " pts") +
                         "</b></div>",
                     )
                     .join("")
@@ -7407,6 +7551,14 @@
             .catch(() => {
               $("leaderboard").textContent = "Leaderboard unavailable.";
             });
+      }
+      function renderQuizLobby() {
+        $("quiz-mode-menu").classList.remove("hidden");
+        $("quiz-lobby").classList.add("hidden");
+        $("qcard").classList.add("hidden");
+        $("summary").classList.add("hidden");
+        $("score").classList.add("hidden");
+        $("quiz-progress-wrap").classList.add("hidden");
       }
       async function renderTopLearners() {
         const topList = $("top-learners-list");
@@ -7558,14 +7710,31 @@
         practiceSwipeDirection = 0,
         practiceSwipePreview = null,
         practiceSwipeWasFlipped = false;
-      function renderPractice() {
+      function renderPracticeSetup(mode = "holh") {
+        const citizenshipMode = mode === "citizenship";
+        $("practice-mode-menu").classList.add("hidden");
+        $("practice-setup").classList.remove("hidden");
+        if (citizenshipMode) {
+          $("practice-category").innerHTML = citizenshipQuizSections
+            .map(
+              (section) =>
+                '<option value="' + section.value + '">' + section.label + "</option>",
+            )
+            .join("");
+          buildSelect($("practice-category"));
+        } else {
+          fillCategories();
+          $("practice-category").value = "all";
+          buildSelect($("practice-category"));
+        }
+        loadPracticeCards();
+      }
+      function loadPracticeCards() {
         let category = $("practice-category").value || "Driving";
-        if (category === "citizenship") {
+        if (category.startsWith("citizenship:")) {
           practiceCards = sh(
-            (window.CITIZENSHIP_SEED || []).map((item) => ({
+            citizenshipQuizSource(category).map((item) => ({
               ...item,
-              english: item.question,
-              chin: item.answer,
               category: "citizenship",
             })),
           );
@@ -7577,12 +7746,18 @@
         practiceCards = sh(
           cards.filter(
             (c) =>
-              (c.category || "Driving") === category && c.chin && c.chin.trim(),
+              (category === "all" || (c.category || "Driving") === category) &&
+              c.chin &&
+              c.chin.trim(),
           ),
         );
         practiceIndex = 0;
         practiceFlipped = false;
         updatePracticeCard();
+      }
+      function renderPractice() {
+        $("practice-mode-menu").classList.remove("hidden");
+        $("practice-setup").classList.add("hidden");
       }
       function updatePracticeCard() {
         let card = practiceCards[practiceIndex],
@@ -7597,22 +7772,26 @@
         }
         $("practice-count").textContent =
           "Card " + (practiceIndex + 1) + " of " + practiceCards.length;
-        $("practice-english").textContent = card.english;
-        $("practice-chin").textContent = card.chin;
+        $("practice-english").textContent =
+          card.category === "citizenship" ? card.english : card.chin;
+        $("practice-chin").textContent =
+          card.category === "citizenship" ? card.chin : card.english;
         $("practice-question-translation").textContent =
           card.category === "citizenship" ? card.chinQuestion || "" : "";
+        $("practice-front-label").textContent =
+          card.category === "citizenship" ? "English question" : "Hakha Chin";
         $("practice-answer-label").textContent =
-          card.category === "citizenship" ? "English answer" : "Hakha Chin";
+          card.category === "citizenship" ? "English answer" : "English meaning";
         $("practice-answer-translation").textContent =
           card.category === "citizenship" ? card.chinAnswer || "" : "";
         $("practice-front-prompt").textContent =
           card.category === "citizenship"
             ? "Tap to see answer"
-            : "Tap to reveal the translation";
+            : "Tap to reveal the English meaning";
         $("practice-back-prompt").textContent =
           card.category === "citizenship"
             ? "Tap to see question"
-            : "Tap to see the English phrase";
+            : "Tap to see the Hakha Chin phrase";
         surface.classList.toggle("flipped", practiceFlipped);
       }
       function flipPracticeCard() {
@@ -7736,7 +7915,8 @@
           }
         }, 220);
       }
-      $("practice-category").onchange = renderPractice;
+      $("practice-category").onchange = () =>
+        loadPracticeCards();
       $("practice-card").ontouchstart = (event) => {
         let touch = event.changedTouches[0];
         if (practiceSwipePreview) clearPracticeSwipePreview();
@@ -8017,20 +8197,14 @@
                 '<option value="' + esc(name) + '">' + esc(name) + "</option>",
             )
             .join("");
-        $("quiz-category").insertAdjacentHTML(
-          "beforeend",
-          '<option value="citizenship">US Citizenship</option>',
-        );
-        $("practice-category").innerHTML = all
+        $("practice-category").innerHTML =
+          '<option value="all">All Holh Cawnnak (random)</option>' +
+          all
           .map(
             ([name]) =>
               '<option value="' + esc(name) + '">' + esc(name) + "</option>",
           )
           .join("");
-        $("practice-category").insertAdjacentHTML(
-          "beforeend",
-          '<option value="citizenship">US Citizenship</option>',
-        );
         if (
           currentContent &&
           [...$("content-category").options].some(
@@ -8058,14 +8232,8 @@
       function updateQuizLengthOptions() {
         let category = $("quiz-category").value || "all",
           source =
-            category === "citizenship"
-              ? (window.CITIZENSHIP_SEED || []).map((item) => ({
-                  ...item,
-                  english: item.question,
-                  chin: item.answer,
-                  category: "citizenship",
-                  quiz: true,
-                }))
+            category.startsWith("citizenship:")
+              ? citizenshipQuizSource(category)
               : cards,
           total = source.filter(
             (c) =>
@@ -8106,6 +8274,7 @@
         $("menu-email").textContent = email;
         $("menu-role").textContent = role;
         $("login").textContent = user ? "Log out" : "Log in";
+        renderDrawerMenuIcons();
       }
       function buildSelect(s) {
         if (!s) return;
@@ -8258,11 +8427,11 @@
                   '" aria-label="Edit phrase"><svg class="ai-ico" style="width:15px;height:15px;"><use href="#i-edit"/></svg></button>'
                 : "") +
               "<h3>" +
-              esc(c.english) +
+              esc(c.chin || "Hakha Chin phrase coming soon") +
               "</h3><p>" +
-              (c.chin
-                ? esc(c.chin)
-                : '<span class="status">Translation needed</span>') +
+              (c.english
+                ? '<span class="english-indicator">Eng:</span><span class="english-meaning">' + esc(c.english) + "</span>"
+                : '<span class="status">English meaning coming soon</span>') +
               '</p><footer><button class="plain say" data-t="' +
               esc(c.english) +
               '">🔊 Listen</button><button class="plain mark' +
@@ -8436,19 +8605,13 @@
         $("quiz-progress-wrap").classList.remove("hidden");
         let category = $("quiz-category").value || "all",
           source =
-            category === "citizenship"
-              ? (window.CITIZENSHIP_SEED || []).map((item) => ({
-                  ...item,
-                  english: item.question,
-                  chin: item.answer,
-                  category: "citizenship",
-                  quiz: true,
-                }))
+            category.startsWith("citizenship:")
+              ? citizenshipQuizSource(category)
               : cards,
           a = source.filter(
             (c) =>
               c.quiz !== false &&
-              (category === "all" || (c.category || "Driving") === category),
+              (category === "all" || category.startsWith("citizenship:") || (c.category || "Driving") === category),
           );
         if (a.length < 4) {
           $("question").textContent =
@@ -8474,19 +8637,21 @@
           answerPool = citizenship
             ? citizenshipDistractors(q)
             : cards
-                .filter((c) => c.chin && c.chin !== q.chin)
-                .map((c) => c.chin),
+                .filter((c) => c.english && c.english !== q.english)
+                .map((c) => c.english),
           a = sh([
-            q.chin,
+            citizenship ? q.chin : q.english,
             ...answerPool
-              .filter((answer) => answer && answer !== q.chin)
+              .filter((answer) =>
+                answer && answer !== (citizenship ? q.chin : q.english),
+              )
               .slice(0, 3),
           ]);
         $("score").textContent = "Question " + (i + 1) + " of " + quiz.length;
         $("line").style.width = (i / quiz.length) * 100 + "%";
-        $("question").textContent = q.english;
+        $("question").textContent = citizenship ? q.english : q.chin;
         $("quiz-question-translation").textContent =
-          q.category === "citizenship" ? q.chinQuestion || "" : "";
+          q.category === "citizenship" ? q.chinQuestion || "" : q.english;
         $("options").innerHTML = a
           .map(
             (x) =>
@@ -8508,9 +8673,9 @@
         done = true;
         document.querySelectorAll(".option").forEach((x) => {
           x.disabled = true;
-          if (x.dataset.a === q.chin) x.classList.add("correct");
+          if (x.dataset.a === (q.category === "citizenship" ? q.chin : q.english)) x.classList.add("correct");
         });
-        if (b.dataset.a === q.chin) {
+        if (b.dataset.a === (q.category === "citizenship" ? q.chin : q.english)) {
           good++;
           sound("correct");
           buzz(80);
@@ -8519,7 +8684,8 @@
           b.classList.add("wrong");
           sound("wrong");
           buzz([80, 50, 100]);
-          $("feedback").textContent = "Correct answer: " + q.chin;
+          $("feedback").textContent =
+            "Correct answer: " + (q.category === "citizenship" ? q.chin : q.english);
           if (i > 1 && good === 0) {
             $("feedback").textContent +=
               " · Take a moment to review the phrase.";
@@ -8533,14 +8699,26 @@
       }
       $("next").onclick = () => (++i < quiz.length ? question() : finish());
       $("speak").onclick = () => speak(quiz[i].english);
-      $("speak-answer").onclick = () => speak(quiz[i].chin);
+      $("speak-answer").onclick = () =>
+        speak(quiz[i].category === "citizenship" ? quiz[i].chin : quiz[i].english);
       $("restart").onclick = start;
-      $("quiz-menu").onclick = () => {
-        $("summary").classList.add("hidden");
-        $("quiz-lobby").classList.remove("hidden");
-        $("score").classList.add("hidden");
-        $("quiz-progress-wrap").classList.add("hidden");
-      };
+      $("quiz-menu").onclick = renderQuizLobby;
+      $("quiz-mode-back").onclick = renderQuizLobby;
+      document.querySelectorAll("[data-quiz-mode]").forEach((button) => {
+        button.onclick = () => {
+          const mode = button.dataset.quizMode;
+          if (mode === "grammar") return $("grammar-dialog").showModal();
+          renderQuizSetup(mode);
+        };
+      });
+      $("practice-mode-back").onclick = renderPractice;
+      document.querySelectorAll("[data-practice-mode]").forEach((button) => {
+        button.onclick = () => {
+          const mode = button.dataset.practiceMode;
+          if (mode === "grammar") return $("grammar-dialog").showModal();
+          renderPracticeSetup(mode);
+        };
+      });
       $("start-quiz").onclick = start;
       function finish() {
         let s = Math.round((good / quiz.length) * 100),
@@ -8550,11 +8728,19 @@
           {
             score: s,
             category: category === "all" ? "All categories" : category,
+            quizType: activeQuizMode,
             at: Date.now(),
           },
           ...(p.history || []),
         ].slice(0, 10);
         save();
+        if (user && functions) {
+          httpsCallable(functions, "recordQuizResult")({
+            quizType: activeQuizMode,
+            correct: good,
+            total: quiz.length,
+          }).catch((error) => console.warn("Could not save quiz ranking", error));
+        }
         $("qcard").classList.add("hidden");
         $("summary").classList.remove("hidden");
         $("result").textContent =
@@ -9683,10 +9869,11 @@
         "beforeend",
         '<aside id="notification-panel" class="notification-panel hidden" aria-live="polite"></aside>',
       );
-      $("login").insertAdjacentHTML(
+      $("install").insertAdjacentHTML(
         "beforebegin",
         '<button id="profile" class="btn hidden">My profile</button>',
       );
+      renderDrawerMenuIcons();
       $("share-badge").onclick = async (event) => {
         event.preventDefault();
         try {
@@ -10612,6 +10799,8 @@
       $("history-menu").onclick = () => showAppView("auditview");
       $("choose-track").onclick = () => showAppView("track-choice");
       $("choose-holh").onclick = () => showAppView("categories");
+      $("choose-grammar").onclick = () => $("grammar-dialog").showModal();
+      $("close-grammar-dialog").onclick = () => $("grammar-dialog").close();
       $("choose-citizenship").onclick = () => {
         showAppView("citizenship");
         const savedState = localStorage.getItem("cawnnak-citizenship-state");
@@ -11056,8 +11245,9 @@
           return;
         }
         const profile = await getDoc(doc(db, "users", user.uid));
+        const aiUserRecord = await getDoc(doc(db, "aiUsers", user.uid));
         const name = String(
-          profile.data()?.displayName || user.displayName || "",
+          profile.data()?.displayName || aiUserRecord.data()?.name || user.displayName || "",
         ).trim();
         if (name.length < 2) {
           $("lai-tech-title").textContent = "Complete your profile first";
@@ -11444,6 +11634,7 @@
           await enrichCitizenshipOfficials(questions, state);
           citizenshipQuestions = questions;
           status.textContent = `${questions.length} questions generated for ${state}. English questions and answers are ready; Chin translations appear when available.`;
+          $("citizenship").classList.add("citizenship-ready");
           $("citizenship-setup-panel").classList.add("hidden");
           $("citizenship-study-panel").classList.remove("hidden");
           renderCitizenshipRange();
@@ -11462,6 +11653,7 @@
       buildSelect($("citizenship-range"));
       $("apply-citizenship-range").onclick = renderCitizenshipRange;
       $("citizenship-change-state").onclick = () => {
+        $("citizenship").classList.remove("citizenship-ready");
         $("citizenship-study-panel").classList.add("hidden");
         $("citizenship-setup-panel").classList.remove("hidden");
         buildSelect($("citizenship-state"));

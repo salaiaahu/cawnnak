@@ -5353,7 +5353,11 @@
       #practice-setup { border:1px solid rgba(96,165,250,.3) !important; border-radius:22px !important; background:radial-gradient(circle at 90% 8%,rgba(250,204,21,.14),transparent 24%),linear-gradient(145deg,#172b4d,#10192d) !important; box-shadow:inset 0 1px rgba(255,255,255,.14),0 9px 0 #080f1e,0 22px 36px rgba(0,0,0,.3) !important; }
       #citizenship.citizenship-ready .citizenship-setup > .head { display:none; } #citizenship.citizenship-ready .citizenship-setup { max-width:760px; }.citizenship-setup #citizenship-study-panel { border:1px solid rgba(96,165,250,.3) !important; border-radius:22px !important; background:radial-gradient(circle at 90% 6%,rgba(250,204,21,.15),transparent 22%),linear-gradient(145deg,#172b4d,#10192d) !important; box-shadow:inset 0 1px rgba(255,255,255,.14),0 9px 0 #080f1e,0 22px 36px rgba(0,0,0,.3) !important; }.citizenship-setup #citizenship-study-panel > .head { padding-bottom:12px; border-bottom:1px solid rgba(255,255,255,.09); }.citizenship-question { border:1px solid rgba(96,165,250,.22) !important; border-radius:18px !important; background:linear-gradient(145deg,#1a3156,#101c31) !important; box-shadow:inset 0 1px rgba(255,255,255,.11),0 5px 0 #091121,0 12px 22px rgba(0,0,0,.22) !important; }.citizenship-question span { color:#93c5fd !important; font-weight:700; }.citizenship-question b { color:#f8fafc !important; }
       .learn-card .english-indicator { margin-right:5px; color:#60a5fa; font-weight:800; }.learn-card .english-meaning { color:#bfdbfe; }
-      @media(max-width:600px) { .quiz-mode-menu { padding:18px 15px; border-radius:20px; }.quiz-menu-heading { margin-bottom:14px; }.quiz-menu-heading h1 { font-size:1.55rem; }.quiz-mode-card { gap:11px; padding:13px; border-radius:15px; }.quiz-mode-icon { width:42px; height:42px; border-radius:13px; font-size:1.15rem; }.quiz-mode-copy b { font-size:.94rem; }.quiz-mode-copy small { font-size:.73rem; }.quiz-coming-soon { font-size:.57rem; padding:4px 6px; }.quiz-lobby { padding:15px !important; } }
+      header.bar { background:linear-gradient(180deg,rgba(20,31,54,.98),rgba(10,16,30,.98)) !important; border-bottom:1px solid rgba(96,165,250,.35) !important; box-shadow:0 2px 0 rgba(30,64,175,.4),0 12px 25px rgba(0,0,0,.42) !important; } header.bar::after { position:absolute; right:0; bottom:-1px; left:0; height:1px; background:linear-gradient(90deg,transparent,rgba(96,165,250,.7),rgba(250,204,21,.45),transparent); content:''; } header.bar .brand { text-shadow:0 1px 0 rgba(0,0,0,.55); }
+      #merge-category-dialog { width:min(440px,calc(100vw - 28px)); padding:22px; border:1px solid rgba(96,165,250,.38); border-radius:20px; color:#f8fafc; background:linear-gradient(145deg,#172b4d,#10192d); box-shadow:0 24px 60px rgba(0,0,0,.64); } #merge-category-dialog::backdrop { background:rgba(2,6,23,.75); backdrop-filter:blur(4px); } #merge-category-dialog h2 { margin:0 0 8px; } #merge-category-dialog .status { margin:0 0 15px; color:#bfdbfe; }
+      .quiz-lobby { position:relative; overflow:hidden; }.quiz-lobby::after { position:absolute; width:190px; height:190px; right:-88px; bottom:-110px; border:1px solid rgba(96,165,250,.17); border-radius:50%; box-shadow:0 0 0 20px rgba(96,165,250,.04),0 0 0 42px rgba(96,165,250,.03); content:''; pointer-events:none; }.quiz-lobby > * { position:relative; z-index:1; }.quiz-loadout { padding:16px; border:1px solid rgba(96,165,250,.28); border-radius:18px; background:linear-gradient(135deg,rgba(37,99,235,.22),rgba(15,23,42,.2)); box-shadow:inset 0 1px rgba(255,255,255,.12),0 5px 0 rgba(7,15,33,.48); }.quiz-loadout-heading { display:flex; align-items:center; gap:12px; }.quiz-loadout-heading h2 { margin:2px 0 0; color:#f8fafc; font-size:1.33rem; line-height:1.1; }.quiz-loadout-emblem { display:grid; flex:0 0 48px; width:48px; height:48px; place-items:center; border:1px solid rgba(254,240,138,.55); border-radius:15px; color:#fef08a; background:linear-gradient(145deg,#f59e0b,#c2410c); box-shadow:inset 0 1px rgba(255,255,255,.35),0 4px 0 #7c2d12,0 9px 17px rgba(0,0,0,.25); }.quiz-loadout-emblem .ai-ico { width:23px; height:23px; }.quiz-stage-label { display:flex; align-items:center; gap:7px; margin:0; color:#93c5fd; font-size:.64rem; font-weight:900; letter-spacing:.11em; text-transform:uppercase; }.quiz-stage-label span { color:#facc15; font-size:1rem; line-height:0; }.quiz-choice-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:15px; }.quiz-choice { margin:0 !important; padding:10px 10px 8px; border:1px solid rgba(148,163,184,.22); border-radius:14px; background:rgba(4,13,30,.42); box-shadow:inset 0 1px rgba(255,255,255,.07),0 3px 0 rgba(3,8,22,.5); }.quiz-choice-label { display:block; margin:0 0 5px; color:#93c5fd; font-size:.65rem; font-weight:900; letter-spacing:.08em; text-transform:uppercase; }.quiz-choice select { min-height:30px !important; padding:0 !important; border:0 !important; border-radius:0 !important; color:#f8fafc !important; background:transparent !important; box-shadow:none !important; font-size:.9rem !important; font-weight:800; }.quiz-lobby .stats { margin:13px 0; }.quiz-lobby .stats .stat { min-height:60px; padding:9px 7px; font-size:.68rem; }.quiz-lobby .stats .stat b { display:block; margin-bottom:2px; font-size:1.07rem; }.quiz-lobby .take-quiz { width:100%; min-height:50px; font-weight:900; letter-spacing:.01em; }.quiz-lobby .take-quiz span { margin-left:7px; font-size:1.2em; }.quiz-round-actions { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:16px; }.quiz-round-actions #next { min-width:148px; margin:0; }.quiz-cancel { color:#cbd5e1 !important; background:rgba(15,23,42,.52) !important; border:1px solid rgba(148,163,184,.18) !important; }.quiz-cancel:hover { color:#fecaca !important; border-color:rgba(248,113,113,.48) !important; background:rgba(127,29,29,.24) !important; }
+      .quiz-choice .custom-select button { position:relative; min-height:46px; padding:9px 54px 9px 0 !important; border:0 !important; border-radius:0 !important; color:#f8fafc !important; background:transparent !important; box-shadow:none !important; font-size:.96rem !important; font-weight:800; }.quiz-choice .custom-select button::before { position:absolute; top:50%; right:0; width:31px; height:31px; border:1px solid rgba(96,165,250,.42); border-radius:10px; background:linear-gradient(145deg,rgba(59,130,246,.35),rgba(30,64,175,.2)); box-shadow:inset 0 1px rgba(255,255,255,.14),0 3px 0 rgba(3,20,53,.65); content:''; transform:translateY(-50%); }.quiz-choice .custom-select button::after { position:absolute; top:50%; right:11px; width:7px; height:7px; border-right:2px solid #bfdbfe; border-bottom:2px solid #bfdbfe; color:transparent; content:''; font-size:0; transform:translateY(-68%) rotate(45deg); }.quiz-choice .custom-select button:focus::before { border-color:#93c5fd; box-shadow:0 0 0 3px rgba(59,130,246,.2),inset 0 1px rgba(255,255,255,.18),0 3px 0 rgba(3,20,53,.65); }.quiz-choice .custom-select ul { border-color:rgba(96,165,250,.34) !important; background:#0b1730 !important; box-shadow:0 13px 30px rgba(0,0,0,.48) !important; }
+      @media(max-width:600px) { .quiz-mode-menu { padding:18px 15px; border-radius:20px; }.quiz-menu-heading { margin-bottom:14px; }.quiz-menu-heading h1 { font-size:1.55rem; }.quiz-mode-card { gap:11px; padding:13px; border-radius:15px; }.quiz-mode-icon { width:42px; height:42px; border-radius:13px; font-size:1.15rem; }.quiz-mode-copy b { font-size:.94rem; }.quiz-mode-copy small { font-size:.73rem; }.quiz-coming-soon { font-size:.57rem; padding:4px 6px; }.quiz-lobby { padding:15px !important; }.quiz-choice-grid { grid-template-columns:1fr; }.quiz-round-actions #next { min-width:136px; } }
     </style>
   </head>
   <body>
@@ -5595,19 +5599,6 @@
           <div class="stat stat-score"><span class="stat-icon" aria-hidden="true">🏆</span><div class="score-copy"><b id="best">—</b><span>high score</span></div></div>
           <div class="stat stat-mode"><span class="stat-icon" aria-hidden="true">⚡</span><b id="mode">Guest</b><span>player status</span></div>
         </div>
-        <section class="home-section quest-map-card">
-          <div class="section-heading">
-            <div>
-              <small class="eyebrow">QUEST MAP</small>
-              <h2>Choose your next adventure</h2>
-            </div>
-            <span aria-hidden="true"
-              ><svg class="ai-ico"><use href="#i-sun" /></svg
-            ></span>
-          </div>
-          <p class="status">Pick a topic, unlock useful phrases, and earn progress one card at a time.</p>
-          <button class="btn" type="button" data-v="categories">Explore quests <span aria-hidden="true">→</span></button>
-        </section>
         <section class="home-section continue-learning">
           <div class="section-heading">
             <div>
@@ -6331,6 +6322,9 @@
           >
             +
           </button>
+          <button id="merge-categories" class="plain hidden" type="button">
+            Merge
+          </button>
         </div>
         <p id="category-delete-status" class="status hidden"></p>
         <div id="category-grid" class="category-grid"></div>
@@ -6370,22 +6364,30 @@
           </section>
           <article id="quiz-lobby" class="panel">
             <button id="quiz-mode-back" class="plain quiz-mode-back" type="button">← All quiz modes</button>
-            <h2 id="quiz-lobby-title">Test your knowledge</h2>
-            <p class="status">
-              Test tuah na duhmi category thimpiak law Start quiz kha hmet
-            </p>
-            <label class="field"
-              >Quiz category<select id="quiz-category"></select
-            ></label>
-            <label class="field"
-              >Number of questions<select id="quiz-length"></select
-            ></label>
+            <section class="quiz-loadout">
+              <div class="quiz-loadout-heading">
+                <span class="quiz-loadout-emblem" aria-hidden="true"><svg class="ai-ico"><use href="#i-trophy" /></svg></span>
+                <div>
+                  <h2 id="quiz-lobby-title">Test your knowledge</h2>
+                </div>
+              </div>
+              <div class="quiz-choice-grid">
+                <label class="field quiz-choice">
+                  <span class="quiz-choice-label">Quest map</span>
+                  <select id="quiz-category"></select>
+                </label>
+                <label class="field quiz-choice">
+                  <span class="quiz-choice-label">Round size</span>
+                  <select id="quiz-length"></select>
+                </label>
+              </div>
+            </section>
             <div class="stats">
               <div class="stat"><b id="lobby-best">—</b>Best score</div>
               <div class="stat"><b id="lobby-tests">0</b>Tests taken</div>
               <div class="stat"><b id="lobby-rank">—</b>Total points</div>
             </div>
-            <button id="start-quiz" class="btn take-quiz">Start quiz</button>
+            <button id="start-quiz" class="btn take-quiz">Start challenge <span aria-hidden="true">→</span></button>
             <div class="quiz-insights">
               <section class="quiz-insight">
                 <div class="quiz-insight-title">
@@ -6413,18 +6415,12 @@
           </div>
           <article id="qcard" class="panel hidden">
             <h2 id="question"></h2>
-            <p id="quiz-question-translation" class="status"></p>
-            <button id="speak" class="plain">
-              <svg class="ai-ico"><use href="#i-volume" /></svg> Listen in
-              English
-            </button>
-            <button id="speak-answer" class="plain">
-              <svg class="ai-ico"><use href="#i-volume" /></svg> Listen to
-              answer
-            </button>
             <div id="options" class="options"></div>
             <p id="feedback"></p>
-            <button id="next" class="btn" disabled>Next question</button>
+            <div class="quiz-round-actions">
+              <button id="cancel-quiz" class="plain quiz-cancel" type="button">Cancel round</button>
+              <button id="next" class="btn" disabled>Next question <span aria-hidden="true">→</span></button>
+            </div>
           </article>
           <article id="summary" class="panel hidden">
             <h2>Quiz complete</h2>
@@ -6846,6 +6842,19 @@
             Cancel
           </button>
           <button class="btn" type="submit">Create category</button>
+        </div>
+      </form>
+    </dialog>
+    <dialog id="merge-category-dialog" class="category-dialog">
+      <form id="merge-category-form">
+        <h2>Merge categories</h2>
+        <p class="status">Move every phrase from one category into another. This cannot be undone.</p>
+        <label class="field">Merge from<select id="merge-source-category" required></select></label>
+        <label class="field">Merge into<select id="merge-target-category" required></select></label>
+        <p id="merge-category-message" class="status"></p>
+        <div class="actions">
+          <button id="cancel-merge-category" class="plain" type="button">Cancel</button>
+          <button class="btn" type="submit">Merge phrases</button>
         </div>
       </form>
     </dialog>
@@ -8047,6 +8056,7 @@
           $("category-grid").innerHTML =
             '<p class="status">No categories match your search.</p>';
         $("add-category").classList.toggle("hidden", !user?.admin);
+        $("merge-categories").classList.toggle("hidden", !user?.admin);
         document.querySelectorAll(".category").forEach(
           (b) =>
             (b.onclick = () => {
@@ -8133,6 +8143,47 @@
       $("add-category").onclick = openCategoryDialog;
       $("admin-new-category").onclick = openCategoryDialog;
       $("cancel-category").onclick = () => $("category-dialog").close();
+      function openMergeCategoryDialog() {
+        if (!user?.admin || !functions) return;
+        const options = categories
+          .map(([name]) => '<option value="' + esc(name) + '">' + esc(name) + "</option>")
+          .join("");
+        $("merge-source-category").innerHTML = options;
+        $("merge-target-category").innerHTML = options;
+        $("merge-target-category").selectedIndex = Math.min(1, categories.length - 1);
+        $("merge-category-message").textContent = "";
+        $("merge-category-dialog").showModal();
+      }
+      $("merge-categories").onclick = openMergeCategoryDialog;
+      $("cancel-merge-category").onclick = () => $("merge-category-dialog").close();
+      $("merge-category-form").onsubmit = async (event) => {
+        event.preventDefault();
+        const source = $("merge-source-category").value;
+        const target = $("merge-target-category").value;
+        if (source === target) {
+          $("merge-category-message").textContent = "Choose two different categories.";
+          return;
+        }
+        const submit = event.currentTarget.querySelector('button[type="submit"]');
+        submit.disabled = true;
+        $("merge-category-message").textContent = "Moving phrases…";
+        try {
+          const result = await httpsCallable(functions, "mergeCategories")({ source, target });
+          if (activeCategory === source) activeCategory = target;
+          await load();
+          await loadCustomCategories();
+          fillCategories();
+          renderCategories();
+          $("merge-category-dialog").close();
+          $("category-delete-status").textContent =
+            (result.data?.moved || 0) + " phrase" + ((result.data?.moved || 0) === 1 ? " was" : "s were") + " moved to " + target + ".";
+          $("category-delete-status").classList.remove("hidden");
+        } catch (error) {
+          $("merge-category-message").textContent = "Could not merge: " + error.message;
+        } finally {
+          submit.disabled = false;
+        }
+      };
       $("category-form").onsubmit = async (event) => {
         event.preventDefault();
         let form = new FormData(event.target),
@@ -8421,7 +8472,7 @@
           .map(
             (c) =>
               '<article class="card learn-card">' +
-              (user?.admin
+              (user?.editor
                 ? '<button class="plain card-edit-top" data-id="' +
                   c.id +
                   '" aria-label="Edit phrase"><svg class="ai-ico" style="width:15px;height:15px;"><use href="#i-edit"/></svg></button>'
@@ -8443,7 +8494,7 @@
               '">' +
               (p.studied.includes(c.id) ? "✓ Learned" : "Mark learned") +
               "</button></footer>" +
-              (user?.admin
+              (user?.editor
                 ? '<form class="card-inline-edit hidden" data-id="' +
                   c.id +
                   '"><label>English<input name="english"></label><label>Hakha Chin<input name="chin"></label><label class="inline-check"><input name="quiz" type="checkbox"> Use in quiz</label><div><button class="btn small">Save</button><button class="plain cancel-inline" type="button">Cancel</button><button class="plain delete-card" type="button">Delete phrase</button></div><p class="status"></p></form>'
@@ -8498,7 +8549,17 @@
               if (!content || !db) return;
               if (!window.confirm(`Delete "${content.english}"?`)) return;
               try {
-                await deleteDoc(doc(db, "content", content.id));
+                await setDoc(
+                  doc(db, "content", content.id),
+                  {
+                    deleted: true,
+                    status: "archived",
+                    deletedAt: serverTimestamp(),
+                    deletedBy: user.uid,
+                    deletedByName: user.displayName || "",
+                  },
+                  { merge: true },
+                );
                 await load();
                 render();
               } catch (error) {
@@ -8650,8 +8711,6 @@
         $("score").textContent = "Question " + (i + 1) + " of " + quiz.length;
         $("line").style.width = (i / quiz.length) * 100 + "%";
         $("question").textContent = citizenship ? q.english : q.chin;
-        $("quiz-question-translation").textContent =
-          q.category === "citizenship" ? q.chinQuestion || "" : q.english;
         $("options").innerHTML = a
           .map(
             (x) =>
@@ -8698,9 +8757,10 @@
         $("next").disabled = false;
       }
       $("next").onclick = () => (++i < quiz.length ? question() : finish());
-      $("speak").onclick = () => speak(quiz[i].english);
-      $("speak-answer").onclick = () =>
-        speak(quiz[i].category === "citizenship" ? quiz[i].chin : quiz[i].english);
+      $("cancel-quiz").onclick = () => {
+        if (!confirm("Cancel this quiz? Current progress will not be saved.")) return;
+        renderQuizSetup(activeQuizMode);
+      };
       $("restart").onclick = start;
       $("quiz-menu").onclick = renderQuizLobby;
       $("quiz-mode-back").onclick = renderQuizLobby;
@@ -9625,9 +9685,8 @@
             const data = await response.json();
             remote = Array.isArray(data.content) ? data.content : [];
           }
-          cards = [
-            ...new Map([...seed, ...remote].map((c) => [c.id, c])).values(),
-          ];
+          cards = [...new Map([...seed, ...remote].map((c) => [c.id, c])).values()]
+            .filter((card) => card.deleted !== true);
           fillCategories();
           $("status").textContent =
             remote.length === 0

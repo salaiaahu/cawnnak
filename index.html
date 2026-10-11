@@ -7701,6 +7701,17 @@
           </div>
           <article id="qcard" class="panel hidden">
             <h2 id="question"></h2>
+            <p id="quiz-question-translation" class="status"></p>
+            <div class="quiz-audio-actions">
+              <button id="speak" class="plain" type="button">
+                <svg class="ai-ico"><use href="#i-volume" /></svg> Listen in
+                English
+              </button>
+              <button id="speak-answer" class="plain" type="button">
+                <svg class="ai-ico"><use href="#i-volume" /></svg> Listen to
+                answer
+              </button>
+            </div>
             <div id="options" class="options"></div>
             <p id="feedback"></p>
             <div class="quiz-round-actions">
@@ -10139,11 +10150,14 @@
         $("next").disabled = false;
       }
       $("next").onclick = () => (++i < quiz.length ? question() : finish());
-      $("speak").onclick = () => speak(quiz[i].english);
-      $("speak-answer").onclick = () =>
-        speak(
-          quiz[i].category === "citizenship" ? quiz[i].chin : quiz[i].english,
-        );
+      if ($("speak")) $("speak").onclick = () => speak(quiz[i]?.english);
+      if ($("speak-answer"))
+        $("speak-answer").onclick = () =>
+          speak(
+            quiz[i]?.category === "citizenship"
+              ? quiz[i]?.chin
+              : quiz[i]?.english,
+          );
       $("cancel-quiz").onclick = () => {
         if (!confirm("Cancel this quiz? Current progress will not be saved."))
           return;

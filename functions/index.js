@@ -175,11 +175,12 @@ exports.getLearnerContent = onRequest({ cors: true }, async (request, response) 
     const snapshot = await db.collection('content').get();
     const content = snapshot.docs
       .map(card => ({ id: card.id, ...card.data() }))
-      .filter(card =>
+      .filter(card => card.deleted === true || (
         (!Object.prototype.hasOwnProperty.call(card, 'status') || card.status === 'published')
         && typeof card.english === 'string'
         && card.english.trim()
-      );
+      ))
+      .map(card => card.deleted === true ? { id: card.id, deleted: true } : card);
     response.set('Cache-Control', 'no-store, max-age=0');
     return response.json({ content });
   } catch (error) {
@@ -746,6 +747,41 @@ exports.migrateLegacyContent = onCall({ timeoutSeconds: 540, memory: '512MiB' },
     after: { migrated: legacy.length, status: 'published' }, actorUid: actor.uid, actorEmail: actor.token.email || null, actorName: actor.token.name || null
   });
   return { scanned: snapshot.size, migrated: legacy.length };
+});
+
+exports.mergeCategories = onCall({ timeoutSeconds: 120 }, async request => {
+  const actor = await requireAdmin(request);
+  await ensureRateLimit(actor.uid, 'mergeCategories', 6, 60_000);
+  const source = String(request.data?.source || '').trim();
+  const target = String(request.data?.target || '').trim();
+  if (!source || !target || source.length > 80 || target.length > 80) {
+    throw new HttpsError('invalid-argument', 'Choose valid source and target categories.');
+  }
+  if (source === target) throw new HttpsError('invalid-argument', 'Source and target categories must be different.');
+
+  const snapshot = await db.collection('content').where('category', '==', source).get();
+  for (let start = 0; start < snapshot.docs.length; start += 400) {
+    const batch = db.batch();
+    snapshot.docs.slice(start, start + 400).forEach(card => {
+      batch.update(card.ref, {
+        category: target,
+        updatedAt: FieldValue.serverTimestamp(),
+        updatedBy: actor.uid,
+        updatedByEmail: actor.token.email || null,
+        updatedByName: actor.token.name || null
+      });
+    });
+    await batch.commit();
+  }
+
+  const sourceCategory = await db.collection('categories').where('name', '==', source).limit(1).get();
+  if (!sourceCategory.empty) await sourceCategory.docs[0].ref.delete();
+  await writeAudit({
+    action: 'category.merge', entityType: 'category', entityId: source,
+    before: { category: source }, after: { category: target, moved: snapshot.size },
+    actorUid: actor.uid, actorEmail: actor.token.email || null, actorName: actor.token.name || null
+  });
+  return { moved: snapshot.size, sourceRemoved: !sourceCategory.empty };
 });
 
 exports.setUserRole = onCall(async request => {
